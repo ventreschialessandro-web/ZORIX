@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZORIX AI</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060d14;color:#fff;font-family:system-ui;height:100vh;display:flex;flex-direction:column}
+header{padding:18px;text-align:center;background:#0f1e2d;color:#00ff9d;font-weight:900;font-size:22px}
+#chat{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.msg{padding:14px 18px;border-radius:16px;max-width:85%;line-height:1.6;white-space:pre-wrap;font-size:15px}
+.user{background:#00ff9d;color:#000;align-self:flex-end}
+.bot{background:#132435;align-self:flex-start;border:1px solid #1e3a52}
+#bar{display:flex;gap:10px;padding:14px;background:#0f1e2d}
+#q{flex:1;padding:15px;border-radius:14px;border:0;background:#182f44;color:#fff;outline:0}
+#send{padding:15px 22px;border-radius:14px;border:0;background:#00ff9d;font-weight:900}
+</style>
+</head>
+<body>
+<header>ZORIX • زوريكس</header>
+<div id="chat"><div class="msg bot">أهلاً بيك في ZORIX 🚀 اسأل أي حاجة!</div></div>
+<div id="bar"><input id="q" placeholder="اكتب سؤالك..."><button id="send" onclick="go()">إرسال</button></div>
+<script>
+const API_KEY = "PASTE_YOUR_GSK_KEY_HERE";
+const chat=document.getElementById('chat');
+const inp=document.getElementById('q');
+function add(t,c){let d=document.createElement('div');d.className='msg '+c;d.textContent=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d}
+async function go(){
+let v=inp.value.trim();if(!v)return;
+add(v,'user');inp.value='';
+let b=add('ZORIX يفكر...','bot');
+try{
+let r=await fetch("https://api.groq.com/openai/v1/chat/completions",{
+method:"POST",
+headers:{"Content-Type":"application/json","Authorization":"Bearer "+API_KEY},
+body:JSON.stringify({model:"llama-3.3-70b-versatile",messages:[{role:"user",content:v}]})
+});
+let j=await r.json();
+b.textContent=j.choices[0].message.content;
+}catch(e){b.textContent="تأكد من المفتاح - فيه مشكلة";}
+}
+inp.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+</script>
+</body>
+</html>
