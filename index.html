@@ -1,42 +1,59 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Free Unlimited AI Chatbot</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <div id="chatHeader">Free Unlimited AI Chatbot</div>
-    <div id="chatContainer"></div>
-    <button id="scrollBtn">↓</button>
-    <div id="inputContainer">
-      <select id="modelSelect"></select>
-      <textarea id="userInput" placeholder="Type your message..." autocomplete="off" rows="1"></textarea>
-      <button id="sendBtn">Send</button>
-      <button id="themeToggle">🌙</button>
-    </div>
-    <script src="https://js.puter.com/v2/"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
-    <script src="app.js"></script>
-  </body>
-  <script>
-  // Set theme class on <body> before CSS loads to prevent flash
-  (function() {
-    try {
-      var theme = localStorage.getItem('ollama-theme') || 'system';
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var body = document.body;
-      body.classList.remove('dark', 'light');
-      if (theme === 'dark' || (theme === 'system' && prefersDark)) {
-        body.classList.add('dark');
-      } else if (theme === 'light') {
-        body.classList.add('light');
-      }
-    } catch (e) {}
-  })();
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZORIX - Free AI Chatbot</title>
+<script src="https://js.puter.com/v2/"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui;background:#0f0f0f;color:white;display:flex;flex-direction:column;height:100vh}
+header{padding:15px;background:#1a1a1a;text-align:center;border-bottom:1px solid #333}
+header h1{font-size:22px;background:linear-gradient(90deg,#00f5ff,#7c4dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#models{padding:10px;background:#1a1a1a;display:flex;gap:10px;overflow-x:auto}
+#models button{white-space:nowrap;padding:6px 12px;border-radius:20px;border:1px solid #333;background:#222;color:#aaa;cursor:pointer}
+#models button.active{background:#7c4dff;color:white;border-color:#7c4dff}
+#chat{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:15px}
+.msg{max-width:85%;padding:12px 16px;border-radius:18px;line-height:1.5}
+.user{align-self:flex-end;background:#7c4dff}
+.bot{align-self:flex-start;background:#222;border:1px solid #333}
+#inputArea{padding:15px;background:#1a1a1a;display:flex;gap:10px;border-top:1px solid #333}
+#input{flex:1;padding:12px 16px;border-radius:25px;border:1px solid #333;background:#222;color:white;outline:none}
+#send{padding:12px 20px;border-radius:25px;border:none;background:#7c4dff;color:white;font-weight:bold;cursor:pointer}
+</style>
+</head>
+<body>
+<header><h1>ZORIX - Free Unlimited AI</h1></header>
+<div id="models">
+<button class="active" data-model="gpt-4o-mini">GPT-4o Mini</button>
+<button data-model="claude-sonnet-4">Claude 4</button>
+<button data-model="google/gemini-2.5-flash">Gemini 2.5</button>
+<button data-model="meta-llama/llama-4-maverick">Llama 4</button>
+<button data-model="mistralai/mistral-large">Mistral Large</button>
+</div>
+<div id="chat"><div class="msg bot">أهلا! أنا ZORIX، اختار الموديل من فوق وابدأ اسألني أي حاجة 🚀</div></div>
+<div id="inputArea">
+<input id="input" placeholder="Type your message...">
+<button id="send">Send</button>
+</div>
+<script>
+let currentModel='gpt-4o-mini';
+document.querySelectorAll('#models button').forEach(b=>b.onclick=()=>{
+document.querySelectorAll('#models button').forEach(x=>x.classList.remove('active'));
+b.classList.add('active');currentModel=b.dataset.model;
+});
+const chat=document.getElementById('chat'),input=document.getElementById('input'),sendBtn=document.getElementById('send');
+async function send(){
+const text=input.value.trim();if(!text)return;
+chat.innerHTML+=`<div class="msg user">${text}</div>`;input.value='';
+const botDiv=document.createElement('div');botDiv.className='msg bot';botDiv.textContent='...';chat.appendChild(botDiv);chat.scrollTop=chat.scrollHeight;
+try{
+const res=await puter.ai.chat(text,{model:currentModel,stream:true});
+botDiv.textContent='';
+for await(const part of res){botDiv.textContent+=part?.text||'';chat.scrollTop=chat.scrollHeight}
+}catch(e){botDiv.textContent='Error: '+e.message+' - جرب موديل تاني'}
+}
+sendBtn.onclick=send;input.onkeydown=e=>{if(e.key==='Enter')send()};
 </script>
+</body>
 </html>
