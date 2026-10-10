@@ -1,1 +1,3728 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   AI Business Framework - Project Management Hub
+  </title>
+  <style>
+/*
+ * Converted to ProjectSuite CSS Architecture
+ * Date: 2025-11-29 04:36:34
+ * Bootstrap/utility classes mapped to ProjectSuite equivalents
+ * Original backed up to: ./asset_backups
+ */
 
+:root {
+  /* Colors */
+  --color-background: rgba(252, 252, 249, 1);
+  --color-surface: rgba(255, 255, 253, 1);
+  --color-text: rgba(19, 52, 59, 1);
+  --color-text-secondary: rgba(98, 108, 113, 1);
+  --color-primary: rgba(33, 128, 141, 1);
+  --color-primary-hover: rgba(29, 116, 128, 1);
+  --color-primary-active: rgba(26, 104, 115, 1);
+  --color-secondary: rgba(94, 82, 64, 0.12);
+  --color-secondary-hover: rgba(94, 82, 64, 0.2);
+  --color-secondary-active: rgba(94, 82, 64, 0.25);
+  --color-border: rgba(94, 82, 64, 0.2);
+  --color-btn-primary-text: rgba(252, 252, 249, 1);
+  --color-card-border: rgba(94, 82, 64, 0.12);
+  --color-card-border-inner: rgba(94, 82, 64, 0.12);
+  --color-error: rgba(192, 21, 47, 1);
+  --color-success: rgba(33, 128, 141, 1);
+  --color-warning: rgba(168, 75, 47, 1);
+  --color-info: rgba(98, 108, 113, 1);
+  --color-focus-ring: rgba(33, 128, 141, 0.4);
+  --color-select-caret: rgba(19, 52, 59, 0.8);
+
+  /* Common style patterns */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+  /* RGB versions for opacity control */
+  --color-success-rgb: 33, 128, 141;
+  --color-error-rgb: 192, 21, 47;
+  --color-warning-rgb: 168, 75, 47;
+  --color-info-rgb: 98, 108, 113;
+
+  /* Typography */
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
+    0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+  /* Animation */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+}
+
+/* Dark mode colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: rgba(31, 33, 33, 1);
+    --color-surface: rgba(38, 40, 40, 1);
+    --color-text: rgba(245, 245, 245, 1);
+    --color-text-secondary: rgba(167, 169, 169, 0.7);
+    --color-primary: rgba(50, 184, 198, 1);
+    --color-primary-hover: rgba(45, 166, 178, 1);
+    --color-primary-active: rgba(41, 150, 161, 1);
+    --color-secondary: rgba(119, 124, 124, 0.15);
+    --color-secondary-hover: rgba(119, 124, 124, 0.25);
+    --color-secondary-active: rgba(119, 124, 124, 0.3);
+    --color-border: rgba(119, 124, 124, 0.3);
+    --color-error: rgba(255, 84, 89, 1);
+    --color-success: rgba(50, 184, 198, 1);
+    --color-warning: rgba(230, 129, 97, 1);
+    --color-info: rgba(167, 169, 169, 1);
+    --color-focus-ring: rgba(50, 184, 198, 0.4);
+    --color-btn-primary-text: rgba(19, 52, 59, 1);
+    --color-card-border: rgba(119, 124, 124, 0.2);
+    --color-card-border-inner: rgba(119, 124, 124, 0.15);
+    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    --button-border-secondary: rgba(119, 124, 124, 0.2);
+    --color-border-secondary: rgba(119, 124, 124, 0.2);
+    --color-select-caret: rgba(245, 245, 245, 0.8);
+
+    /* Common style patterns - updated for dark mode */
+    --focus-ring: 0 0 0 3px var(--color-focus-ring);
+    --focus-outline: 2px solid var(--color-primary);
+    --status-bg-opacity: 0.15;
+    --status-border-opacity: 0.25;
+    --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+    /* RGB versions for dark mode */
+    --color-success-rgb: 50, 184, 198;
+    --color-error-rgb: 255, 84, 89;
+    --color-warning-rgb: 230, 129, 97;
+    --color-info-rgb: 167, 169, 169;
+  }
+}
+
+/* Data attribute for manual theme switching */
+[data-color-scheme="dark"] {
+  --color-background: rgba(31, 33, 33, 1);
+  --color-surface: rgba(38, 40, 40, 1);
+  --color-text: rgba(245, 245, 245, 1);
+  --color-text-secondary: rgba(167, 169, 169, 0.7);
+  --color-primary: rgba(50, 184, 198, 1);
+  --color-primary-hover: rgba(45, 166, 178, 1);
+  --color-primary-active: rgba(41, 150, 161, 1);
+  --color-secondary: rgba(119, 124, 124, 0.15);
+  --color-secondary-hover: rgba(119, 124, 124, 0.25);
+  --color-secondary-active: rgba(119, 124, 124, 0.3);
+  --color-border: rgba(119, 124, 124, 0.3);
+  --color-error: rgba(255, 84, 89, 1);
+  --color-success: rgba(50, 184, 198, 1);
+  --color-warning: rgba(230, 129, 97, 1);
+  --color-info: rgba(167, 169, 169, 1);
+  --color-focus-ring: rgba(50, 184, 198, 0.4);
+  --color-btn-primary-text: rgba(19, 52, 59, 1);
+  --color-card-border: rgba(119, 124, 124, 0.15);
+  --color-card-border-inner: rgba(119, 124, 124, 0.15);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  --color-border-secondary: rgba(119, 124, 124, 0.2);
+  --color-select-caret: rgba(245, 245, 245, 0.8);
+
+  /* Common style patterns - updated for dark mode */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+  /* RGB versions for dark mode */
+  --color-success-rgb: 50, 184, 198;
+  --color-error-rgb: 255, 84, 89;
+  --color-warning-rgb: 230, 129, 97;
+  --color-info-rgb: 167, 169, 169;
+}
+
+[data-color-scheme="light"] {
+  --color-background: rgba(252, 252, 249, 1);
+  --color-surface: rgba(255, 255, 253, 1);
+  --color-text: rgba(19, 52, 59, 1);
+  --color-text-secondary: rgba(98, 108, 113, 1);
+  --color-primary: rgba(33, 128, 141, 1);
+  --color-primary-hover: rgba(29, 116, 128, 1);
+  --color-primary-active: rgba(26, 104, 115, 1);
+  --color-secondary: rgba(94, 82, 64, 0.12);
+  --color-secondary-hover: rgba(94, 82, 64, 0.2);
+  --color-secondary-active: rgba(94, 82, 64, 0.25);
+  --color-border: rgba(94, 82, 64, 0.2);
+  --color-btn-primary-text: rgba(252, 252, 249, 1);
+  --color-card-border: rgba(94, 82, 64, 0.12);
+  --color-card-border-inner: rgba(94, 82, 64, 0.12);
+  --color-error: rgba(192, 21, 47, 1);
+  --color-success: rgba(33, 128, 141, 1);
+  --color-warning: rgba(168, 75, 47, 1);
+  --color-info: rgba(98, 108, 113, 1);
+  --color-focus-ring: rgba(33, 128, 141, 0.4);
+
+  /* RGB versions for light mode */
+  --color-success-rgb: 33, 128, 141;
+  --color-error-rgb: 192, 21, 47;
+  --color-warning-rgb: 168, 75, 47;
+  --color-info-rgb: 98, 108, 113;
+}
+
+/* Base styles */
+html {
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+}
+h2 {
+  font-size: var(--font-size-3xl);
+}
+h3 {
+  font-size: var(--font-size-2xl);
+}
+h4 {
+  font-size: var(--font-size-xl);
+}
+h5 {
+  font-size: var(--font-size-lg);
+}
+h6 {
+  font-size: var(--font-size-md);
+}
+
+p {
+  margin: 0 0 var(--space-16) 0;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+code,
+pre {
+  font-family: var(--font-family-mono);
+  font-size: calc(var(--font-size-base) * 0.95);
+  background-color: var(--color-secondary);
+  border-radius: var(--radius-sm);
+}
+
+code {
+  padding: var(--space-1) var(--space-4);
+}
+
+pre {
+  padding: var(--space-16);
+  margin: var(--space-16) 0;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  border: none;
+  text-decoration: none;
+  position: relative;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn--primary:active {
+  background: var(--color-primary-active);
+}
+
+.btn--secondary {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.btn--secondary:hover {
+  background: var(--color-secondary-hover);
+}
+
+.btn--secondary:active {
+  background: var(--color-secondary-active);
+}
+
+.btn--outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn--outline:hover {
+  background: var(--color-secondary);
+}
+
+.btn--sm {
+  padding: var(--space-4) var(--space-12);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+}
+
+.btn--lg {
+  padding: var(--space-10) var(--space-20);
+  font-size: var(--font-size-lg);
+  border-radius: var(--radius-md);
+}
+
+.btn--full-width {
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Form elements */
+.form-control {
+  display: block;
+  width: 100%;
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+textarea.form-control {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+}
+
+select.form-control {
+  padding: var(--space-8) var(--space-12);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: var(--select-caret-light);
+  background-repeat: no-repeat;
+  background-position: right var(--space-12) center;
+  background-size: 16px;
+  padding-right: var(--space-32);
+}
+
+/* Add a dark mode specific caret */
+@media (prefers-color-scheme: dark) {
+  select.form-control {
+    background-image: var(--select-caret-dark);
+  }
+}
+
+/* Also handle data-color-scheme */
+[data-color-scheme="dark"] select.form-control {
+  background-image: var(--select-caret-dark);
+}
+
+[data-color-scheme="light"] select.form-control {
+  background-image: var(--select-caret-light);
+}
+
+.form-control:focus {
+  border-color: var(--color-primary);
+  outline: var(--focus-outline);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-8);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.form-group {
+  margin-bottom: var(--space-16);
+}
+
+/* Card component */
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card__body {
+  padding: var(--space-16);
+}
+
+.card__header,
+.card__footer {
+  padding: var(--space-16);
+  border-bottom: 1px solid var(--color-card-border-inner);
+}
+
+/* Status indicators - simplified with CSS variables */
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.status--success {
+  background-color: rgba(
+    var(--color-success-rgb, 33, 128, 141),
+    var(--status-bg-opacity)
+  );
+  color: var(--color-success);
+  border: 1px solid
+    rgba(var(--color-success-rgb, 33, 128, 141), var(--status-border-opacity));
+}
+
+.status--error {
+  background-color: rgba(
+    var(--color-error-rgb, 192, 21, 47),
+    var(--status-bg-opacity)
+  );
+  color: var(--color-error);
+  border: 1px solid
+    rgba(var(--color-error-rgb, 192, 21, 47), var(--status-border-opacity));
+}
+
+.status--warning {
+  background-color: rgba(
+    var(--color-warning-rgb, 168, 75, 47),
+    var(--status-bg-opacity)
+  );
+  color: var(--color-warning);
+  border: 1px solid
+    rgba(var(--color-warning-rgb, 168, 75, 47), var(--status-border-opacity));
+}
+
+.status--info {
+  background-color: rgba(
+    var(--color-info-rgb, 98, 108, 113),
+    var(--status-bg-opacity)
+  );
+  color: var(--color-info);
+  border: 1px solid
+    rgba(var(--color-info-rgb, 98, 108, 113), var(--status-border-opacity));
+}
+
+/* Container layout */
+.section-content {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: var(--space-16);
+  padding-left: var(--space-16);
+}
+
+@media (min-width: 640px) {
+  .section-content {
+    max-width: var(--container-sm);
+  }
+}
+@media (min-width: 768px) {
+  .section-content {
+    max-width: var(--container-md);
+  }
+}
+@media (min-width: 1024px) {
+  .section-content {
+    max-width: var(--container-lg);
+  }
+}
+@media (min-width: 1280px) {
+  .section-content {
+    max-width: var(--container-xl);
+  }
+}
+
+/* Utility classes */
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-4 {
+  gap: var(--space-4);
+}
+.gap-8 {
+  gap: var(--space-8);
+}
+.gap-16 {
+  gap: var(--space-16);
+}
+
+.block {
+  display: block;
+}
+.hidden {
+  display: none;
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+/* Dark mode specifics */
+[data-color-scheme="dark"] .btn--outline {
+  border: 1px solid var(--color-border-secondary);
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
+    format('woff2');
+}
+
+/* Layout */
+body {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+    font-family: var(--font-family-base);
+    background-color: var(--color-background);
+}
+
+.side-nav {
+    width: 250px;
+    background-color: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+    padding: var(--space-24);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    margin-bottom: var(--space-32);
+}
+
+.sidebar-header h2 {
+    color: var(--color-primary);
+    font-size: var(--font-size-xl);
+    margin: 0;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-12) var(--space-16);
+    margin-bottom: var(--space-4);
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.menu-item:hover {
+    background-color: var(--color-secondary);
+}
+
+.menu-item.active {
+    background-color: var(--color-primary);
+    color: var(--color-btn-primary-text);
+}
+
+.menu-icon {
+    margin-right: var(--space-12);
+    font-size: var(--font-size-lg);
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: var(--space-24);
+    overflow-y: auto;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.section-header {
+    margin-bottom: var(--space-32);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header h1 {
+    margin: 0;
+    font-size: var(--font-size-4xl);
+}
+
+.section-header p {
+    color: var(--color-text-secondary);
+    margin: var(--space-8) 0 0 0;
+}
+
+/* Grid Layouts */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-24);
+    margin-bottom: var(--space-32);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-24);
+    margin-bottom: var(--space-32);
+}
+
+.framework-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-24);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--space-24);
+}
+
+.performance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-24);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-24);
+}
+
+.automation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-24);
+}
+
+/* KPI Cards */
+.kpi-card {
+    background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-secondary) 100%);
+}
+
+.kpi-value {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin: var(--space-8) 0;
+}
+
+.kpi-trend {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-12);
+}
+
+.kpi-trend.positive {
+    color: var(--color-success);
+}
+
+.kpi-trend.negative {
+    color: var(--color-error);
+}
+
+.kpi-progress {
+    margin-top: var(--space-16);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--color-secondary);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: var(--space-8);
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--color-primary);
+    transition: width var(--duration-normal) var(--ease-standard);
+}
+
+.progress-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+/* Framework Progress */
+.framework-progress {
+    height: fit-content;
+}
+
+.framework-overview {
+    margin-bottom: var(--space-24);
+}
+
+.framework-step {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-16);
+    padding: var(--space-12);
+    border-radius: var(--radius-base);
+    transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.framework-step:hover {
+    background-color: var(--color-secondary);
+}
+
+.framework-step.completed {
+    background-color: rgba(var(--color-success-rgb), 0.1);
+}
+
+.framework-step.in-progress {
+    background-color: rgba(var(--color-warning-rgb), 0.1);
+}
+
+.framework-step.pending {
+    background-color: rgba(var(--color-info-rgb), 0.1);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    color: var(--color-btn-primary-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    margin-right: var(--space-16);
+    flex-shrink: 0;
+}
+
+.step-info {
+    flex: 1;
+}
+
+.step-info h4 {
+    margin: 0 0 var(--space-8) 0;
+    font-size: var(--font-size-md);
+}
+
+/* Framework Step Cards */
+.framework-step-card {
+    border-left: 4px solid var(--color-border);
+}
+
+.framework-step-card.completed {
+    border-left-color: var(--color-success);
+}
+
+.framework-step-card.in-progress {
+    border-left-color: var(--color-warning);
+}
+
+.framework-step-card.pending {
+    border-left-color: var(--color-info);
+}
+
+.step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-16);
+}
+
+.step-tasks {
+    margin-top: var(--space-16);
+}
+
+.task-item {
+    padding: var(--space-8) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.task-item.completed {
+    color: var(--color-success);
+}
+
+.task-item.in-progress {
+    color: var(--color-warning);
+}
+
+.task-item.pending {
+    color: var(--color-info);
+}
+
+/* Recent Activities */
+.activity-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: var(--space-12) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    margin-right: var(--space-12);
+    font-size: var(--font-size-lg);
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-text {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-4);
+}
+
+.activity-meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+/* Chart Container */
+.chart-container {
+    margin-top: var(--space-32);
+}
+
+.chart-container canvas {
+    max-height: 400px;
+}
+
+/* Project Cards */
+.project-card {
+    border-left: 4px solid var(--color-primary);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-8);
+}
+
+.project-header h3 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+}
+
+.project-id {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-16) 0;
+}
+
+.project-stats {
+    margin-bottom: var(--space-16);
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-8);
+}
+
+.stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.stat-value {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.project-actions {
+    display: flex;
+    gap: var(--space-8);
+}
+
+/* Business Model Items */
+.business-model-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+}
+
+.business-model-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    padding: var(--space-12);
+    border-radius: var(--radius-base);
+    background-color: var(--color-secondary);
+}
+
+.model-tier {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    color: white;
+    flex-shrink: 0;
+}
+
+.s-tier {
+    background-color: #ff6b6b;
+}
+
+.a-tier {
+    background-color: #4ecdc4;
+}
+
+.b-tier {
+    background-color: #45b7d1;
+}
+
+.model-info h4 {
+    margin: 0 0 var(--space-4) 0;
+    font-size: var(--font-size-md);
+}
+
+.model-info p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+/* ROI Calculator */
+.roi-calculator {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+}
+
+.roi-results {
+    margin-top: var(--space-16);
+    padding: var(--space-16);
+    background-color: var(--color-secondary);
+    border-radius: var(--radius-base);
+}
+
+.roi-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-8);
+}
+
+.roi-metric:last-child {
+    margin-bottom: 0;
+}
+
+.roi-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.roi-value {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+}
+
+/* Team Member Cards */
+.team-member-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.member-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+}
+
+.member-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    color: var(--color-btn-primary-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+}
+
+.member-details h3 {
+    margin: 0 0 var(--space-4) 0;
+    font-size: var(--font-size-md);
+}
+
+.member-details p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.member-email {
+    font-size: var(--font-size-xs) !important;
+}
+
+/* Tables */
+.documents-table,
+.inventory-table {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-base);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    background-color: var(--color-secondary);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.table-cell {
+    padding: var(--space-12) var(--space-16);
+    display: flex;
+    align-items: center;
+    font-size: var(--font-size-sm);
+}
+
+.table-header .table-cell {
+    color: var(--color-text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .side-nav {
+        width: 200px;
+    }
+
+    .main-content {
+        margin-left: 200px;
+        padding: var(--space-16);
+    }
+
+    .dashboard-grid,
+    .performance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-16);
+    }
+
+    .table-header,
+    .table-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+    }
+
+    .table-cell {
+        padding: var(--space-8);
+    }
+}
+
+@media (max-width: 480px) {
+    .side-nav {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: var(--space-12);
+    }
+
+    .framework-grid,
+    .projects-grid,
+    .team-grid,
+    .automation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-actions {
+        flex-direction: column;
+    }
+
+    .member-info {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  
+  
+  
+  
+  <script>
+   /* Unified color-mode: no-flash init (shared standard) */
+   (function () {
+     try {
+       var s = localStorage.getItem('colorScheme');
+       if (s !== 'dark' && s !== 'light') {
+         s = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+       }
+       document.documentElement.setAttribute('data-color-scheme', s);
+     } catch (e) {}
+   })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   /* Unified typography — Space Grotesk headings + Inter body (shared standard) */
+   body { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+   h1, h2, h3, h4, h5, h6,
+   .logo, .logo span, .sidebar-header h2, .sidebar__title, .app-title {
+     font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+     letter-spacing: -0.02em;
+   }
+  </style>
+  <style>
+   /* ============================================================
+      PROJECTSUITE ENHANCE — palette refresh (tangerine, no red) + motion
+      ============================================================ */
+   :root, [data-color-scheme="light"] {
+     --color-primary: #e2652a;
+     --color-primary-hover: #c9551e;
+     --color-primary-active: #b54a18;
+     --color-accent: #2a9d8f;
+     --color-accent-hover: #1e7a70;
+     --color-success: #17a673;
+     --color-warning: #e0930b;
+     --color-error: #d2691e;
+     --color-danger: #d2691e;
+     --color-info: #1e85ad;
+     --color-focus-ring: rgba(226, 101, 42, 0.4);
+     --color-btn-primary-text: #ffffff;
+     --color-primary-rgb: 226, 101, 42;
+     --color-success-rgb: 23, 166, 115;
+     --color-warning-rgb: 224, 147, 11;
+     --color-error-rgb: 210, 105, 30;
+     --color-info-rgb: 30, 133, 173;
+     --gradient-primary: linear-gradient(135deg, #e2652a 0%, #f5a623 100%);
+     --gradient-accent: linear-gradient(135deg, #2a9d8f 0%, #17a673 100%);
+   }
+   [data-color-scheme="dark"] {
+     --color-primary: #ff8a4c;
+     --color-primary-hover: #ff7a33;
+     --color-primary-active: #f26b21;
+     --color-accent: #3fb9aa;
+     --color-accent-hover: #2dd4a7;
+     --color-success: #2dd4a7;
+     --color-warning: #f5b23d;
+     --color-error: #ff9150;
+     --color-danger: #ff9150;
+     --color-info: #38a9ce;
+     --color-focus-ring: rgba(255, 138, 76, 0.4);
+     --color-btn-primary-text: #16150f;
+     --color-primary-rgb: 255, 138, 76;
+     --color-success-rgb: 45, 212, 167;
+     --color-warning-rgb: 245, 178, 61;
+     --color-error-rgb: 255, 145, 80;
+     --color-info-rgb: 56, 169, 206;
+     --gradient-primary: linear-gradient(135deg, #ff8a4c 0%, #f5b23d 100%);
+     --gradient-accent: linear-gradient(135deg, #3fb9aa 0%, #2dd4a7 100%);
+   }
+   @media (prefers-color-scheme: dark) {
+     :root:not([data-color-scheme="light"]) {
+       --color-primary: #ff8a4c; --color-primary-hover: #ff7a33; --color-primary-active: #f26b21;
+       --color-accent: #3fb9aa; --color-success: #2dd4a7; --color-warning: #f5b23d;
+       --color-error: #ff9150; --color-danger: #ff9150; --color-info: #38a9ce;
+       --color-primary-rgb: 255, 138, 76;
+       --gradient-primary: linear-gradient(135deg, #ff8a4c 0%, #f5b23d 100%);
+     }
+   }
+   html.ph-anim .ph-reveal { opacity: 0; transform: translateY(18px);
+     transition: opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); will-change: opacity, transform; }
+   html.ph-anim .ph-reveal.in-view { opacity: 1; transform: none; }
+   .ph-card { position: relative; }
+   .ph-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+     background: var(--gradient-primary); transform: scaleX(0); transform-origin: left;
+     transition: transform .35s cubic-bezier(.16,1,.3,1); border-radius: 4px 4px 0 0; pointer-events: none; z-index: 1; }
+   .ph-card:hover::after { transform: scaleX(1); }
+   .ph-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.4);
+     transform: translate(-50%,-50%) scale(0); animation: phRipple .6s ease-out forwards; pointer-events: none; }
+   @keyframes phRipple { to { transform: translate(-50%,-50%) scale(1); opacity: 0; } }
+   .ph-cursor { position: fixed; top: 0; left: 0; width: 16px; height: 16px;
+     border: 2px solid var(--color-primary); border-radius: 50%; pointer-events: none; z-index: 9998;
+     transition: width .25s ease, height .25s ease, background .25s ease, border-color .25s ease, opacity .25s ease;
+     opacity: .28; will-change: transform; }
+   .ph-cursor.hover { width: 30px; height: 30px; background: rgba(var(--color-primary-rgb), .06); opacity: .45; }
+   @media (max-width: 900px) { .ph-cursor { display: none; } }
+   @media (prefers-reduced-motion: reduce) {
+     html.ph-anim .ph-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+     .ph-cursor { display: none; }
+   }
+  </style>
+     <style>
+   /* Site chrome — shared footer + about-modal system */
+   .site-footer { margin-top: 32px; padding: 24px; border-top: 1px solid var(--color-border); background: var(--color-surface); }
+   .sf-inner { max-width: 1280px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+   .site-footer a { color: var(--color-text-secondary); text-decoration: none; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+   .site-footer a:hover { color: var(--color-primary); }
+   .site-footer a i { width: 14px; height: 14px; }
+   .sf-links { display: flex; gap: 20px; flex-wrap: wrap; }
+   .sf-byline { font-size: 13px; color: var(--color-text-secondary); }
+   .sf-byline a { display: inline; color: var(--color-primary); font-weight: 600; }
+   #appInfoBtn { flex-shrink: 0; display: inline-flex !important; align-items: center; gap: 6px; }
+   [data-theme-toggle] { display: inline-flex !important; align-items: center; justify-content: center; gap: 6px; }
+   .tt-label { font-size: 13px; font-weight: 500; white-space: nowrap; }
+   .app-summary { padding: 10px 24px; background: var(--color-surface); border-bottom: 1px solid var(--color-border); color: var(--color-text-secondary); font-size: 13px; line-height: 1.5; }
+   .sidebar-header .app-summary, .sidebar__header .app-summary { padding: 4px 0 0; margin: 0; border: none; background: none; font-size: 12px; }
+   .site-about-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 2500; display: flex; align-items: center; justify-content: center; padding: 20px; }
+   .site-about-modal { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; max-width: 580px; width: 100%; max-height: 82vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,.3); }
+   .sam-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 1px solid var(--color-border); position: sticky; top: 0; background: var(--color-surface); }
+   .sam-head h3 { margin: 0; font-size: 18px; }
+   .sam-body { padding: 22px; line-height: 1.75; color: var(--color-text-secondary); font-size: 14px; }
+   .sam-body p { margin: 0 0 14px; }
+   .sam-body strong { color: var(--color-text); }
+   .sam-body hr { border: none; border-top: 1px solid var(--color-border); margin: 18px 0; }
+   .sam-body ul { margin: 0 0 14px; padding-left: 20px; }
+   .sam-body li { margin-bottom: 6px; }
+  </style>
+
+ </head>
+ <body>
+<div id="kb-app-nav" style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.5rem 1rem;background:#181b21;color:#e5e7eb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;border-bottom:1px solid #2a2e37;position:relative;z-index:99999;box-sizing:border-box;">
+  <a href="https://kareembullard.github.io/" style="color:#e5e7eb;text-decoration:none;font-weight:600;white-space:nowrap;">🏠 Home</a>
+  <div style="position:relative;">
+    <button id="kb-apps-btn" type="button" style="background:#2563eb;color:#fff;border:none;border-radius:6px;padding:.3rem .7rem;font:inherit;cursor:pointer;">Apps ▾</button>
+    <div id="kb-apps-menu" style="display:none;position:absolute;top:130%;left:0;background:#181b21;border:1px solid #2a2e37;border-radius:8px;padding:.4rem;min-width:260px;max-height:70vh;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.45);"></div>
+  </div>
+  <span id="kb-current-app" style="color:#9aa1ad;white-space:nowrap;"></span>
+</div>
+<script>
+(function () {
+  if (window.self !== window.top) {
+    var framedBar = document.getElementById("kb-app-nav");
+    if (framedBar) framedBar.style.display = "none";
+    return;
+  }
+  var KB_APPS = [
+    { group: "Personal Systems Suite", name: "Systems Catalog Explorer", repo: "systems-catalog-explorer-web" },
+    { group: "Personal Systems Suite", name: "Tool Inventory Browser", repo: "tool-inventory-browser-web" },
+    { group: "Personal Systems Suite", name: "Snippet & Shortcut Launcher", repo: "snippet-launcher-web" },
+    { group: "Personal Systems Suite", name: "Product / Income Calculator", repo: "product-income-calculator-web" },
+    { group: "Personal Systems Suite", name: "Food Inventory", repo: "food-inventory-web" },
+    { group: "Personal Systems Suite", name: "Quick Capture", repo: "quick-capture-web" },
+    { group: "Quizzes & Utilities", name: "Quiz Arcade", repo: "powerbi-quiz" },
+    { group: "Quizzes & Utilities", name: "AI Studio Renamer", repo: "ai-studio-renamer" },
+    { group: "Project Dashboards", name: "PM Dashboard", repo: "pm-dashboard" },
+    { group: "Project Dashboards", name: "Portfolio Dashboard", repo: "portfolio-dashboard" },
+    { group: "Project Dashboards", name: "WBS Portfolio", repo: "wbs-portfolio" },
+    { group: "Project Dashboards", name: "Sacrifice Metrics", repo: "sacrifice-metrics" },
+    { group: "Showcase Demos", name: "Asset Management System", repo: "asset-hub-web" },
+    { group: "Showcase Demos", name: "Project Portfolio Manager", repo: "project-portfolio-manager-web" },
+    { group: "Showcase Demos", name: "Agile Sprint Manager", repo: "sprint-planner-web" },
+    { group: "Showcase Demos", name: "Property Risk Manager", repo: "landlord-risk-manager-web" },
+    { group: "Showcase Demos", name: "Learning & Media Tracker", repo: "learning-hub-web" },
+    { group: "Showcase Demos", name: "AI Business Framework", repo: "ai-wealth-framework-web" },
+    { group: "Showcase Demos", name: "RSS Feed Reader", repo: "rss-feed-reader-web" },
+    { group: "Showcase Demos", name: "Personal Growth Tracker", repo: "flourishing-life-web" },
+    { group: "Showcase Demos", name: "Phase System Manager", repo: "phase-system-manager-web" },
+  ];
+  var CURRENT_REPO = "project-showcase";
+
+  var current = KB_APPS.find(function (a) { return a.repo === CURRENT_REPO; });
+  var currentSpan = document.getElementById("kb-current-app");
+  if (current && currentSpan) currentSpan.textContent = "— " + current.name;
+
+  var menu = document.getElementById("kb-apps-menu");
+  var groups = {};
+  KB_APPS.forEach(function (a) {
+    (groups[a.group] = groups[a.group] || []).push(a);
+  });
+  Object.keys(groups).forEach(function (g) {
+    var h = document.createElement("div");
+    h.textContent = g;
+    h.style.cssText = "color:#6b7280;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:.4rem .5rem .2rem;";
+    menu.appendChild(h);
+    groups[g].forEach(function (a) {
+      var isCurrent = a.repo === CURRENT_REPO;
+      var link = document.createElement(isCurrent ? "span" : "a");
+      link.textContent = (isCurrent ? "● " : "") + a.name;
+      if (!isCurrent) link.href = "https://kareembullard.github.io/" + a.repo + "/";
+      link.style.cssText = "display:block;padding:.35rem .5rem;border-radius:5px;text-decoration:none;font-size:13px;" +
+        (isCurrent ? "color:#60a5fa;font-weight:600;" : "color:#e5e7eb;");
+      if (!isCurrent) {
+        link.addEventListener("mouseenter", function () { link.style.background = "#242832"; });
+        link.addEventListener("mouseleave", function () { link.style.background = "transparent"; });
+      }
+      menu.appendChild(link);
+    });
+  });
+
+  var btn = document.getElementById("kb-apps-btn");
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  });
+  document.addEventListener("click", function () { menu.style.display = "none"; });
+})();
+</script>
+<div style="background:#78350f;color:#fef3c7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;padding:.6rem 1rem;text-align:center;position:relative;z-index:99998;box-sizing:border-box;">⚠️ This is the original showcase demo. A rebuilt, actively maintained version with real data and cross-app integrations lives at <a href="https://kareembullard.github.io/ai-wealth-framework-web/" style="color:#fde68a;font-weight:700;">AI Business Framework →</a></div>
+
+  <!-- Navigation Sidebar -->
+  <nav class="side-nav nav-bar">
+   <div class="sidebar-header nav-content">
+    <h2>
+     AI Business Framework
+    </h2>
+    <button class="btn btn--outline btn--sm" data-theme-toggle="" id="themeToggle" aria-label="Toggle color scheme" style="margin-top:8px;">
+     <i class="fas fa-moon"></i>
+    </button>
+   </div>
+   <ul class="sidebar-menu nav-links">
+    <li class="menu-item" data-section="dashboard">
+     <span class="menu-icon">
+      📊
+     </span>
+     <span>
+      Dashboard
+     </span>
+    </li>
+    <li class="menu-item" data-section="framework">
+     <span class="menu-icon">
+      🎯
+     </span>
+     <span>
+      Framework Steps
+     </span>
+    </li>
+    <li class="menu-item" data-section="projects">
+     <span class="menu-icon">
+      📋
+     </span>
+     <span>
+      Projects
+     </span>
+    </li>
+    <li class="menu-item" data-section="performance">
+     <span class="menu-icon">
+      📈
+     </span>
+     <span>
+      Performance
+     </span>
+    </li>
+    <li class="menu-item" data-section="documents">
+     <span class="menu-icon">
+      📄
+     </span>
+     <span>
+      Documents
+     </span>
+    </li>
+    <li class="menu-item" data-section="automation">
+     <span class="menu-icon">
+      ⚙️
+     </span>
+     <span>
+      Automation
+     </span>
+    </li>
+    <li class="menu-item" data-section="inventory">
+     <span class="menu-icon">
+      📦
+     </span>
+     <span>
+      Inventory
+     </span>
+    </li>
+    <li class="menu-item" data-section="team">
+     <span class="menu-icon">
+      👥
+     </span>
+     <span>
+      Team
+     </span>
+    </li>
+   </ul>
+  </nav>
+  <!-- Main Content -->
+  <main class="main-content">
+   <!-- Dashboard Section -->
+   <div class="section" id="dashboard">
+    <div class="section-header">
+     <h1>
+      Dashboard
+     </h1>
+     <p>
+      Welcome to your AI Business Framework management hub
+     </p>
+    </div>
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+     <div class="card kpi-card">
+      <div class="card__body">
+       <h3>
+        Total Revenue
+       </h3>
+       <div class="kpi-value">
+        $87,500
+       </div>
+       <div class="kpi-trend positive">
+        ↗ 8.5%
+       </div>
+       <div class="kpi-progress">
+        <div class="progress-bar">
+         <div class="progress-fill" style="width: 87.5%">
+         </div>
+        </div>
+        <span class="progress-text">
+         87.5% of target
+        </span>
+       </div>
+      </div>
+     </div>
+     <div class="card kpi-card">
+      <div class="card__body">
+       <h3>
+        Monthly Recurring Revenue
+       </h3>
+       <div class="kpi-value">
+        $22,000
+       </div>
+       <div class="kpi-trend positive">
+        ↗ 12.2%
+       </div>
+       <div class="kpi-progress">
+        <div class="progress-bar">
+         <div class="progress-fill" style="width: 88%">
+         </div>
+        </div>
+        <span class="progress-text">
+         88% of target
+        </span>
+       </div>
+      </div>
+     </div>
+     <div class="card kpi-card">
+      <div class="card__body">
+       <h3>
+        Customer Acquisition Cost
+       </h3>
+       <div class="kpi-value">
+        $95
+       </div>
+       <div class="kpi-trend negative">
+        ↘ -5.2%
+       </div>
+       <div class="kpi-progress">
+        <div class="progress-bar">
+         <div class="progress-fill" style="width: 95%">
+         </div>
+        </div>
+        <span class="progress-text">
+         95% of target
+        </span>
+       </div>
+      </div>
+     </div>
+     <div class="card kpi-card">
+      <div class="card__body">
+       <h3>
+        Customer Lifetime Value
+       </h3>
+       <div class="kpi-value">
+        $1,425
+       </div>
+       <div class="kpi-trend positive">
+        ↗ 3.8%
+       </div>
+       <div class="kpi-progress">
+        <div class="progress-bar">
+         <div class="progress-fill" style="width: 95%">
+         </div>
+        </div>
+        <span class="progress-text">
+         95% of target
+        </span>
+       </div>
+      </div>
+     </div>
+    </div>
+    <!-- Framework Progress -->
+    <div class="dashboard-grid">
+     <div class="card framework-progress">
+      <div class="card__body">
+       <h3>
+        Framework Progress
+       </h3>
+       <div class="framework-overview">
+        <div class="framework-step completed">
+         <div class="step-number">
+          1
+         </div>
+         <div class="step-info">
+          <h4>
+           Industry Selection
+          </h4>
+          <div class="progress-bar">
+           <div class="progress-fill" style="width: 100%">
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="framework-step completed">
+         <div class="step-number">
+          2
+         </div>
+         <div class="step-info">
+          <h4>
+           Business Model Selection
+          </h4>
+          <div class="progress-bar">
+           <div class="progress-fill" style="width: 100%">
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="framework-step in-progress">
+         <div class="step-number">
+          3
+         </div>
+         <div class="step-info">
+          <h4>
+           Customer Targeting
+          </h4>
+          <div class="progress-bar">
+           <div class="progress-fill" style="width: 75%">
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="framework-step pending">
+         <div class="step-number">
+          4
+         </div>
+         <div class="step-info">
+          <h4>
+           Offer Creation
+          </h4>
+          <div class="progress-bar">
+           <div class="progress-fill" style="width: 25%">
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <button class="btn btn--primary btn--full-width">
+        View All Steps
+       </button>
+      </div>
+     </div>
+     <div class="card recent-activities">
+      <div class="card__body">
+       <h3>
+        Recent Activities
+       </h3>
+       <div class="activity-list">
+        <div class="activity-item">
+         <div class="activity-icon">
+          📊
+         </div>
+         <div class="activity-content">
+          <div class="activity-text">
+           John Smith updated project milestone
+          </div>
+          <div class="activity-meta">
+           Customer Targeting Phase • July 10, 2025
+          </div>
+         </div>
+        </div>
+        <div class="activity-item">
+         <div class="activity-icon">
+          📋
+         </div>
+         <div class="activity-content">
+          <div class="activity-text">
+           Sarah Johnson completed requirements analysis
+          </div>
+          <div class="activity-meta">
+           Technical Requirements • July 9, 2025
+          </div>
+         </div>
+        </div>
+        <div class="activity-item">
+         <div class="activity-icon">
+          ⚙️
+         </div>
+         <div class="activity-content">
+          <div class="activity-text">
+           Mike Chen set up development environment
+          </div>
+          <div class="activity-meta">
+           Infrastructure • July 8, 2025
+          </div>
+         </div>
+        </div>
+        <div class="activity-item">
+         <div class="activity-icon">
+          👥
+         </div>
+         <div class="activity-content">
+          <div class="activity-text">
+           Emily Davis finished customer personas
+          </div>
+          <div class="activity-meta">
+           Marketing Strategy • July 7, 2025
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <!-- Chart Section -->
+    <div class="card chart-container">
+     <div class="card__body">
+      <h3>
+       Revenue Trend
+      </h3>
+      <canvas height="200" id="revenueChart" width="400">
+      </canvas>
+     </div>
+    </div>
+   </div>
+   <!-- Framework Steps Section -->
+   <div class="section" id="framework">
+    <div class="section-header">
+     <h1>
+      Framework Steps
+     </h1>
+     <p>
+      Track your progress through the 8-step AI Business Framework
+     </p>
+    </div>
+    <div class="framework-grid">
+     <div class="card framework-step-card completed">
+      <div class="card__body">
+       <div class="step-header">
+        <div class="step-number">
+         1
+        </div>
+        <div class="step-status">
+         <span class="status status--success">
+          Completed
+         </span>
+        </div>
+       </div>
+       <h3>
+        Industry Selection
+       </h3>
+       <p>
+        Choose the right industry for AI disruption
+       </p>
+       <div class="progress-bar">
+        <div class="progress-fill" style="width: 100%">
+        </div>
+       </div>
+       <div class="step-tasks">
+        <div class="task-item completed">
+         ✓ Market Research
+        </div>
+        <div class="task-item completed">
+         ✓ Industry Analysis
+        </div>
+        <div class="task-item completed">
+         ✓ Opportunity Assessment
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card framework-step-card completed">
+      <div class="card__body">
+       <div class="step-header">
+        <div class="step-number">
+         2
+        </div>
+        <div class="step-status">
+         <span class="status status--success">
+          Completed
+         </span>
+        </div>
+       </div>
+       <h3>
+        Business Model Selection
+       </h3>
+       <p>
+        Select high-margin, scalable business model
+       </p>
+       <div class="progress-bar">
+        <div class="progress-fill" style="width: 100%">
+        </div>
+       </div>
+       <div class="step-tasks">
+        <div class="task-item completed">
+         ✓ Tier Classification
+        </div>
+        <div class="task-item completed">
+         ✓ Margin Analysis
+        </div>
+        <div class="task-item completed">
+         ✓ Scalability Assessment
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card framework-step-card in-progress">
+      <div class="card__body">
+       <div class="step-header">
+        <div class="step-number">
+         3
+        </div>
+        <div class="step-status">
+         <span class="status status--warning">
+          In Progress
+         </span>
+        </div>
+       </div>
+       <h3>
+        Customer Targeting
+       </h3>
+       <p>
+        Target high-value customers with precision
+       </p>
+       <div class="progress-bar">
+        <div class="progress-fill" style="width: 75%">
+        </div>
+       </div>
+       <div class="step-tasks">
+        <div class="task-item completed">
+         ✓ Customer Segmentation
+        </div>
+        <div class="task-item completed">
+         ✓ Persona Development
+        </div>
+        <div class="task-item in-progress">
+         ⏳ Targeting Strategy
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card framework-step-card pending">
+      <div class="card__body">
+       <div class="step-header">
+        <div class="step-number">
+         4
+        </div>
+        <div class="step-status">
+         <span class="status status--info">
+          Pending
+         </span>
+        </div>
+       </div>
+       <h3>
+        Offer Creation
+       </h3>
+       <p>
+        Create irresistible high cash flow offers
+       </p>
+       <div class="progress-bar">
+        <div class="progress-fill" style="width: 25%">
+        </div>
+       </div>
+       <div class="step-tasks">
+        <div class="task-item in-progress">
+         ⏳ Value Proposition
+        </div>
+        <div class="task-item pending">
+         ⏸️ Pricing Strategy
+        </div>
+        <div class="task-item pending">
+         ⏸️ Offer Testing
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <!-- Projects Section -->
+   <div class="section" id="projects">
+    <div class="section-header">
+     <h1>
+      Projects
+     </h1>
+     <p>
+      Manage your AI wealth building projects
+     </p>
+     <button class="btn btn--primary">
+      New Project
+     </button>
+    </div>
+    <div class="projects-grid">
+     <div class="card project-card">
+      <div class="card__body">
+       <div class="project-header">
+        <h3>
+         AI Consulting Business Launch
+        </h3>
+        <span class="status status--warning">
+         In Progress
+        </span>
+       </div>
+       <p class="project-id">
+        PRJ001
+       </p>
+       <div class="project-stats">
+        <div class="stat">
+         <span class="stat-label">
+          Progress
+         </span>
+         <div class="progress-bar">
+          <div class="progress-fill" style="width: 65%">
+          </div>
+         </div>
+         <span class="stat-value">
+          65%
+         </span>
+        </div>
+        <div class="stat">
+         <span class="stat-label">
+          Budget
+         </span>
+         <span class="stat-value">
+          $32,500 / $50,000
+         </span>
+        </div>
+        <div class="stat">
+         <span class="stat-label">
+          Timeline
+         </span>
+         <span class="stat-value">
+          Mar 2025 - Aug 2025
+         </span>
+        </div>
+        <div class="stat">
+         <span class="stat-label">
+          Team Size
+         </span>
+         <span class="stat-value">
+          5 members
+         </span>
+        </div>
+       </div>
+       <div class="project-actions">
+        <button class="btn btn--secondary">
+         View Details
+        </button>
+        <button class="btn btn--outline">
+         Edit
+        </button>
+       </div>
+      </div>
+     </div>
+     <div class="card project-card">
+      <div class="card__body">
+       <div class="project-header">
+        <h3>
+         SaaS Platform Development
+        </h3>
+        <span class="status status--info">
+         Planning
+        </span>
+       </div>
+       <p class="project-id">
+        PRJ002
+       </p>
+       <div class="project-stats">
+        <div class="stat">
+         <span class="stat-label">
+          Progress
+         </span>
+         <div class="progress-bar">
+          <div class="progress-fill" style="width: 15%">
+          </div>
+         </div>
+         <span class="stat-value">
+          15%
+         </span>
+        </div>
+        <div class="stat">
+         <span class="stat-label">
+          Budget
+         </span>
+         <span class="stat-value">
+          $0 / $150,000
+         </span>
+        </div>
+        <div class="stat">
+         <span class="stat-label">
+          Timeline
+         </span>
+         <span class="stat-value">
+          Jun 2025 - Dec 2025
+         </span>
+        </div>
+        <div class="stat">
+         <span class="stat-label">
+          Team Size
+         </span>
+         <span class="stat-value">
+          8 members
+         </span>
+        </div>
+       </div>
+       <div class="project-actions">
+        <button class="btn btn--secondary">
+         View Details
+        </button>
+        <button class="btn btn--outline">
+         Edit
+        </button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <!-- Performance Section -->
+   <div class="section" id="performance">
+    <div class="section-header">
+     <h1>
+      Performance Analytics
+     </h1>
+     <p>
+      Monitor KPIs and business performance
+     </p>
+    </div>
+    <div class="performance-grid">
+     <div class="card">
+      <div class="card__body">
+       <h3>
+        Business Model Performance
+       </h3>
+       <div class="business-model-list">
+        <div class="business-model-item">
+         <div class="model-tier s-tier">
+          S
+         </div>
+         <div class="model-info">
+          <h4>
+           AI SaaS
+          </h4>
+          <p>
+           90% margin • $50K investment • 12-24 months
+          </p>
+         </div>
+        </div>
+        <div class="business-model-item">
+         <div class="model-tier a-tier">
+          A
+         </div>
+         <div class="model-info">
+          <h4>
+           AI Consulting
+          </h4>
+          <p>
+           80% margin • $25K investment • 3-6 months
+          </p>
+         </div>
+        </div>
+        <div class="business-model-item">
+         <div class="model-tier a-tier">
+          A
+         </div>
+         <div class="model-info">
+          <h4>
+           Digital Products
+          </h4>
+          <p>
+           95% margin • $15K investment • 6-12 months
+          </p>
+         </div>
+        </div>
+        <div class="business-model-item">
+         <div class="model-tier b-tier">
+          B
+         </div>
+         <div class="model-info">
+          <h4>
+           AI Services
+          </h4>
+          <p>
+           70% margin • $40K investment • 6-18 months
+          </p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="card__body">
+       <h3>
+        ROI Calculator
+       </h3>
+       <div class="roi-calculator">
+        <div class="form-group">
+         <label class="form-label">
+          Initial Investment
+         </label>
+         <input class="form-control" id="investment" type="number" value="50000"/>
+        </div>
+        <div class="form-group">
+         <label class="form-label">
+          Monthly Revenue
+         </label>
+         <input class="form-control" id="revenue" type="number" value="22000"/>
+        </div>
+        <div class="form-group">
+         <label class="form-label">
+          Monthly Costs
+         </label>
+         <input class="form-control" id="costs" type="number" value="8000"/>
+        </div>
+        <div class="roi-results">
+         <div class="roi-metric">
+          <span class="roi-label">
+           Monthly Profit
+          </span>
+          <span class="roi-value" id="monthlyProfit">
+           $14,000
+          </span>
+         </div>
+         <div class="roi-metric">
+          <span class="roi-label">
+           ROI (Annual)
+          </span>
+          <span class="roi-value" id="annualROI">
+           336%
+          </span>
+         </div>
+         <div class="roi-metric">
+          <span class="roi-label">
+           Payback Period
+          </span>
+          <span class="roi-value" id="paybackPeriod">
+           3.6 months
+          </span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <!-- Team Section -->
+   <div class="section" id="team">
+    <div class="section-header">
+     <h1>
+      Team
+     </h1>
+     <p>
+      Manage your team members and collaboration
+     </p>
+     <button class="btn btn--primary">
+      Add Member
+     </button>
+    </div>
+    <div class="team-grid">
+     <div class="card team-member-card">
+      <div class="card__body">
+       <div class="member-info">
+        <div class="member-avatar">
+         JS
+        </div>
+        <div class="member-details">
+         <h3>
+          John Smith
+         </h3>
+         <p>
+          Project Manager
+         </p>
+         <p class="member-email">
+          john@company.com
+         </p>
+        </div>
+       </div>
+       <div class="member-status">
+        <span class="status status--success">
+         Active
+        </span>
+       </div>
+      </div>
+     </div>
+     <div class="card team-member-card">
+      <div class="card__body">
+       <div class="member-info">
+        <div class="member-avatar">
+         SJ
+        </div>
+        <div class="member-details">
+         <h3>
+          Sarah Johnson
+         </h3>
+         <p>
+          Business Analyst
+         </p>
+         <p class="member-email">
+          sarah@company.com
+         </p>
+        </div>
+       </div>
+       <div class="member-status">
+        <span class="status status--success">
+         Active
+        </span>
+       </div>
+      </div>
+     </div>
+     <div class="card team-member-card">
+      <div class="card__body">
+       <div class="member-info">
+        <div class="member-avatar">
+         MC
+        </div>
+        <div class="member-details">
+         <h3>
+          Mike Chen
+         </h3>
+         <p>
+          Technical Lead
+         </p>
+         <p class="member-email">
+          mike@company.com
+         </p>
+        </div>
+       </div>
+       <div class="member-status">
+        <span class="status status--success">
+         Active
+        </span>
+       </div>
+      </div>
+     </div>
+     <div class="card team-member-card">
+      <div class="card__body">
+       <div class="member-info">
+        <div class="member-avatar">
+         ED
+        </div>
+        <div class="member-details">
+         <h3>
+          Emily Davis
+         </h3>
+         <p>
+          Marketing Lead
+         </p>
+         <p class="member-email">
+          emily@company.com
+         </p>
+        </div>
+       </div>
+       <div class="member-status">
+        <span class="status status--success">
+         Active
+        </span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <!-- Other sections (Documents, Automation, Inventory) will be shown/hidden by JavaScript -->
+   <div class="section" id="documents">
+    <div class="section-header">
+     <h1>
+      Documents
+     </h1>
+     <p>
+      Manage project documents and templates
+     </p>
+     <button class="btn btn--primary">
+      Upload Document
+     </button>
+    </div>
+    <div class="documents-table">
+     <div class="table-header">
+      <div class="table-cell">
+       Document Name
+      </div>
+      <div class="table-cell">
+       Type
+      </div>
+      <div class="table-cell">
+       Author
+      </div>
+      <div class="table-cell">
+       Date
+      </div>
+      <div class="table-cell">
+       Status
+      </div>
+     </div>
+     <div class="table-row">
+      <div class="table-cell">
+       Project Charter
+      </div>
+      <div class="table-cell">
+       Planning
+      </div>
+      <div class="table-cell">
+       John Smith
+      </div>
+      <div class="table-cell">
+       Mar 1, 2025
+      </div>
+      <div class="table-cell">
+       <span class="status status--success">
+        Approved
+       </span>
+      </div>
+     </div>
+     <div class="table-row">
+      <div class="table-cell">
+       Requirements Document
+      </div>
+      <div class="table-cell">
+       Technical
+      </div>
+      <div class="table-cell">
+       Sarah Johnson
+      </div>
+      <div class="table-cell">
+       Mar 15, 2025
+      </div>
+      <div class="table-cell">
+       <span class="status status--info">
+        Draft
+       </span>
+      </div>
+     </div>
+     <div class="table-row">
+      <div class="table-cell">
+       Business Model Analysis
+      </div>
+      <div class="table-cell">
+       Strategy
+      </div>
+      <div class="table-cell">
+       Emily Davis
+      </div>
+      <div class="table-cell">
+       Mar 20, 2025
+      </div>
+      <div class="table-cell">
+       <span class="status status--warning">
+        Review
+       </span>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="section" id="automation">
+    <div class="section-header">
+     <h1>
+      Automation
+     </h1>
+     <p>
+      Manage workflows and automation processes
+     </p>
+     <button class="btn btn--primary">
+      Create Workflow
+     </button>
+    </div>
+    <div class="automation-grid">
+     <div class="card">
+      <div class="card__body">
+       <h3>
+        Customer Onboarding
+       </h3>
+       <p>
+        Automated email sequences and setup tasks
+       </p>
+       <div class="automation-status">
+        <span class="status status--success">
+         Active
+        </span>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="card__body">
+       <h3>
+        Invoice Processing
+       </h3>
+       <p>
+        Automated invoice generation and follow-ups
+       </p>
+       <div class="automation-status">
+        <span class="status status--success">
+         Active
+        </span>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="card__body">
+       <h3>
+        Lead Qualification
+       </h3>
+       <p>
+        Automated lead scoring and routing
+       </p>
+       <div class="automation-status">
+        <span class="status status--info">
+         Draft
+        </span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="section" id="inventory">
+    <div class="section-header">
+     <h1>
+      Inventory
+     </h1>
+     <p>
+      Manage tools, platforms, and assets
+     </p>
+     <button class="btn btn--primary">
+      Add Item
+     </button>
+    </div>
+    <div class="inventory-table">
+     <div class="table-header">
+      <div class="table-cell">
+       Item Name
+      </div>
+      <div class="table-cell">
+       Type
+      </div>
+      <div class="table-cell">
+       Cost
+      </div>
+      <div class="table-cell">
+       Expiry
+      </div>
+      <div class="table-cell">
+       Status
+      </div>
+     </div>
+     <div class="table-row">
+      <div class="table-cell">
+       Project Management Software
+      </div>
+      <div class="table-cell">
+       Software
+      </div>
+      <div class="table-cell">
+       $2,400
+      </div>
+      <div class="table-cell">
+       Jan 15, 2026
+      </div>
+      <div class="table-cell">
+       <span class="status status--success">
+        Active
+       </span>
+      </div>
+     </div>
+     <div class="table-row">
+      <div class="table-cell">
+       CRM System
+      </div>
+      <div class="table-cell">
+       Software
+      </div>
+      <div class="table-cell">
+       $3,600
+      </div>
+      <div class="table-cell">
+       Feb 1, 2026
+      </div>
+      <div class="table-cell">
+       <span class="status status--success">
+        Active
+       </span>
+      </div>
+     </div>
+     <div class="table-row">
+      <div class="table-cell">
+       Marketing Automation
+      </div>
+      <div class="table-cell">
+       Software
+      </div>
+      <div class="table-cell">
+       $1,800
+      </div>
+      <div class="table-cell">
+       Jan 20, 2026
+      </div>
+      <div class="table-cell">
+       <span class="status status--success">
+        Active
+       </span>
+      </div>
+     </div>
+     <div class="table-row">
+      <div class="table-cell">
+       Development Servers
+      </div>
+      <div class="table-cell">
+       Hardware
+      </div>
+      <div class="table-cell">
+       $8,000
+      </div>
+      <div class="table-cell">
+       -
+      </div>
+      <div class="table-cell">
+       <span class="status status--success">
+        Active
+       </span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </main>
+  <script>
+// Application data
+const appData = {
+    framework_steps: [
+        {
+            id: 1,
+            title: "Industry Selection",
+            description: "Choose the right industry for AI disruption",
+            status: "completed",
+            completion: 100,
+            tasks: [
+                {id: "1.1", title: "Market Research", status: "completed"},
+                {id: "1.2", title: "Industry Analysis", status: "completed"},
+                {id: "1.3", title: "Opportunity Assessment", status: "completed"}
+            ]
+        },
+        {
+            id: 2,
+            title: "Business Model Selection",
+            description: "Select high-margin, scalable business model",
+            status: "completed",
+            completion: 100,
+            tasks: [
+                {id: "2.1", title: "Tier Classification", status: "completed"},
+                {id: "2.2", title: "Margin Analysis", status: "completed"},
+                {id: "2.3", title: "Scalability Assessment", status: "completed"}
+            ]
+        },
+        {
+            id: 3,
+            title: "Customer Targeting",
+            description: "Target high-value customers with precision",
+            status: "in_progress",
+            completion: 75,
+            tasks: [
+                {id: "3.1", title: "Customer Segmentation", status: "completed"},
+                {id: "3.2", title: "Persona Development", status: "completed"},
+                {id: "3.3", title: "Targeting Strategy", status: "in_progress"}
+            ]
+        },
+        {
+            id: 4,
+            title: "Offer Creation",
+            description: "Create irresistible high cash flow offers",
+            status: "pending",
+            completion: 25,
+            tasks: [
+                {id: "4.1", title: "Value Proposition", status: "in_progress"},
+                {id: "4.2", title: "Pricing Strategy", status: "pending"},
+                {id: "4.3", title: "Offer Testing", status: "pending"}
+            ]
+        }
+    ],
+    kpi_metrics: [
+        {name: "Total Revenue", value: 87500, target: 100000, unit: "USD", trend: "up", change: 8.5},
+        {name: "Monthly Recurring Revenue", value: 22000, target: 25000, unit: "USD", trend: "up", change: 12.2},
+        {name: "Customer Acquisition Cost", value: 95, target: 100, unit: "USD", trend: "down", change: -5.2},
+        {name: "Customer Lifetime Value", value: 1425, target: 1500, unit: "USD", trend: "up", change: 3.8},
+        {name: "Conversion Rate", value: 3.8, target: 3.5, unit: "%", trend: "up", change: 0.3},
+        {name: "Automation Efficiency", value: 85.2, target: 80, unit: "%", trend: "up", change: 5.2}
+    ],
+    projects: [
+        {
+            id: "PRJ001",
+            name: "AI Consulting Business Launch",
+            status: "in_progress",
+            progress: 65,
+            start_date: "2025-03-01",
+            end_date: "2025-08-31",
+            budget: 50000,
+            spent: 32500,
+            team_size: 5
+        },
+        {
+            id: "PRJ002", 
+            name: "SaaS Platform Development",
+            status: "planning",
+            progress: 15,
+            start_date: "2025-06-01",
+            end_date: "2025-12-31",
+            budget: 150000,
+            spent: 0,
+            team_size: 8
+        }
+    ]
+};
+
+// Application state
+let currentSection = 'dashboard';
+let revenueChart = null;
+let openModals = [];
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Initializing AI Business Framework App...');
+    initializeNavigation();
+    initializeCharts();
+    initializeROICalculator();
+    initializeInteractiveElements();
+    showSection('dashboard');
+});
+
+// Navigation functionality - Fixed version
+function initializeNavigation() {
+    const menuItems = document.querySelectorAll('.menu-item');
+    
+    menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const targetSection = this.dataset.section;
+            console.log('Navigation clicked:', targetSection);
+            
+            if (targetSection) {
+                navigateToSection(targetSection);
+            }
+        });
+    });
+}
+
+// Fixed navigation function
+function navigateToSection(sectionId) {
+    console.log('Navigating to section:', sectionId);
+    
+    const menuItems = document.querySelectorAll('.menu-item');
+    const sections = document.querySelectorAll('.section');
+    
+    // Remove active class from all menu items and sections
+    menuItems.forEach(item => item.classList.remove('active'));
+    sections.forEach(section => section.classList.remove('active'));
+    
+    // Add active class to clicked item and corresponding section
+    const targetMenuItem = document.querySelector(`[data-section="${sectionId}"]`);
+    const targetSection = document.getElementById(sectionId);
+    
+    if (targetMenuItem) {
+        targetMenuItem.classList.add('active');
+    }
+    
+    if (targetSection) {
+        targetSection.classList.add('active');
+        currentSection = sectionId;
+        
+        // Handle section-specific initialization
+        if (sectionId === 'performance') {
+            setTimeout(() => {
+                initializeROICalculator();
+            }, 100);
+        }
+        
+        console.log('Successfully navigated to:', sectionId);
+    } else {
+        console.error('Section not found:', sectionId);
+        // If section not found, try to find it by checking all sections
+        const allSections = document.querySelectorAll('.section');
+        console.log('Available sections:', Array.from(allSections).map(s => s.id));
+    }
+}
+
+// Show specific section
+function showSection(sectionId) {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+        currentSection = sectionId;
+    }
+}
+
+// Chart initialization - Fixed version
+function initializeCharts() {
+    const ctx = document.getElementById('revenueChart');
+    if (ctx) {
+        try {
+            revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [45000, 52000, 58000, 65000, 72000, 78000, 87500],
+                        borderColor: '#1FB8CD',
+                        backgroundColor: 'rgba(31, 184, 205, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            console.log('Revenue chart initialized successfully');
+        } catch (error) {
+            console.error('Error initializing chart:', error);
+        }
+    }
+}
+
+// ROI Calculator functionality - Fixed version
+function initializeROICalculator() {
+    const investmentInput = document.getElementById('investment');
+    const revenueInput = document.getElementById('revenue');
+    const costsInput = document.getElementById('costs');
+    
+    console.log('Initializing ROI Calculator...');
+    
+    if (investmentInput && revenueInput && costsInput) {
+        // Remove existing event listeners
+        investmentInput.removeEventListener('input', calculateROI);
+        revenueInput.removeEventListener('input', calculateROI);
+        costsInput.removeEventListener('input', calculateROI);
+        
+        // Add new event listeners
+        investmentInput.addEventListener('input', calculateROI);
+        revenueInput.addEventListener('input', calculateROI);
+        costsInput.addEventListener('input', calculateROI);
+        
+        calculateROI(); // Initial calculation
+        console.log('ROI Calculator initialized successfully');
+    } else {
+        console.log('ROI Calculator inputs not found - will retry when Performance section is accessed');
+    }
+}
+
+function calculateROI() {
+    console.log('Calculating ROI...');
+    
+    const investmentInput = document.getElementById('investment');
+    const revenueInput = document.getElementById('revenue');
+    const costsInput = document.getElementById('costs');
+    
+    if (!investmentInput || !revenueInput || !costsInput) {
+        console.log('ROI inputs not available');
+        return;
+    }
+    
+    const investment = parseFloat(investmentInput.value) || 0;
+    const monthlyRevenue = parseFloat(revenueInput.value) || 0;
+    const monthlyCosts = parseFloat(costsInput.value) || 0;
+    
+    const monthlyProfit = monthlyRevenue - monthlyCosts;
+    const annualProfit = monthlyProfit * 12;
+    const annualROI = investment > 0 ? (annualProfit / investment) * 100 : 0;
+    const paybackPeriod = monthlyProfit > 0 ? investment / monthlyProfit : 0;
+    
+    // Update display
+    const monthlyProfitEl = document.getElementById('monthlyProfit');
+    const annualROIEl = document.getElementById('annualROI');
+    const paybackPeriodEl = document.getElementById('paybackPeriod');
+    
+    if (monthlyProfitEl) monthlyProfitEl.textContent = `$${monthlyProfit.toLocaleString()}`;
+    if (annualROIEl) annualROIEl.textContent = `${annualROI.toFixed(1)}%`;
+    if (paybackPeriodEl) paybackPeriodEl.textContent = `${paybackPeriod.toFixed(1)} months`;
+    
+    console.log('ROI calculated:', {monthlyProfit, annualROI, paybackPeriod});
+}
+
+// Interactive elements - Fixed version
+function initializeInteractiveElements() {
+    console.log('Initializing interactive elements...');
+    
+    // Framework step cards click handlers
+    const frameworkStepCards = document.querySelectorAll('.framework-step-card');
+    frameworkStepCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Add visual feedback
+            card.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Show step details
+            const stepTitle = card.querySelector('h3').textContent;
+            console.log('Framework step clicked:', stepTitle);
+        });
+    });
+    
+    // Project card interactions - Fixed
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        const viewButton = card.querySelector('.btn--secondary');
+        const editButton = card.querySelector('.btn--outline');
+        
+        if (viewButton) {
+            viewButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('View project details clicked');
+                showProjectDetails(card);
+            });
+        }
+        
+        if (editButton) {
+            editButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Edit project clicked');
+                editProject(card);
+            });
+        }
+    });
+    
+    // Team member card interactions
+    const teamMemberCards = document.querySelectorAll('.team-member-card');
+    teamMemberCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Team member clicked');
+            showTeamMemberDetails(card);
+        });
+    });
+    
+    // Button click handlers
+    initializeButtonHandlers();
+}
+
+function initializeButtonHandlers() {
+    console.log('Initializing button handlers...');
+    
+    // New Project button
+    const newProjectBtn = document.querySelector('#projects .btn--primary');
+    if (newProjectBtn) {
+        newProjectBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('New project button clicked');
+            showCreateProjectModal();
+        });
+    }
+    
+    // Add Member button
+    const addMemberBtn = document.querySelector('#team .btn--primary');
+    if (addMemberBtn) {
+        addMemberBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Add member button clicked');
+            showAddMemberModal();
+        });
+    }
+    
+    // Upload Document button
+    const uploadDocBtn = document.querySelector('#documents .btn--primary');
+    if (uploadDocBtn) {
+        uploadDocBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Upload document button clicked');
+            showUploadDocumentModal();
+        });
+    }
+    
+    // Create Workflow button
+    const createWorkflowBtn = document.querySelector('#automation .btn--primary');
+    if (createWorkflowBtn) {
+        createWorkflowBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Create workflow button clicked');
+            showCreateWorkflowModal();
+        });
+    }
+    
+    // Add Item button
+    const addItemBtn = document.querySelector('#inventory .btn--primary');
+    if (addItemBtn) {
+        addItemBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Add inventory item button clicked');
+            showAddInventoryItemModal();
+        });
+    }
+    
+    // View All Steps button
+    const viewAllStepsBtn = document.querySelector('.framework-progress .btn--primary');
+    if (viewAllStepsBtn) {
+        viewAllStepsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('View all steps button clicked');
+            navigateToSection('framework');
+        });
+    }
+}
+
+// Improved modal management
+function createModal(content, modalId) {
+    // Close any existing modals
+    closeAllModals();
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.id = modalId || 'modal-' + Date.now();
+    overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;';
+    
+    const modalContainer = document.createElement('div');
+    modalContainer.className = 'modal-container';
+    modalContainer.style.cssText = 'background: white; padding: 20px; border-radius: 8px; max-width: 500px; margin: 20px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto;';
+    modalContainer.innerHTML = content;
+    
+    overlay.appendChild(modalContainer);
+    
+    // Close on overlay click
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            closeModal(overlay.id);
+        }
+    });
+    
+    // Close on escape key
+    const escapeHandler = function(e) {
+        if (e.key === 'Escape') {
+            closeModal(overlay.id);
+        }
+    };
+    
+    document.addEventListener('keydown', escapeHandler);
+    overlay.escapeHandler = escapeHandler;
+    
+    // Add close buttons functionality
+    const closeButtons = modalContainer.querySelectorAll('[data-close-modal]');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            closeModal(overlay.id);
+        });
+    });
+    
+    document.body.appendChild(overlay);
+    openModals.push(overlay.id);
+    
+    return overlay;
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        // Remove escape key listener
+        if (modal.escapeHandler) {
+            document.removeEventListener('keydown', modal.escapeHandler);
+        }
+        
+        modal.remove();
+        openModals = openModals.filter(id => id !== modalId);
+        console.log('Modal closed:', modalId);
+    }
+}
+
+function closeAllModals() {
+    openModals.forEach(modalId => {
+        closeModal(modalId);
+    });
+    openModals = [];
+}
+
+// Modal and interaction functions - Improved versions
+function showProjectDetails(card) {
+    const projectName = card.querySelector('h3').textContent;
+    const projectId = card.querySelector('.project-id').textContent;
+    
+    const content = `
+        <h2>Project Details: ${projectName}</h2>
+        <p><strong>Project ID:</strong> ${projectId}</p>
+        <p><strong>Features:</strong></p>
+        <ul>
+            <li>Timeline management</li>
+            <li>Task tracking</li>
+            <li>Budget breakdown</li>
+            <li>Team assignments</li>
+            <li>Progress reports</li>
+        </ul>
+        <button data-close-modal style="background: #1FB8CD; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Close</button>
+    `;
+    
+    createModal(content, 'project-details-modal');
+}
+
+function editProject(card) {
+    const projectName = card.querySelector('h3').textContent;
+    
+    const content = `
+        <h2>Edit Project: ${projectName}</h2>
+        <form style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Project Name:</label>
+                <input type="text" value="${projectName}" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Budget:</label>
+                <input type="number" value="50000" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Status:</label>
+                <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option>In Progress</option>
+                    <option>Planning</option>
+                    <option>Completed</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" data-close-modal style="background: #1FB8CD; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Save Changes</button>
+                <button type="button" data-close-modal style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+            </div>
+        </form>
+    `;
+    
+    createModal(content, 'edit-project-modal');
+}
+
+function showTeamMemberDetails(card) {
+    const memberName = card.querySelector('h3').textContent;
+    const memberRole = card.querySelector('p').textContent;
+    const memberEmail = card.querySelector('.member-email').textContent;
+    
+    const content = `
+        <h2>Team Member Details</h2>
+        <p><strong>Name:</strong> ${memberName}</p>
+        <p><strong>Role:</strong> ${memberRole}</p>
+        <p><strong>Email:</strong> ${memberEmail}</p>
+        <p><strong>Status:</strong> Active</p>
+        <h3>Current Assignments:</h3>
+        <ul>
+            <li>AI Consulting Business Launch</li>
+            <li>Customer Targeting Phase</li>
+            <li>Requirements Analysis</li>
+        </ul>
+        <button data-close-modal style="background: #1FB8CD; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Close</button>
+    `;
+    
+    createModal(content, 'team-member-modal');
+}
+
+function showCreateProjectModal() {
+    const content = `
+        <h2>Create New Project</h2>
+        <form style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Project Name:</label>
+                <input type="text" placeholder="Enter project name" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Description:</label>
+                <textarea placeholder="Enter project description" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 80px;"></textarea>
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Budget:</label>
+                <input type="number" placeholder="Enter budget" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Framework Step:</label>
+                <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option>Industry Selection</option>
+                    <option>Business Model Selection</option>
+                    <option>Customer Targeting</option>
+                    <option>Offer Creation</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" data-close-modal style="background: #1FB8CD; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Create Project</button>
+                <button type="button" data-close-modal style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+            </div>
+        </form>
+    `;
+    
+    createModal(content, 'create-project-modal');
+}
+
+function showAddMemberModal() {
+    const content = `
+        <h2>Add Team Member</h2>
+        <form style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Name:</label>
+                <input type="text" placeholder="Enter member name" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Role:</label>
+                <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option>Project Manager</option>
+                    <option>Business Analyst</option>
+                    <option>Technical Lead</option>
+                    <option>Marketing Lead</option>
+                    <option>Developer</option>
+                </select>
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Email:</label>
+                <input type="email" placeholder="Enter email address" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" data-close-modal style="background: #1FB8CD; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Add Member</button>
+                <button type="button" data-close-modal style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+            </div>
+        </form>
+    `;
+    
+    createModal(content, 'add-member-modal');
+}
+
+function showUploadDocumentModal() {
+    const content = `
+        <h2>Upload Document</h2>
+        <form style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Document File:</label>
+                <input type="file" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Document Type:</label>
+                <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option>Planning</option>
+                    <option>Technical</option>
+                    <option>Strategy</option>
+                    <option>Report</option>
+                </select>
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Description:</label>
+                <textarea placeholder="Enter document description" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 60px;"></textarea>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" data-close-modal style="background: #1FB8CD; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Upload</button>
+                <button type="button" data-close-modal style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+            </div>
+        </form>
+    `;
+    
+    createModal(content, 'upload-document-modal');
+}
+
+function showCreateWorkflowModal() {
+    const content = `
+        <h2>Create Automation Workflow</h2>
+        <form style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Workflow Name:</label>
+                <input type="text" placeholder="Enter workflow name" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Trigger:</label>
+                <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option>New Customer</option>
+                    <option>Project Milestone</option>
+                    <option>Email Received</option>
+                    <option>Time-based</option>
+                </select>
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Action:</label>
+                <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option>Send Email</option>
+                    <option>Create Task</option>
+                    <option>Update Database</option>
+                    <option>Generate Report</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" data-close-modal style="background: #1FB8CD; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Create Workflow</button>
+                <button type="button" data-close-modal style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+            </div>
+        </form>
+    `;
+    
+    createModal(content, 'create-workflow-modal');
+}
+
+function showAddInventoryItemModal() {
+    const content = `
+        <h2>Add Inventory Item</h2>
+        <form style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Item Name:</label>
+                <input type="text" placeholder="Enter item name" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Type:</label>
+                <select style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    <option>Software</option>
+                    <option>Hardware</option>
+                    <option>Service</option>
+                    <option>License</option>
+                </select>
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Cost:</label>
+                <input type="number" placeholder="Enter cost" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px;">Expiry Date:</label>
+                <input type="date" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" data-close-modal style="background: #1FB8CD; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Add Item</button>
+                <button type="button" data-close-modal style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Cancel</button>
+            </div>
+        </form>
+    `;
+    
+    createModal(content, 'add-inventory-modal');
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+            case '1':
+                e.preventDefault();
+                navigateToSection('dashboard');
+                break;
+            case '2':
+                e.preventDefault();
+                navigateToSection('framework');
+                break;
+            case '3':
+                e.preventDefault();
+                navigateToSection('projects');
+                break;
+            case '4':
+                e.preventDefault();
+                navigateToSection('performance');
+                break;
+            case '5':
+                e.preventDefault();
+                navigateToSection('documents');
+                break;
+            case '6':
+                e.preventDefault();
+                navigateToSection('automation');
+                break;
+            case '7':
+                e.preventDefault();
+                navigateToSection('inventory');
+                break;
+            case '8':
+                e.preventDefault();
+                navigateToSection('team');
+                break;
+        }
+    }
+});
+
+// Window resize handler
+window.addEventListener('resize', function() {
+    if (revenueChart) {
+        revenueChart.resize();
+    }
+});
+
+// Application ready
+console.log('AI Business Framework App initialized successfully');
+console.log('Available keyboard shortcuts:');
+console.log('- Ctrl/Cmd + 1: Dashboard');
+console.log('- Ctrl/Cmd + 2: Framework Steps');
+console.log('- Ctrl/Cmd + 3: Projects');
+console.log('- Ctrl/Cmd + 4: Performance');
+console.log('- Ctrl/Cmd + 5: Documents');
+console.log('- Ctrl/Cmd + 6: Automation');
+console.log('- Ctrl/Cmd + 7: Inventory');
+console.log('- Ctrl/Cmd + 8: Team');
+</script>
+  <script>
+   /* Unified color-mode toggle — shared standard across all apps */
+   (function () {
+     function preferred() {
+       try { var s = localStorage.getItem('colorScheme'); if (s === 'dark' || s === 'light') return s; } catch (e) {}
+       return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+     }
+     function current() { return document.documentElement.getAttribute('data-color-scheme') || preferred(); }
+     function swapIcon(btn, isDark) {
+       var lu = btn.querySelector('i[data-lucide="moon"], i[data-lucide="sun"], svg.lucide-moon, svg.lucide-sun');
+       if (lu) {
+         var ni = document.createElement('i');
+         ni.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+         if (lu.tagName.toLowerCase() === 'i' && lu.className) ni.className = lu.className;
+         lu.replaceWith(ni);
+         return;
+       }
+       var fa = btn.querySelector('i.fa-moon, i.fa-sun');
+       if (fa) { fa.classList.remove('fa-moon', 'fa-sun'); fa.classList.add(isDark ? 'fa-sun' : 'fa-moon'); }
+     }
+     function refreshIcons(theme) {
+       var isDark = theme === 'dark';
+       document.querySelectorAll('[data-theme-toggle]').forEach(function (b) { swapIcon(b, isDark); });
+       if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+     }
+     function apply(theme) {
+       document.documentElement.setAttribute('data-color-scheme', theme);
+       try { localStorage.setItem('colorScheme', theme); } catch (e) {}
+       refreshIcons(theme);
+     }
+     window.toggleColorScheme = function () { apply(current() === 'dark' ? 'light' : 'dark'); };
+     function wire() {
+       var t = preferred();
+       document.documentElement.setAttribute('data-color-scheme', t);
+       document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+         var clone = btn.cloneNode(true);
+         clone.removeAttribute('onclick');
+         if (btn.parentNode) btn.parentNode.replaceChild(clone, btn);
+         clone.addEventListener('click', function (e) { e.preventDefault(); window.toggleColorScheme(); });
+       });
+       refreshIcons(t);
+     }
+     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', wire); }
+     else { wire(); }
+   })();
+  </script>
+   <style>
+   .aw-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+   .aw-modal { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; width: 100%; max-width: 460px; box-shadow: 0 20px 40px rgba(0,0,0,.25); overflow: hidden; }
+   .aw-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--color-border); }
+   .aw-head h3 { margin: 0; font-size: 18px; font-weight: 600; }
+   .aw-x { background: none; border: none; color: var(--color-text-secondary); cursor: pointer; font-size: 22px; line-height: 1; padding: 2px 8px; border-radius: 6px; }
+   .aw-x:hover { background: var(--color-secondary); color: var(--color-text); }
+   .aw-body { padding: 20px; }
+   .aw-field { margin-bottom: 16px; }
+   .aw-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+   .aw-field input, .aw-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-background); color: var(--color-text); font: inherit; font-size: 14px; }
+   .aw-field input[type=file] { padding: 8px; }
+   .aw-field input:focus, .aw-field select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-focus-ring); }
+   .aw-foot { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+   .doc-link { color: var(--color-primary); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+   .doc-link:hover { text-decoration: underline; }
+  </style>
+  <script>
+   /* AI Wealth — persistent, editable document upload + appData persistence */
+   (function () {
+     var hasData = typeof appData !== 'undefined';
+     if (hasData && !appData.uploadedDocs) appData.uploadedDocs = [];
+     var docs = hasData ? appData.uploadedDocs : [];
+     var KEY = 'aiWealthState_v1';
+     function read() { try { var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+     function snap() { return hasData ? { uploadedDocs: appData.uploadedDocs, framework_steps: appData.framework_steps, projects: appData.projects, kpi_metrics: appData.kpi_metrics } : {}; }
+     if (hasData) {
+       var s = read();
+       if (s) { ['uploadedDocs', 'framework_steps', 'projects', 'kpi_metrics'].forEach(function (k) { if (Array.isArray(s[k])) appData[k] = s[k]; }); docs = appData.uploadedDocs; }
+       else { try { localStorage.setItem(KEY, JSON.stringify(snap())); } catch (e) {} }
+     }
+     var last = ''; try { last = localStorage.getItem(KEY) || ''; } catch (e) {}
+     function save() { try { var j = JSON.stringify(snap()); if (j !== last) { localStorage.setItem(KEY, j); last = j; } } catch (e) {} }
+     setInterval(save, 1200); window.addEventListener('beforeunload', save);
+     document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') save(); });
+
+     function fmtDate() { var d = new Date(); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
+     function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+     function icons() { if (window.lucide && lucide.createIcons) lucide.createIcons(); }
+
+     function renderDocs() {
+       var table = document.querySelector('#documents .documents-table'); if (!table) return;
+       Array.prototype.slice.call(table.querySelectorAll('.aw-uprow')).forEach(function (r) { r.remove(); });
+       docs.forEach(function (doc, idx) {
+         var row = document.createElement('div'); row.className = 'table-row aw-uprow'; row.style.cursor = 'pointer'; row.dataset.idx = idx;
+         var nameCell = doc.url ? '<a class="doc-link" href="' + doc.url + '" target="_blank" rel="noopener noreferrer"><i class="fas fa-file"></i>' + esc(doc.name) + '</a>'
+           : '<span class="doc-link"><i class="fas fa-file"></i>' + esc(doc.name) + '</span>';
+         row.innerHTML = '<div class="table-cell">' + nameCell + '</div><div class="table-cell">' + esc(doc.type) + '</div><div class="table-cell">' + esc(doc.author) + '</div><div class="table-cell">' + esc(doc.date) + '</div><div class="table-cell"><span class="status status--info">Uploaded</span></div>';
+         table.appendChild(row);
+       });
+       Array.prototype.slice.call(table.querySelectorAll('.aw-uprow')).forEach(function (row) {
+         row.addEventListener('click', function (e) { if (e.target.closest('a.doc-link')) return; editDoc(+row.dataset.idx); });
+       });
+       icons();
+     }
+     function editDoc(idx) {
+       var doc = docs[idx]; if (!doc) return;
+       var ov = document.createElement('div'); ov.className = 'aw-overlay';
+       ov.innerHTML = '<div class="aw-modal"><div class="aw-head"><h3>Edit Document</h3><button class="aw-x" type="button">&times;</button></div><div class="aw-body"><form id="awEdit">'
+         + '<div class="aw-field"><label>Name</label><input name="name" value="' + esc(doc.name) + '" required></div>'
+         + '<div class="aw-field"><label>Type</label><select name="type">' + ['Planning', 'Technical', 'Strategy', 'Report', 'Financial'].map(function (t) { return '<option' + (t === doc.type ? ' selected' : '') + '>' + t + '</option>'; }).join('') + '</select></div>'
+         + '<div class="aw-field"><label>Author</label><input name="author" value="' + esc(doc.author) + '"></div>'
+         + '<div class="aw-foot" style="justify-content:space-between"><button type="button" class="btn btn--outline btn--sm" data-del><i class="fas fa-trash"></i> Delete</button><div style="display:flex;gap:10px"><button type="button" class="btn btn--secondary" data-x>Cancel</button><button type="submit" class="btn btn--primary">Save</button></div></div></form></div></div>';
+       document.body.appendChild(ov);
+       function close() { ov.remove(); }
+       ov.querySelector('.aw-x').addEventListener('click', close); ov.querySelector('[data-x]').addEventListener('click', close); ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+       function fv(n) { var e = ov.querySelector('[name="' + n + '"]'); return e ? e.value : ''; }
+       ov.querySelector('[data-del]').addEventListener('click', function () { docs.splice(idx, 1); close(); renderDocs(); save(); if (window.showToast) showToast('Document removed'); });
+       ov.querySelector('#awEdit').addEventListener('submit', function (e) { e.preventDefault(); doc.name = fv('name').trim() || doc.name; doc.type = fv('type'); doc.author = fv('author').trim(); close(); renderDocs(); save(); if (window.showToast) showToast('Document updated'); });
+     }
+     function openUpload() {
+       var ov = document.createElement('div'); ov.className = 'aw-overlay';
+       ov.innerHTML = '<div class="aw-modal"><div class="aw-head"><h3>Upload Document</h3><button class="aw-x" type="button">&times;</button></div>'
+         + '<div class="aw-body"><form id="awForm">'
+         + '<div class="aw-field"><label>Document file</label><input name="file" type="file" required></div>'
+         + '<div class="aw-field"><label>Type</label><select name="type"><option>Planning</option><option>Technical</option><option>Strategy</option><option>Report</option><option>Financial</option></select></div>'
+         + '<div class="aw-field"><label>Author</label><input name="author" value="You" autocomplete="off"></div>'
+         + '<div class="aw-foot"><button type="button" class="btn btn--secondary" data-x>Cancel</button><button type="submit" class="btn btn--primary">Upload</button></div>'
+         + '</form></div></div>';
+       document.body.appendChild(ov);
+       function close() { ov.remove(); document.removeEventListener('keydown', esckey); }
+       function esckey(e) { if (e.key === 'Escape') close(); }
+       ov.querySelector('.aw-x').addEventListener('click', close);
+       ov.querySelector('[data-x]').addEventListener('click', close);
+       ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+       document.addEventListener('keydown', esckey);
+       ov.querySelector('#awForm').addEventListener('submit', function (e) {
+         e.preventDefault();
+         var fileInput = ov.querySelector('input[type=file]');
+         var file = fileInput.files && fileInput.files[0];
+         if (!file) { fileInput.focus(); return; }
+         var type = ov.querySelector('[name=type]').value;
+         var author = (ov.querySelector('[name=author]').value || 'You').trim();
+         function push(url) { docs.push({ name: file.name, type: type, author: author, date: fmtDate(), url: url }); renderDocs(); save(); close(); if (window.showToast) showToast('Uploaded "' + file.name + '"'); }
+         if (file.size && file.size < 1500000 && window.FileReader) {
+           var r = new FileReader(); r.onload = function () { push(r.result); }; r.onerror = function () { var u = null; try { u = URL.createObjectURL(file); } catch (e) {} push(u); }; r.readAsDataURL(file);
+         } else { var u = null; try { u = URL.createObjectURL(file); } catch (e) {} push(u); }
+       });
+       var fi = ov.querySelector('input[type=file]'); if (fi) fi.focus();
+     }
+     window.showUploadDocumentModal = openUpload;
+     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(renderDocs, 60); }); else setTimeout(renderDocs, 60);
+   })();
+  </script>
+  <script>
+   window.APP_ABOUT = {"title":"About AI Business Framework","summary":"A step-by-step framework for building an AI-driven business, with documents, ROI calculator, and KPIs.","html":"<p><strong>AI Business Framework</strong> is a project hub built around a specific business-building methodology: a 4-step framework (Industry Selection → Business Model → Customer Targeting → Offer Creation) for launching an AI-driven business.</p>\n<p>It tracks KPIs like revenue, monthly recurring revenue, CAC, and LTV; includes a Documents section with real file upload (click a document to open the file you uploaded), an automation section, inventory, a team roster, and an ROI calculator for modeling payback period.</p>\n<p>It's meant to demonstrate a step-by-step \"framework as software\" pattern — turning a business methodology into an interactive tool rather than a static slide deck.</p><p style=\"margin-top:20px;margin-bottom:8px;font-weight:600;color:var(--color-text)\">Key Features</p><ul><li>4-step business framework (Industry Selection \u2192 Business Model \u2192 Customer Targeting \u2192 Offer Creation)</li><li>KPI tracking: revenue, MRR, CAC, LTV</li><li>Real document upload \u2014 click an uploaded document to open the actual file</li><li>Automation, Inventory, and Team sections, plus an ROI calculator</li></ul><p style=\"margin-top:20px;margin-bottom:8px;font-weight:600;color:var(--color-text)\">How to Use</p><ul><li>Use the sidebar to move through Dashboard, Framework Steps, Projects, Performance, Documents, Automation, Inventory, and Team</li><li>Click \"Upload Document\" to add a file; click any uploaded document to view, edit, or remove it</li><li>Use the ROI Calculator on the Performance tab to model payback period</li></ul>"};
+  </script>
+      <script>
+   /* Site chrome — shared footer + about-modal system (identical across the showcase) */
+   (function () {
+     function icons() { if (window.lucide && lucide.createIcons) lucide.createIcons(); }
+     function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+     function ic(luc, faCls) { return (window.lucide && typeof lucide.createIcons === 'function') ? '<i data-lucide="' + luc + '"></i>' : '<i class="' + faCls + '"></i>'; }
+     var isHub = /(^|\/)index\.html$/.test(location.pathname) || /\/$/.test(location.pathname);
+
+     function buildFooter() {
+       if (document.querySelector('.site-footer')) return;
+       var f = document.createElement('footer');
+       f.className = 'site-footer';
+       var homeLink = isHub ? '' : '<a href="index.html">' + ic('layout-grid', 'fas fa-grip') + 'All Apps</a>';
+       f.innerHTML = '<div class="sf-inner">'
+         + '<div class="sf-byline">Built by <a href="https://kareembullard.com" target="_blank" rel="noopener">Kareem Bullard</a> — a portfolio demo, not a production product.</div>'
+         + '<div class="sf-links">' + homeLink
+         + '<a href="privacy.html">' + ic('shield-check', 'fas fa-shield-halved') + 'Privacy &amp; Terms</a>'
+         + '<a href="https://github.com/kareembullard/project-showcase" target="_blank" rel="noopener">' + ic('github', 'fab fa-github') + 'GitHub</a></div>'
+         + '</div>';
+       // Apps with a `position: fixed` sidebar (e.g. a `.side-nav`) take body out of normal flow for
+       // a plain appended child — append inside `.main-content` instead so the footer sits below the
+       // content (offset past the fixed sidebar) rather than overlapping it.
+       var target = document.body;
+       var fixedSide = document.querySelector('.side-nav');
+       if (fixedSide && getComputedStyle(fixedSide).position === 'fixed') {
+         var mc = document.querySelector('.main-content');
+         if (mc) target = mc;
+       }
+       target.appendChild(f);
+       icons();
+     }
+
+     window.openAboutModal = function () {
+       var data = window.APP_ABOUT; if (!data) return;
+       var ov = document.createElement('div'); ov.className = 'site-about-overlay';
+       ov.innerHTML = '<div class="site-about-modal"><div class="sam-head"><h3></h3><button class="modal-close" type="button" id="samClose">' + ic('x', 'fas fa-xmark') + '</button></div>'
+         + '<div class="sam-body"></div></div>';
+       ov.querySelector('h3').textContent = data.title;
+       ov.querySelector('.sam-body').innerHTML = data.html
+         + '<hr><p><strong>Note:</strong> This is a portfolio demo — all data shown is fictional/sample and stored only in your browser (nothing is sent to a server). See <a href="privacy.html">Privacy &amp; Terms</a> for details.</p>';
+       document.body.appendChild(ov);
+       function close() { ov.remove(); document.removeEventListener('keydown', esckey); }
+       function esckey(e) { if (e.key === 'Escape') close(); }
+       ov.querySelector('#samClose').addEventListener('click', close);
+       ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+       document.addEventListener('keydown', esckey);
+       icons();
+     };
+
+     function wireInfoButton() {
+       if (!window.APP_ABOUT || document.getElementById('appInfoBtn')) return;
+       var toggle = document.querySelector('[data-theme-toggle]');
+       var container = toggle ? toggle.parentNode : (document.querySelector('.header-actions') || document.querySelector('.header-right') || document.querySelector('.sidebar-header') || document.querySelector('.sidebar__header'));
+       if (!container) return;
+       var btn = document.createElement('button');
+       btn.id = 'appInfoBtn';
+       btn.className = 'btn btn--secondary btn--sm';
+       btn.type = 'button';
+       btn.title = 'About this app';
+       btn.setAttribute('aria-label', 'About this app');
+       btn.innerHTML = ic('info', 'fas fa-circle-info') + '<span class="tt-label">Info</span>';
+       btn.addEventListener('click', window.openAboutModal);
+       if (toggle) container.insertBefore(btn, toggle); else container.insertBefore(btn, container.firstChild);
+       icons();
+     }
+
+     function labelThemeToggle() {
+       document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+         if (btn.querySelector('.tt-label')) return;
+         if (btn.textContent.trim().length > 0) return; // already shows its own text (e.g. "Toggle Dark Mode") — don't duplicate
+         var span = document.createElement('span');
+         span.className = 'tt-label';
+         span.textContent = 'Theme';
+         btn.appendChild(span);
+       });
+     }
+
+     function buildSummary() {
+       if (!window.APP_ABOUT || !window.APP_ABOUT.summary) return;
+       if (document.querySelector('.app-summary')) return;
+       var bar = document.createElement('div');
+       bar.className = 'app-summary';
+       bar.textContent = window.APP_ABOUT.summary;
+       var header = document.querySelector('header');
+       if (header) { header.parentNode.insertBefore(bar, header.nextSibling); return; }
+       var side = document.querySelector('.sidebar-header') || document.querySelector('.sidebar__header');
+       if (side) side.appendChild(bar);
+     }
+
+     function start() { buildFooter(); wireInfoButton(); labelThemeToggle(); buildSummary(); }
+     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(start, 50); }); else setTimeout(start, 50);
+   })();
+  </script>
+
+  <script>
+   /* ProjectSuite Enhance — motion, counters, ripple, cursor, chart polish (shared) */
+   (function () {
+     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+     var docEl = document.documentElement;
+
+     if (window.Chart && Chart.defaults) {
+       try {
+         var cs = getComputedStyle(docEl);
+         var txt = (cs.getPropertyValue('--color-text-secondary') || '').trim() || '#8a8f98';
+         var grid = (cs.getPropertyValue('--color-border') || '').trim() || 'rgba(140,140,140,.15)';
+         Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+         Chart.defaults.font.size = 12;
+         Chart.defaults.color = txt;
+         Chart.defaults.borderColor = grid;
+         var P = Chart.defaults.plugins || {};
+         if (P.legend) { P.legend.labels = P.legend.labels || {}; P.legend.labels.usePointStyle = true; P.legend.labels.boxWidth = 8; P.legend.labels.padding = 16; }
+         if (P.tooltip) { P.tooltip.usePointStyle = true; P.tooltip.padding = 10; P.tooltip.cornerRadius = 8; P.tooltip.boxPadding = 4; P.tooltip.titleFont = { weight: '600' }; }
+         var E = Chart.defaults.elements || {};
+         if (E.line) { E.line.tension = 0.35; E.line.borderWidth = 2; }
+         if (E.point) { E.point.radius = 0; E.point.hoverRadius = 5; E.point.hitRadius = 12; }
+         if (E.bar) { E.bar.borderRadius = 6; E.bar.borderSkipped = false; }
+         if (E.arc) { E.arc.borderWidth = 2; }
+         (function () {
+           function hexRgb(h){h=h.replace('#','');if(h.length===3)h=h.split('').map(function(x){return x+x;}).join('');var n=parseInt(h.slice(0,6),16);return [(n>>16)&255,(n>>8)&255,n&255];}
+           function toRgb(c){var m;c=(''+c).trim();if(m=c.match(/^#([0-9a-fA-F]{3,8})$/))return hexRgb(m[1]);if(m=c.match(/rgba?\(([^)]+)\)/i)){var p=m[1].split(',').map(parseFloat);return [p[0],p[1],p[2]];}return null;}
+           function reddish(rgb){if(!rgb)return false;var r=rgb[0],g=rgb[1],b=rgb[2];var mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;if(mx<70||d<28)return false;var h;if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;h*=60;if(h<0)h+=360;var s=d/mx;return s>0.32&&(h>=338||h<=14);}
+           function remap(c){if(typeof c!=='string')return c;var rgb=toRgb(c);if(!rgb||rgb.some(isNaN))return c;if(reddish(rgb)){var a=c.match(/rgba?\([^)]*,\s*([\d.]+)\s*\)/i);return a?'rgba(226,101,42,'+a[1]+')':'#e2652a';}return c;}
+           var keys=['backgroundColor','borderColor','pointBackgroundColor','pointBorderColor','hoverBackgroundColor','hoverBorderColor','pointHoverBackgroundColor'];
+           var plugin={id:'phRecolor',beforeInit:function(chart){(chart.data.datasets||[]).forEach(function(ds){keys.forEach(function(k){if(Array.isArray(ds[k]))ds[k]=ds[k].map(remap);else if(ds[k]!=null&&typeof ds[k]==='string')ds[k]=remap(ds[k]);});});}};
+           if (Chart.register) Chart.register(plugin); else if (Chart.plugins && Chart.plugins.register) Chart.plugins.register(plugin);
+         })();
+       } catch (e) {}
+     }
+
+     function countUp(el) {
+       if (el.children.length) return;
+       var raw = el.textContent.trim();
+       var m = raw.match(/^([^\d-]*)(-?[\d,]+(?:\.\d+)?)(.*)$/);
+       if (!m) return;
+       var prefix = m[1], numStr = m[2], suffix = m[3];
+       var decimals = (numStr.split('.')[1] || '').length;
+       var useComma = numStr.indexOf(',') > -1;
+       var target = parseFloat(numStr.replace(/,/g, ''));
+       if (isNaN(target)) return;
+       var dur = 1200, t0 = performance.now();
+       function fmt(n) {
+         var s = decimals ? n.toFixed(decimals) : String(Math.round(n));
+         if (useComma) s = Number(s).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+         return prefix + s + suffix;
+       }
+       function step(now) {
+         var p = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - p, 4);
+         el.textContent = fmt(target * e);
+         if (p < 1) requestAnimationFrame(step); else el.textContent = raw;
+       }
+       requestAnimationFrame(step);
+     }
+
+     function start() {
+       var IO = window.IntersectionObserver;
+       if (!reduce && IO) {
+         docEl.classList.add('ph-anim');
+         var revealSel = '.card, .kpi-card, .widget, .chart-container, .stat-card, .metric-card, .dashboard-card, .stat-display, .info-card, .summary-card, .chart-canvas-wrap';
+         var els = [];
+         document.querySelectorAll(revealSel).forEach(function (el) {
+           if (el.closest('.nav-bar')) return;
+           if (el.querySelector('.card, .kpi-card, .widget')) return;
+           el.classList.add('ph-reveal', 'ph-card');
+           els.push(el);
+         });
+         var io = new IO(function (entries) {
+           entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in-view'); io.unobserve(en.target); } });
+         }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+         els.forEach(function (el) { io.observe(el); });
+         setTimeout(function () { els.forEach(function (el) { el.classList.add('in-view'); }); }, 1600);
+       }
+
+       if (!reduce && IO) {
+         var numSel = '.kpi-value, .stat-number, .widget-value, .stat-value, .metric-value, .kpi-card .value, .stat__value, .metric__value';
+         var co = new IO(function (entries) {
+           entries.forEach(function (en) { if (en.isIntersecting) { countUp(en.target); co.unobserve(en.target); } });
+         }, { threshold: .6 });
+         document.querySelectorAll(numSel).forEach(function (el) {
+           if (el.closest('.nav-bar') || el.children.length) return;
+           if (/\d/.test(el.textContent) && /^[^\d-]*-?[\d,]+(?:\.\d+)?[^\d]*$/.test(el.textContent.trim())) co.observe(el);
+         });
+       }
+
+       document.addEventListener('click', function (e) {
+         if (reduce) return;
+         var btn = e.target.closest('.btn, button');
+         if (!btn || btn.closest('.nav-bar')) return;
+         var r = btn.getBoundingClientRect();
+         if (getComputedStyle(btn).position === 'static') btn.style.position = 'relative';
+         if (getComputedStyle(btn).overflow !== 'hidden') btn.style.overflow = 'hidden';
+         var s = document.createElement('span');
+         s.className = 'ph-ripple';
+         var size = Math.max(r.width, r.height);
+         s.style.width = s.style.height = size + 'px';
+         s.style.left = (e.clientX - r.left) + 'px';
+         s.style.top = (e.clientY - r.top) + 'px';
+         btn.appendChild(s);
+         setTimeout(function () { s.remove(); }, 640);
+       });
+
+       if (!reduce && window.matchMedia('(pointer:fine)').matches && window.innerWidth > 900) {
+         var ring = document.createElement('div');
+         ring.className = 'ph-cursor';
+         document.body.appendChild(ring);
+         var x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y;
+         document.addEventListener('mousemove', function (e) { x = e.clientX; y = e.clientY; });
+         (function loop() { rx += (x - rx) * .18; ry += (y - ry) * .18; ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)'; requestAnimationFrame(loop); })();
+         var hoverSel = 'a,button,.btn,.nav-tab,.tab-btn,.tab-item,.menu-item,.card,[role="button"],input,select,textarea,[data-theme-toggle]';
+         document.addEventListener('mouseover', function (e) { if (e.target.closest(hoverSel)) ring.classList.add('hover'); });
+         document.addEventListener('mouseout', function (e) { if (e.target.closest(hoverSel)) ring.classList.remove('hover'); });
+       }
+     }
+
+     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+     else start();
+   })();
+  </script>
+ </body>
+</html>
