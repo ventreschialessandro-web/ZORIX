@@ -1,832 +1,361 @@
-<!DOCTYPE html>
-<html lang='ar' dir='rtl'>
+ <!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<title>ZORIX AI - Company Edition</title>
-<link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;600&display=swap' rel='stylesheet'>
-<style>
-:root{--bg:#0a0a0f;--bg2:#12121a;--card:#1a1a24;--card2:#222233;--border:#2a2a3a;--text:#e8e8ef;--text2:#9a9ab0;--accent:#7c3aed;--accent2:#a78bfa;--green:#10b981;--red:#ef4444}
-_{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Cairo','Inter',system-ui;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;direction:rtl}
-.sidebar{width:300px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;transition:.3s}
-.sidebar-top{padding:20px;border-bottom:1px solid var(--border)}
-.logo{font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800}
-.new-chat{width:100%;margin-top:16px;padding:12px;background:var(--accent);border:none;border-radius:12px;color:#fff;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
-.new-chat:hover{background:#6d28e0;transform:translateY(-1px)}
-.history{flex:1;overflow-y:auto;padding:12px}
-.history-title{font-size:11px;color:var(--text2);letter-spacing:1px;margin:12px 8px 8px;font-weight:600}
-.chat-item{padding:10px 12px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:.15s;margin-bottom:4px}
-.chat-item:hover{background:var(--card);color:var(--text)}
-.chat-item.active{background:var(--card2);color:var(--text);border:1px solid var(--border)}
-.sidebar-bottom{padding:16px;border-top:1px solid var(--border)}
-.user-box{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:var(--card)}
-.user-avatar{width:32px;height:32px;background:var(--accent2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#000}
-.main{flex:1;display:flex;flex-direction:column;background:var(--bg);position:relative}
-.topbar{height:56px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:var(--bg2)}
-.model-select{padding:8px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--text);font-size:13px;cursor:pointer}
-.chat-area{flex:1;overflow-y:auto;padding:0}
-.messages{max-width:820px;margin:0 auto;padding:24px 20px 100px}
-.msg-group{margin-bottom:28px;display:flex;gap:16px}
-.msg-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:13px}
-.msg-avatar.user{background:var(--card2);border:1px solid var(--border)}
-.msg-avatar.ai{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
-.msg-content{flex:1;min-width:0}
-.msg-role{font-size:13px;font-weight:600;margin-bottom:6px}
-.msg-text{line-height:1.7;font-size:14.5px;color:var(--text);white-space:pre-wrap;word-break:break-word}
-.msg-text.ai{color:#d8d8e8}
-.msg-actions{margin-top:10px;display:flex;gap:8px;opacity:0;transition:.2s}
-.msg-group:hover .msg-actions{opacity:1}
-.action-btn{padding:4px 8px;background:var(--card);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text2);cursor:pointer}
-.welcome{max-width:720px;margin:60px auto 0;text-align:center;padding:40px 20px}
-.welcome h1{font-size:32px;margin-bottom:12px;background:linear-gradient(135deg,var(--text),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.welcome p{color:var(--text2);line-height:1.6;margin-bottom:32px}
-.suggestions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
-.sugg{padding:16px;background:var(--card);border:1px solid var(--border);border-radius:14px;text-align:right;cursor:pointer;transition:.2s}
-.sugg:hover{background:var(--card2);border-color:var(--accent);transform:translateY(-2px)}
-.sugg-title{font-weight:600;font-size:13px;margin-bottom:4px}
-.sugg-desc{font-size:12px;color:var(--text2)}
-.input-wrap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,var(--bg) 30%);padding:24px}
-.input-box{max-width:820px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:8px 8px 8px 12px;display:flex;align-items:flex-end;gap:8px;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:.2s}
-.input-box:focus-within{border-color:var(--accent);box-shadow:0 8px 32px rgba(124,58,237,.2)}
-.input-box textarea{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:14.5px;resize:none;max-height:160px;min-height:24px;padding:10px 8px;line-height:1.5;font-family:inherit}
-.icon-btn{width:36px;height:36px;border:none;background:transparent;color:var(--text2);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
-.icon-btn:hover{background:var(--card2);color:var(--text)}
-.send-btn{width:36px;height:36px;background:var(--accent);border:none;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex-shrink:0}
-.send-btn:hover{background:#6d28e0;transform:scale(1.05)}
-.send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-.footer-note{max-width:820px;margin:12px auto 0;text-align:center;font-size:11px;color:var(--text2);opacity:.6}
-@media(max-width:768px){.sidebar{position:absolute;right:-100%;z-index:10;height:100%}.sidebar.open{right:0}.suggestions{grid-template-columns:1fr}.messages{padding:16px 12px 100px}}
-.typing{display:flex;gap:4px;padding:8px 0}
-.dot{width:6px;height:6px;background:var(--text2);border-radius:50%;animation:bounce 1.4s infinite}
-.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
-@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-6px);opacity:1}}
-code{background:var(--card2);border:1px solid var(--border);padding:2px 6px;border-radius:6px;font-size:13px}
-pre{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;overflow-x:auto;margin:12px 0}
-pre code{background:none;border:none;padding:0}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenRouter Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .user-msg { background: #3b82f6; border-radius: 18px 18px 4px 18px; }
+        .assistant-msg { background: #1f2937; border-radius: 18px 18px 18px 4px; }
+        .prose { max-width: none; }
+        .prose pre { background: #111827; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+        .prose code { font-size: 0.9em; background: #374151; padding: 2px 4px; border-radius: 4px; }
+    </style>
 </head>
-<body>
-<div class="sidebar" id="sidebar">
-<div class="sidebar-top">
-<div class="logo"><div class="logo-icon">Z</div> ZORIX AI</div>
-<button class="new-chat" onclick="newChat()"><span>+</span> محادثة جديدة</button>
-</div>
-<div class="history" id="history">
-<div class="history-title">اليوم</div>
-<div id="historyList"></div>
-<div class="history-title" style="margin-top:20px">الاسبوع الماضي</div>
-<div id="historyOld"></div>
-</div>
-<div class="sidebar-bottom">
-<div class="user-box">
-<div class="user-avatar">M</div>
-<div style="flex:1"><div style="font-size:13px;font-weight:600">Mostafa</div><div style="font-size:11px;color:var(--text2)">Pro Plan</div></div>
-</div>
-</div>
-</div>
-<div class="main">
-<div class="topbar">
-<div style="display:flex;align-items:center;gap:12px">
-<button class="icon-btn" onclick="toggleSidebar()" style="display:none" id="menuBtn">☰</button>
-<select class="model-select" id="modelSelect">
-<option>ZORIX-1 Pro</option>
-<option>ZORIX-1 Fast</option>
-<option>GPT-4o</option>
-<option>Claude 3.5</option>
-</select>
-</div>
-<div style="display:flex;gap:8px">
-<button class="icon-btn" title="مشاركة">↗</button>
-<button class="icon-btn" title="اعدادات">⚙</button>
-</div>
-</div>
-<div class="chat-area" id="chatArea">
-<div class="messages" id="messages">
-<div class="welcome" id="welcome">
-<h1>أهلا بيك في ZORIX</h1>
-<p>مساعدك الذكي اللي مبني في ملف واحد - فيه السيرفر والتطبيق والهيكل كله</p>
-<div class="suggestions">
-<div class="sugg" onclick="useSugg('اشرح لي كود السيرفر اللي في الصورة')"><div class="sugg-title">اشرح السيرفر</div><div class="sugg-desc">افهم http://main.py وكيف يتحول لـ JS</div></div>
-<div class="sugg" onclick="useSugg('ابني لي صفحة تسجيل دخول')"><div class="sugg-title">صفحة تسجيل دخول</div><div class="sugg-desc">كود كامل HTML/CSS/JS</div></div>
-<div class="sugg" onclick="useSugg('كيف احفظ الشات في database')"><div class="sugg-title">حفظ الشات</div><div class="sugg-desc">تحويل http://database.py لـ localStorage</div></div>
-<div class="sugg" onclick="useSugg('اعمل لي API للـ AI')"><div class="sugg-title">ربط AI API</div><div class="sugg-desc">كود ربط OpenAI / Gemini</div></div>
-</div>
-</div>
-</div>
-</div>
-<div class="input-wrap">
-<div class="input-box">
-<button class="icon-btn" title="ارفق ملف">📎</button>
-<textarea id="input" placeholder="اسأل ZORIX أي شيء..." rows="1" onkeydown="handleKey(event)" oninput="autoGrow(this)"></textarea>
-<button class="icon-btn" title="صوت">🎤</button>
-<button class="send-btn" id="sendBtn" onclick="sendMsg()">➤</button>
-</div>
-<div class="footer-note">ZORIX يمكن أن يخطئ. تحقق من المعلومات المهمة. ملف واحد = سيرفر + تطبيق + هيكل</div>
-</div>
-</div>
-<script>
-const ZORIX_SERVER = {
-config: { name: 'ZORIX AI', version: '1.0.0', port: 3000, env: 'production' },
-models: { 'zorix-1-pro': { temp:0.7, max:4096 }, 'gpt-4o': { temp:0.7 } },
-database: {
-save: (k,v)=>{ try{localStorage.setItem('zorix_'+k, http://JSON.stringify(v)); return true;}catch(e){return false} },
-load: (k)=>{ try{return http://JSON.parse(localStorage.getItem('zorix_'+k)||'null')}catch(e){return null} },
-delete: (k)=>localStorage.removeItem('zorix_'+k),
-all: ()=>Object.keys(localStorage).filter(k=>k.startsWith('zorix_'))
-},
-auth: {
-user: { id:'u_123', name:'Mostafa', plan:'pro' },
-check: ()=>true,
-login: (u,p)=>true
-},
-history: {
-list: [],
-add: function(title){ const id='c_'+Date.now(); const item={id,title,time:Date.now(),msgs:[]}; http://this.list.unshift(item); ZORIX_SERVER.database.save('history',this.list); return item; },
-load: function(){ http://this.list = ZORIX_SERVER.database.load('history')||[]; return http://this.list; }
-},
-api: {
-chat: async (msg, model='zorix-1-pro')=>{
-await new Promise(r=>setTimeout(r, 400+Math.random()_600));
-return `فهمت سؤالك: "${msg}"\n\nده الرد من السيرفر main.py شغال JS`;
-}
-}
-};
-let currentChatId = null;
-let isSending = false;
-function init(){
-ZORIX_SERVER.history.load();
-renderHistory();
-http://document.getElementById('input').focus();
-}
-function renderHistory(){
-const list = http://document.getElementById('historyList');
-const old = http://document.getElementById('historyOld');
-http://list.innerHTML=''; http://old.innerHTML='';
-ZORIX_SERVER.history.list.forEach((c,i)=>{
-const div=document.createElement('div'); http://div.className='chat-item'; http://div.textContent=c.title; http://div.onclick=()=>openChat(c.id);
-if(i<5) http://list.appendChild(div); else http://old.appendChild(div);
-});
-}
-function newChat(){
-http://document.getElementById('messages').innerHTML = http://document.getElementById('welcome').outerHTML;
-currentChatId=null;
-}
-function openChat(id){
-const chat = ZORIX_SERVER.history.list.find(c=>c.id===id);
-if(!chat) return;
-currentChatId=id;
-const cont=document.getElementById('messages');
-http://cont.innerHTML='';
-http://chat.msgs.forEach(m=>addMsgToUI(m.text,m.role,false));
-}
-function useSugg(t){ http://document.getElementById('input').value=t; sendMsg(); }
-function autoGrow(el){ http://el.style.height='auto'; http://el.style.height=Math.min(el.scrollHeight,160)+'px'; }
-function handleKey(e){ if(e.key==='Enter' && !e.shiftKey){ http://e.preventDefault(); sendMsg(); } }
-async function sendMsg(){
-const input=document.getElementById('input');
-const text=input.value.trim(); if(!text || isSending) return;
-isSending=true; http://document.getElementById('sendBtn').disabled=true;
-http://document.getElementById('welcome')?.remove();
-addMsgToUI(text,'user',true);
-http://input.value=''; autoGrow(input);
-if(!currentChatId){ const c=ZORIX_SERVER.history.add(text.slice(0,40)); currentChatId=c.id; renderHistory(); }
-const typingId=showTyping();
-try{
-const reply=await ZORIX_SERVER.api.chat(text, http://document.getElementById('modelSelect').value);
-removeTyping(typingId);
-addMsgToUI(reply,'ai',true);
-}catch(err){ removeTyping(typingId); addMsgToUI('خطأ: '+err.message,'ai',true); }
-isSending=false; http://document.getElementById('sendBtn').disabled=false; http://input.focus();
-}
-function addMsgToUI(text,role,save=true){
-const cont=document.getElementById('messages');
-const group=document.createElement('div'); http://group.className='msg-group';
-const avatar=document.createElement('div'); http://avatar.className='msg-avatar '+role; http://avatar.textContent=role==='user'?'M':'Z';
-const content=document.createElement('div'); http://content.className='msg-content';
-const roleEl=document.createElement('div'); http://roleEl.className='msg-role'; http://roleEl.textContent=role==='user'?'انت':'ZORIX';
-const textEl=document.createElement('div'); http://textEl.className='msg-text '+(role==='ai'?'ai':''); http://textEl.textContent=text;
-const actions=document.createElement('div'); http://actions.className='msg-actions';
-http://actions.innerHTML='<button class=action-btn>نسخ</button>';
-http://content.appendChild(roleEl); http://content.appendChild(textEl); http://content.appendChild(actions);
-http://group.appendChild(avatar); http://group.appendChild(content);
-http://cont.appendChild(group);
-http://document.getElementById('chatArea').scrollTop=document.getElementById('chatArea').scrollHeight;
-if(save && currentChatId){ const chat=ZORIX_SERVER.history.list.find(c=>c.id===currentChatId); if(chat){ http://chat.msgs.push({text,role,time:Date.now()}); ZORIX_SERVER.database.save('history',ZORIX_SERVER.history.list); } }
-}
-function showTyping(){
-const id='typing_'+Date.now();
-const cont=document.getElementById('messages');
-const group=document.createElement('div'); http://group.className='msg-group'; http://group.id=id;
-http://group.innerHTML='<div class=msg-avatar ai>Z</div><div class=msg-content><div class=typing><div class=dot></div><div class=dot></div><div class=dot></div></div></div>';
-http://cont.appendChild(group);
-return id;
-}
-function removeTyping(id){ http://document.getElementById(id)?.remove(); }
-function toggleSidebar(){ http://document.getElementById('sidebar').classList.toggle('open'); }
-http://window.onload=init;
-const module_1 = { id:1, name:'ZORIX_Module_1', enabled:true, run:()=>console.log('module 1 ready') };
-ZORIX_SERVER['ext_1'] = module_1;
-const module_2 = { id:2, name:'ZORIX_Module_2', enabled:true, run:()=>console.log('module 2 ready') };
-ZORIX_SERVER['ext_2'] = module_2;
-const module_3 = { id:3, name:'ZORIX_Module_3', enabled:true, run:()=>console.log('module 3 ready') };
-ZORIX_SERVER['ext_3'] = module_3;
-const module_4 = { id:4, name:'ZORIX_Module_4', enabled:true, run:()=>console.log('module 4 ready') };
-ZORIX_SERVER['ext_4'] = module_4;
-const module_5 = { id:5, name:'ZORIX_Module_5', enabled:true, run:()=>console.log('module 5 ready') };
-ZORIX_SERVER['ext_5'] = module_5;
-const module_6 = { id:6, name:'ZORIX_Module_6', enabled:true, run:()=>console.log('module 6 ready') };
-ZORIX_SERVER['ext_6'] = module_6;
-const module_7 = { id:7, name:'ZORIX_Module_7', enabled:true, run:()=>console.log('module 7 ready') };
-ZORIX_SERVER['ext_7'] = module_7;
-const module_8 = { id:8, name:'ZORIX_Module_8', enabled:true, run:()=>console.log('module 8 ready') };
-ZORIX_SERVER['ext_8'] = module_8;
-const module_9 = { id:9, name:'ZORIX_Module_9', enabled:true, run:()=>console.log('module 9 ready') };
-ZORIX_SERVER['ext_9'] = module_9;
-const module_10 = { id:10, name:'ZORIX_Module_10', enabled:true, run:()=>console.log('module 10 ready') };
-ZORIX_SERVER['ext_10'] = module_10;
-const module_11 = { id:11, name:'ZORIX_Module_11', enabled:true, run:()=>console.log('module 11 ready') };
-ZORIX_SERVER['ext_11'] = module_11;
-const module_12 = { id:12, name:'ZORIX_Module_12', enabled:true, run:()=>console.log('module 12 ready') };
-ZORIX_SERVER['ext_12'] = module_12;
-const module_13 = { id:13, name:'ZORIX_Module_13', enabled:true, run:()=>console.log('module 13 ready') };
-ZORIX_SERVER['ext_13'] = module_13;
-const module_14 = { id:14, name:'ZORIX_Module_14', enabled:true, run:()=>console.log('module 14 ready') };
-ZORIX_SERVER['ext_14'] = module_14;
-const module_15 = { id:15, name:'ZORIX_Module_15', enabled:true, run:()=>console.log('module 15 ready') };
-ZORIX_SERVER['ext_15'] = module_15;
-const module_16 = { id:16, name:'ZORIX_Module_16', enabled:true, run:()=>console.log('module 16 ready') };
-ZORIX_SERVER['ext_16'] = module_16;
-const module_17 = { id:17, name:'ZORIX_Module_17', enabled:true, run:()=>console.log('module 17 ready') };
-ZORIX_SERVER['ext_17'] = module_17;
-const module_18 = { id:18, name:'ZORIX_Module_18', enabled:true, run:()=>console.log('module 18 ready') };
-ZORIX_SERVER['ext_18'] = module_18;
-const module_19 = { id:19, name:'ZORIX_Module_19', enabled:true, run:()=>console.log('module 19 ready') };
-ZORIX_SERVER['ext_19'] = module_19;
-const module_20 = { id:20, name:'ZORIX_Module_20', enabled:true, run:()=>console.log('module 20 ready') };
-ZORIX_SERVER['ext_20'] = module_20;
-const module_21 = { id:21, name:'ZORIX_Module_21', enabled:true, run:()=>console.log('module 21 ready') };
-ZORIX_SERVER['ext_21'] = module_21;
-const module_22 = { id:22, name:'ZORIX_Module_22', enabled:true, run:()=>console.log('module 22 ready') };
-ZORIX_SERVER['ext_22'] = module_22;
-const module_23 = { id:23, name:'ZORIX_Module_23', enabled:true, run:()=>console.log('module 23 ready') };
-ZORIX_SERVER['ext_23'] = module_23;
-const module_24 = { id:24, name:'ZORIX_Module_24', enabled:true, run:()=>console.log('module 24 ready') };
-ZORIX_SERVER['ext_24'] = module_24;
-const module_25 = { id:25, name:'ZORIX_Module_25', enabled:true, run:()=>console.log('module 25 ready') };
-ZORIX_SERVER['ext_25'] = module_25;
-const module_26 = { id:26, name:'ZORIX_Module_26', enabled:true, run:()=>console.log('module 26 ready') };
-ZORIX_SERVER['ext_26'] = module_26;
-const module_27 = { id:27, name:'ZORIX_Module_27', enabled:true, run:()=>console.log('module 27 ready') };
-ZORIX_SERVER['ext_27'] = module_27;
-const module_28 = { id:28, name:'ZORIX_Module_28', enabled:true, run:()=>console.log('module 28 ready') };
-ZORIX_SERVER['ext_28'] = module_28;
-const module_29 = { id:29, name:'ZORIX_Module_29', enabled:true, run:()=>console.log('module 29 ready') };
-ZORIX_SERVER['ext_29'] = module_29;
-const module_30 = { id:30, name:'ZORIX_Module_30', enabled:true, run:()=>console.log('module 30 ready') };
-ZORIX_SERVER['ext_30'] = module_30;
-const module_31 = { id:31, name:'ZORIX_Module_31', enabled:true, run:()=>console.log('module 31 ready') };
-ZORIX_SERVER['ext_31'] = module_31;
-const module_32 = { id:32, name:'ZORIX_Module_32', enabled:true, run:()=>console.log('module 32 ready') };
-ZORIX_SERVER['ext_32'] = module_32;
-const module_33 = { id:33, name:'ZORIX_Module_33', enabled:true, run:()=>console.log('module 33 ready') };
-ZORIX_SERVER['ext_33'] = module_33;
-const module_34 = { id:34, name:'ZORIX_Module_34', enabled:true, run:()=>console.log('module 34 ready') };
-ZORIX_SERVER['ext_34'] = module_34;
-const module_35 = { id:35, name:'ZORIX_Module_35', enabled:true, run:()=>console.log('module 35 ready') };
-ZORIX_SERVER['ext_35'] = module_35;
-const module_36 = { id:36, name:'ZORIX_Module_36', enabled:true, run:()=>console.log('module 36 ready') };
-ZORIX_SERVER['ext_36'] = module_36;
-const module_37 = { id:37, name:'ZORIX_Module_37', enabled:true, run:()=>console.log('module 37 ready') };
-ZORIX_SERVER['ext_37'] = module_37;
-const module_38 = { id:38, name:'ZORIX_Module_38', enabled:true, run:()=>console.log('module 38 ready') };
-ZORIX_SERVER['ext_38'] = module_38;
-const module_39 = { id:39, name:'ZORIX_Module_39', enabled:true, run:()=>console.log('module 39 ready') };
-ZORIX_SERVER['ext_39'] = module_39;
-const module_40 = { id:40, name:'ZORIX_Module_40', enabled:true, run:()=>console.log('module 40 ready') };
-ZORIX_SERVER['ext_40'] = module_40;
-const module_41 = { id:41, name:'ZORIX_Module_41', enabled:true, run:()=>console.log('module 41 ready') };
-ZORIX_SERVER['ext_41'] = module_41;
-const module_42 = { id:42, name:'ZORIX_Module_42', enabled:true, run:()=>console.log('module 42 ready') };
-ZORIX_SERVER['ext_42'] = module_42;
-const module_43 = { id:43, name:'ZORIX_Module_43', enabled:true, run:()=>console.log('module 43 ready') };
-ZORIX_SERVER['ext_43'] = module_43;
-const module_44 = { id:44, name:'ZORIX_Module_44', enabled:true, run:()=>console.log('module 44 ready') };
-ZORIX_SERVER['ext_44'] = module_44;
-const module_45 = { id:45, name:'ZORIX_Module_45', enabled:true, run:()=>console.log('module 45 ready') };
-ZORIX_SERVER['ext_45'] = module_45;
-const module_46 = { id:46, name:'ZORIX_Module_46', enabled:true, run:()=>console.log('module 46 ready') };
-ZORIX_SERVER['ext_46'] = module_46;
-const module_47 = { id:47, name:'ZORIX_Module_47', enabled:true, run:()=>console.log('module 47 ready') };
-ZORIX_SERVER['ext_47'] = module_47;
-const module_48 = { id:48, name:'ZORIX_Module_48', enabled:true, run:()=>console.log('module 48 ready') };
-ZORIX_SERVER['ext_48'] = module_48;
-const module_49 = { id:49, name:'ZORIX_Module_49', enabled:true, run:()=>console.log('module 49 ready') };
-ZORIX_SERVER['ext_49'] = module_49;
-const module_50 = { id:50, name:'ZORIX_Module_50', enabled:true, run:()=>console.log('module 50 ready') };
-ZORIX_SERVER['ext_50'] = module_50;
-const module_51 = { id:51, name:'ZORIX_Module_51', enabled:true, run:()=>console.log('module 51 ready') };
-ZORIX_SERVER['ext_51'] = module_51;
-const module_52 = { id:52, name:'ZORIX_Module_52', enabled:true, run:()=>console.log('module 52 ready') };
-ZORIX_SERVER['ext_52'] = module_52;
-const module_53 = { id:53, name:'ZORIX_Module_53', enabled:true, run:()=>console.log('module 53 ready') };
-ZORIX_SERVER['ext_53'] = module_53;
-const module_54 = { id:54, name:'ZORIX_Module_54', enabled:true, run:()=>console.log('module 54 ready') };
-ZORIX_SERVER['ext_54'] = module_54;
-const module_55 = { id:55, name:'ZORIX_Module_55', enabled:true, run:()=>console.log('module 55 ready') };
-ZORIX_SERVER['ext_55'] = module_55;
-const module_56 = { id:56, name:'ZORIX_Module_56', enabled:true, run:()=>console.log('module 56 ready') };
-ZORIX_SERVER['ext_56'] = module_56;
-const module_57 = { id:57, name:'ZORIX_Module_57', enabled:true, run:()=>console.log('module 57 ready') };
-ZORIX_SERVER['ext_57'] = module_57;
-const module_58 = { id:58, name:'ZORIX_Module_58', enabled:true, run:()=>console.log('module 58 ready') };
-ZORIX_SERVER['ext_58'] = module_58;
-const module_59 = { id:59, name:'ZORIX_Module_59', enabled:true, run:()=>console.log('module 59 ready') };
-ZORIX_SERVER['ext_59'] = module_59;
-const module_60 = { id:60, name:'ZORIX_Module_60', enabled:true, run:()=>console.log('module 60 ready') };
-ZORIX_SERVER['ext_60'] = module_60;
-const module_61 = { id:61, name:'ZORIX_Module_61', enabled:true, run:()=>console.log('module 61 ready') };
-ZORIX_SERVER['ext_61'] = module_61;
-const module_62 = { id:62, name:'ZORIX_Module_62', enabled:true, run:()=>console.log('module 62 ready') };
-ZORIX_SERVER['ext_62'] = module_62;
-const module_63 = { id:63, name:'ZORIX_Module_63', enabled:true, run:()=>console.log('module 63 ready') };
-ZORIX_SERVER['ext_63'] = module_63;
-const module_64 = { id:64, name:'ZORIX_Module_64', enabled:true, run:()=>console.log('module 64 ready') };
-ZORIX_SERVER['ext_64'] = module_64;
-const module_65 = { id:65, name:'ZORIX_Module_65', enabled:true, run:()=>console.log('module 65 ready') };
-ZORIX_SERVER['ext_65'] = module_65;
-const module_66 = { id:66, name:'ZORIX_Module_66', enabled:true, run:()=>console.log('module 66 ready') };
-ZORIX_SERVER['ext_66'] = module_66;
-const module_67 = { id:67, name:'ZORIX_Module_67', enabled:true, run:()=>console.log('module 67 ready') };
-ZORIX_SERVER['ext_67'] = module_67;
-const module_68 = { id:68, name:'ZORIX_Module_68', enabled:true, run:()=>console.log('module 68 ready') };
-ZORIX_SERVER['ext_68'] = module_68;
-const module_69 = { id:69, name:'ZORIX_Module_69', enabled:true, run:()=>console.log('module 69 ready') };
-ZORIX_SERVER['ext_69'] = module_69;
-const module_70 = { id:70, name:'ZORIX_Module_70', enabled:true, run:()=>console.log('module 70 ready') };
-ZORIX_SERVER['ext_70'] = module_70;
-const module_71 = { id:71, name:'ZORIX_Module_71', enabled:true, run:()=>console.log('module 71 ready') };
-ZORIX_SERVER['ext_71'] = module_71;
-const module_72 = { id:72, name:'ZORIX_Module_72', enabled:true, run:()=>console.log('module 72 ready') };
-ZORIX_SERVER['ext_72'] = module_72;
-const module_73 = { id:73, name:'ZORIX_Module_73', enabled:true, run:()=>console.log('module 73 ready') };
-ZORIX_SERVER['ext_73'] = module_73;
-const module_74 = { id:74, name:'ZORIX_Module_74', enabled:true, run:()=>console.log('module 74 ready') };
-ZORIX_SERVER['ext_74'] = module_74;
-const module_75 = { id:75, name:'ZORIX_Module_75', enabled:true, run:()=>console.log('module 75 ready') };
-ZORIX_SERVER['ext_75'] = module_75;
-const module_76 = { id:76, name:'ZORIX_Module_76', enabled:true, run:()=>console.log('module 76 ready') };
-ZORIX_SERVER['ext_76'] = module_76;
-const module_77 = { id:77, name:'ZORIX_Module_77', enabled:true, run:()=>console.log('module 77 ready') };
-ZORIX_SERVER['ext_77'] = module_77;
-const module_78 = { id:78, name:'ZORIX_Module_78', enabled:true, run:()=>console.log('module 78 ready') };
-ZORIX_SERVER['ext_78'] = module_78;
-const module_79 = { id:79, name:'ZORIX_Module_79', enabled:true, run:()=>console.log('module 79 ready') };
-ZORIX_SERVER['ext_79'] = module_79;
-const module_80 = { id:80, name:'ZORIX_Module_80', enabled:true, run:()=>console.log('module 80 ready') };
-ZORIX_SERVER['ext_80'] = module_80;
-const module_81 = { id:81, name:'ZORIX_Module_81', enabled:true, run:()=>console.log('module 81 ready') };
-ZORIX_SERVER['ext_81'] = module_81;
-const module_82 = { id:82, name:'ZORIX_Module_82', enabled:true, run:()=>console.log('module 82 ready') };
-ZORIX_SERVER['ext_82'] = module_82;
-const module_83 = { id:83, name:'ZORIX_Module_83', enabled:true, run:()=>console.log('module 83 ready') };
-ZORIX_SERVER['ext_83'] = module_83;
-const module_84 = { id:84, name:'ZORIX_Module_84', enabled:true, run:()=>console.log('module 84 ready') };
-ZORIX_SERVER['ext_84'] = module_84;
-const module_85 = { id:85, name:'ZORIX_Module_85', enabled:true, run:()=>console.log('module 85 ready') };
-ZORIX_SERVER['ext_85'] = module_85;
-const module_86 = { id:86, name:'ZORIX_Module_86', enabled:true, run:()=>console.log('module 86 ready') };
-ZORIX_SERVER['ext_86'] = module_86;
-const module_87 = { id:87, name:'ZORIX_Module_87', enabled:true, run:()=>console.log('module 87 ready') };
-ZORIX_SERVER['ext_87'] = module_87;
-const module_88 = { id:88, name:'ZORIX_Module_88', enabled:true, run:()=>console.log('module 88 ready') };
-ZORIX_SERVER['ext_88'] = module_88;
-const module_89 = { id:89, name:'ZORIX_Module_89', enabled:true, run:()=>console.log('module 89 ready') };
-ZORIX_SERVER['ext_89'] = module_89;
-const module_90 = { id:90, name:'ZORIX_Module_90', enabled:true, run:()=>console.log('module 90 ready') };
-ZORIX_SERVER['ext_90'] = module_90;
-const module_91 = { id:91, name:'ZORIX_Module_91', enabled:true, run:()=>console.log('module 91 ready') };
-ZORIX_SERVER['ext_91'] = module_91;
-const module_92 = { id:92, name:'ZORIX_Module_92', enabled:true, run:()=>console.log('module 92 ready') };
-ZORIX_SERVER['ext_92'] = module_92;
-const module_93 = { id:93, name:'ZORIX_Module_93', enabled:true, run:()=>console.log('module 93 ready') };
-ZORIX_SERVER['ext_93'] = module_93;
-const module_94 = { id:94, name:'ZORIX_Module_94', enabled:true, run:()=>console.log('module 94 ready') };
-ZORIX_SERVER['ext_94'] = module_94;
-const module_95 = { id:95, name:'ZORIX_Module_95', enabled:true, run:()=>console.log('module 95 ready') };
-ZORIX_SERVER['ext_95'] = module_95;
-const module_96 = { id:96, name:'ZORIX_Module_96', enabled:true, run:()=>console.log('module 96 ready') };
-ZORIX_SERVER['ext_96'] = module_96;
-const module_97 = { id:97, name:'ZORIX_Module_97', enabled:true, run:()=>console.log('module 97 ready') };
-ZORIX_SERVER['ext_97'] = module_97;
-const module_98 = { id:98, name:'ZORIX_Module_98', enabled:true, run:()=>console.log('module 98 ready') };
-ZORIX_SERVER['ext_98'] = module_98;
-const module_99 = { id:99, name:'ZORIX_Module_99', enabled:true, run:()=>console.log('module 99 ready') };
-ZORIX_SERVER['ext_99'] = module_99;
-const module_100 = { id:100, name:'ZORIX_Module_100', enabled:true, run:()=>console.log('module 100 ready') };
-ZORIX_SERVER['ext_100'] = module_100;
-const module_101 = { id:101, name:'ZORIX_Module_101', enabled:true, run:()=>console.log('module 101 ready') };
-ZORIX_SERVER['ext_101'] = module_101;
-const module_102 = { id:102, name:'ZORIX_Module_102', enabled:true, run:()=>console.log('module 102 ready') };
-ZORIX_SERVER['ext_102'] = module_102;
-const module_103 = { id:103, name:'ZORIX_Module_103', enabled:true, run:()=>console.log('module 103 ready') };
-ZORIX_SERVER['ext_103'] = module_103;
-const module_104 = { id:104, name:'ZORIX_Module_104', enabled:true, run:()=>console.log('module 104 ready') };
-ZORIX_SERVER['ext_104'] = module_104;
-const module_105 = { id:105, name:'ZORIX_Module_105', enabled:true, run:()=>console.log('module 105 ready') };
-ZORIX_SERVER['ext_105'] = module_105;
-const module_106 = { id:106, name:'ZORIX_Module_106', enabled:true, run:()=>console.log('module 106 ready') };
-ZORIX_SERVER['ext_106'] = module_106;
-const module_107 = { id:107, name:'ZORIX_Module_107', enabled:true, run:()=>console.log('module 107 ready') };
-ZORIX_SERVER['ext_107'] = module_107;
-const module_108 = { id:108, name:'ZORIX_Module_108', enabled:true, run:()=>console.log('module 108 ready') };
-ZORIX_SERVER['ext_108'] = module_108;
-const module_109 = { id:109, name:'ZORIX_Module_109', enabled:true, run:()=>console.log('module 109 ready') };
-ZORIX_SERVER['ext_109'] = module_109;
-const module_110 = { id:110, name:'ZORIX_Module_110', enabled:true, run:()=>console.log('module 110 ready') };
-ZORIX_SERVER['ext_110'] = module_110;
-const module_111 = { id:111, name:'ZORIX_Module_111', enabled:true, run:()=>console.log('module 111 ready') };
-ZORIX_SERVER['ext_111'] = module_111;
-const module_112 = { id:112, name:'ZORIX_Module_112', enabled:true, run:()=>console.log('module 112 ready') };
-ZORIX_SERVER['ext_112'] = module_112;
-const module_113 = { id:113, name:'ZORIX_Module_113', enabled:true, run:()=>console.log('module 113 ready') };
-ZORIX_SERVER['ext_113'] = module_113;
-const module_114 = { id:114, name:'ZORIX_Module_114', enabled:true, run:()=>console.log('module 114 ready') };
-ZORIX_SERVER['ext_114'] = module_114;
-const module_115 = { id:115, name:'ZORIX_Module_115', enabled:true, run:()=>console.log('module 115 ready') };
-ZORIX_SERVER['ext_115'] = module_115;
-const module_116 = { id:116, name:'ZORIX_Module_116', enabled:true, run:()=>console.log('module 116 ready') };
-ZORIX_SERVER['ext_116'] = module_116;
-const module_117 = { id:117, name:'ZORIX_Module_117', enabled:true, run:()=>console.log('module 117 ready') };
-ZORIX_SERVER['ext_117'] = module_117;
-const module_118 = { id:118, name:'ZORIX_Module_118', enabled:true, run:()=>console.log('module 118 ready') };
-ZORIX_SERVER['ext_118'] = module_118;
-const module_119 = { id:119, name:'ZORIX_Module_119', enabled:true, run:()=>console.log('module 119 ready') };
-ZORIX_SERVER['ext_119'] = module_119;
-const module_120 = { id:120, name:'ZORIX_Module_120', enabled:true, run:()=>console.log('module 120 ready') };
-ZORIX_SERVER['ext_120'] = module_120;
-const module_121 = { id:121, name:'ZORIX_Module_121', enabled:true, run:()=>console.log('module 121 ready') };
-ZORIX_SERVER['ext_121'] = module_121;
-const module_122 = { id:122, name:'ZORIX_Module_122', enabled:true, run:()=>console.log('module 122 ready') };
-ZORIX_SERVER['ext_122'] = module_122;
-const module_123 = { id:123, name:'ZORIX_Module_123', enabled:true, run:()=>console.log('module 123 ready') };
-ZORIX_SERVER['ext_123'] = module_123;
-const module_124 = { id:124, name:'ZORIX_Module_124', enabled:true, run:()=>console.log('module 124 ready') };
-ZORIX_SERVER['ext_124'] = module_124;
-const module_125 = { id:125, name:'ZORIX_Module_125', enabled:true, run:()=>console.log('module 125 ready') };
-ZORIX_SERVER['ext_125'] = module_125;
-const module_126 = { id:126, name:'ZORIX_Module_126', enabled:true, run:()=>console.log('module 126 ready') };
-ZORIX_SERVER['ext_126'] = module_126;
-const module_127 = { id:127, name:'ZORIX_Module_127', enabled:true, run:()=>console.log('module 127 ready') };
-ZORIX_SERVER['ext_127'] = module_127;
-const module_128 = { id:128, name:'ZORIX_Module_128', enabled:true, run:()=>console.log('module 128 ready') };
-ZORIX_SERVER['ext_128'] = module_128;
-const module_129 = { id:129, name:'ZORIX_Module_129', enabled:true, run:()=>console.log('module 129 ready') };
-ZORIX_SERVER['ext_129'] = module_129;
-const module_130 = { id:130, name:'ZORIX_Module_130', enabled:true, run:()=>console.log('module 130 ready') };
-ZORIX_SERVER['ext_130'] = module_130;
-const module_131 = { id:131, name:'ZORIX_Module_131', enabled:true, run:()=>console.log('module 131 ready') };
-ZORIX_SERVER['ext_131'] = module_131;
-const module_132 = { id:132, name:'ZORIX_Module_132', enabled:true, run:()=>console.log('module 132 ready') };
-ZORIX_SERVER['ext_132'] = module_132;
-const module_133 = { id:133, name:'ZORIX_Module_133', enabled:true, run:()=>console.log('module 133 ready') };
-ZORIX_SERVER['ext_133'] = module_133;
-const module_134 = { id:134, name:'ZORIX_Module_134', enabled:true, run:()=>console.log('module 134 ready') };
-ZORIX_SERVER['ext_134'] = module_134;
-const module_135 = { id:135, name:'ZORIX_Module_135', enabled:true, run:()=>console.log('module 135 ready') };
-ZORIX_SERVER['ext_135'] = module_135;
-const module_136 = { id:136, name:'ZORIX_Module_136', enabled:true, run:()=>console.log('module 136 ready') };
-ZORIX_SERVER['ext_136'] = module_136;
-const module_137 = { id:137, name:'ZORIX_Module_137', enabled:true, run:()=>console.log('module 137 ready') };
-ZORIX_SERVER['ext_137'] = module_137;
-const module_138 = { id:138, name:'ZORIX_Module_138', enabled:true, run:()=>console.log('module 138 ready') };
-ZORIX_SERVER['ext_138'] = module_138;
-const module_139 = { id:139, name:'ZORIX_Module_139', enabled:true, run:()=>console.log('module 139 ready') };
-ZORIX_SERVER['ext_139'] = module_139;
-const module_140 = { id:140, name:'ZORIX_Module_140', enabled:true, run:()=>console.log('module 140 ready') };
-ZORIX_SERVER['ext_140'] = module_140;
-const module_141 = { id:141, name:'ZORIX_Module_141', enabled:true, run:()=>console.log('module 141 ready') };
-ZORIX_SERVER['ext_141'] = module_141;
-const module_142 = { id:142, name:'ZORIX_Module_142', enabled:true, run:()=>console.log('module 142 ready') };
-ZORIX_SERVER['ext_142'] = module_142;
-const module_143 = { id:143, name:'ZORIX_Module_143', enabled:true, run:()=>console.log('module 143 ready') };
-ZORIX_SERVER['ext_143'] = module_143;
-const module_144 = { id:144, name:'ZORIX_Module_144', enabled:true, run:()=>console.log('module 144 ready') };
-ZORIX_SERVER['ext_144'] = module_144;
-const module_145 = { id:145, name:'ZORIX_Module_145', enabled:true, run:()=>console.log('module 145 ready') };
-ZORIX_SERVER['ext_145'] = module_145;
-const module_146 = { id:146, name:'ZORIX_Module_146', enabled:true, run:()=>console.log('module 146 ready') };
-ZORIX_SERVER['ext_146'] = module_146;
-const module_147 = { id:147, name:'ZORIX_Module_147', enabled:true, run:()=>console.log('module 147 ready') };
-ZORIX_SERVER['ext_147'] = module_147;
-const module_148 = { id:148, name:'ZORIX_Module_148', enabled:true, run:()=>console.log('module 148 ready') };
-ZORIX_SERVER['ext_148'] = module_148;
-const module_149 = { id:149, name:'ZORIX_Module_149', enabled:true, run:()=>console.log('module 149 ready') };
-ZORIX_SERVER['ext_149'] = module_149;
-const module_150 = { id:150, name:'ZORIX_Module_150', enabled:true, run:()=>console.log('module 150 ready') };
-ZORIX_SERVER['ext_150'] = module_150;
-const module_151 = { id:151, name:'ZORIX_Module_151', enabled:true, run:()=>console.log('module 151 ready') };
-ZORIX_SERVER['ext_151'] = module_151;
-const module_152 = { id:152, name:'ZORIX_Module_152', enabled:true, run:()=>console.log('module 152 ready') };
-ZORIX_SERVER['ext_152'] = module_152;
-const module_153 = { id:153, name:'ZORIX_Module_153', enabled:true, run:()=>console.log('module 153 ready') };
-ZORIX_SERVER['ext_153'] = module_153;
-const module_154 = { id:154, name:'ZORIX_Module_154', enabled:true, run:()=>console.log('module 154 ready') };
-ZORIX_SERVER['ext_154'] = module_154;
-const module_155 = { id:155, name:'ZORIX_Module_155', enabled:true, run:()=>console.log('module 155 ready') };
-ZORIX_SERVER['ext_155'] = module_155;
-const module_156 = { id:156, name:'ZORIX_Module_156', enabled:true, run:()=>console.log('module 156 ready') };
-ZORIX_SERVER['ext_156'] = module_156;
-const module_157 = { id:157, name:'ZORIX_Module_157', enabled:true, run:()=>console.log('module 157 ready') };
-ZORIX_SERVER['ext_157'] = module_157;
-const module_158 = { id:158, name:'ZORIX_Module_158', enabled:true, run:()=>console.log('module 158 ready') };
-ZORIX_SERVER['ext_158'] = module_158;
-const module_159 = { id:159, name:'ZORIX_Module_159', enabled:true, run:()=>console.log('module 159 ready') };
-ZORIX_SERVER['ext_159'] = module_159;
-const module_160 = { id:160, name:'ZORIX_Module_160', enabled:true, run:()=>console.log('module 160 ready') };
-ZORIX_SERVER['ext_160'] = module_160;
-const module_161 = { id:161, name:'ZORIX_Module_161', enabled:true, run:()=>console.log('module 161 ready') };
-ZORIX_SERVER['ext_161'] = module_161;
-const module_162 = { id:162, name:'ZORIX_Module_162', enabled:true, run:()=>console.log('module 162 ready') };
-ZORIX_SERVER['ext_162'] = module_162;
-const module_163 = { id:163, name:'ZORIX_Module_163', enabled:true, run:()=>console.log('module 163 ready') };
-ZORIX_SERVER['ext_163'] = module_163;
-const module_164 = { id:164, name:'ZORIX_Module_164', enabled:true, run:()=>console.log('module 164 ready') };
-ZORIX_SERVER['ext_164'] = module_164;
-const module_165 = { id:165, name:'ZORIX_Module_165', enabled:true, run:()=>console.log('module 165 ready') };
-ZORIX_SERVER['ext_165'] = module_165;
-const module_166 = { id:166, name:'ZORIX_Module_166', enabled:true, run:()=>console.log('module 166 ready') };
-ZORIX_SERVER['ext_166'] = module_166;
-const module_167 = { id:167, name:'ZORIX_Module_167', enabled:true, run:()=>console.log('module 167 ready') };
-ZORIX_SERVER['ext_167'] = module_167;
-const module_168 = { id:168, name:'ZORIX_Module_168', enabled:true, run:()=>console.log('module 168 ready') };
-ZORIX_SERVER['ext_168'] = module_168;
-const module_169 = { id:169, name:'ZORIX_Module_169', enabled:true, run:()=>console.log('module 169 ready') };
-ZORIX_SERVER['ext_169'] = module_169;
-const module_170 = { id:170, name:'ZORIX_Module_170', enabled:true, run:()=>console.log('module 170 ready') };
-ZORIX_SERVER['ext_170'] = module_170;
-const module_171 = { id:171, name:'ZORIX_Module_171', enabled:true, run:()=>console.log('module 171 ready') };
-ZORIX_SERVER['ext_171'] = module_171;
-const module_172 = { id:172, name:'ZORIX_Module_172', enabled:true, run:()=>console.log('module 172 ready') };
-ZORIX_SERVER['ext_172'] = module_172;
-const module_173 = { id:173, name:'ZORIX_Module_173', enabled:true, run:()=>console.log('module 173 ready') };
-ZORIX_SERVER['ext_173'] = module_173;
-const module_174 = { id:174, name:'ZORIX_Module_174', enabled:true, run:()=>console.log('module 174 ready') };
-ZORIX_SERVER['ext_174'] = module_174;
-const module_175 = { id:175, name:'ZORIX_Module_175', enabled:true, run:()=>console.log('module 175 ready') };
-ZORIX_SERVER['ext_175'] = module_175;
-const module_176 = { id:176, name:'ZORIX_Module_176', enabled:true, run:()=>console.log('module 176 ready') };
-ZORIX_SERVER['ext_176'] = module_176;
-const module_177 = { id:177, name:'ZORIX_Module_177', enabled:true, run:()=>console.log('module 177 ready') };
-ZORIX_SERVER['ext_177'] = module_177;
-const module_178 = { id:178, name:'ZORIX_Module_178', enabled:true, run:()=>console.log('module 178 ready') };
-ZORIX_SERVER['ext_178'] = module_178;
-const module_179 = { id:179, name:'ZORIX_Module_179', enabled:true, run:()=>console.log('module 179 ready') };
-ZORIX_SERVER['ext_179'] = module_179;
-const module_180 = { id:180, name:'ZORIX_Module_180', enabled:true, run:()=>console.log('module 180 ready') };
-ZORIX_SERVER['ext_180'] = module_180;
-const module_181 = { id:181, name:'ZORIX_Module_181', enabled:true, run:()=>console.log('module 181 ready') };
-ZORIX_SERVER['ext_181'] = module_181;
-const module_182 = { id:182, name:'ZORIX_Module_182', enabled:true, run:()=>console.log('module 182 ready') };
-ZORIX_SERVER['ext_182'] = module_182;
-const module_183 = { id:183, name:'ZORIX_Module_183', enabled:true, run:()=>console.log('module 183 ready') };
-ZORIX_SERVER['ext_183'] = module_183;
-const module_184 = { id:184, name:'ZORIX_Module_184', enabled:true, run:()=>console.log('module 184 ready') };
-ZORIX_SERVER['ext_184'] = module_184;
-const module_185 = { id:185, name:'ZORIX_Module_185', enabled:true, run:()=>console.log('module 185 ready') };
-ZORIX_SERVER['ext_185'] = module_185;
-const module_186 = { id:186, name:'ZORIX_Module_186', enabled:true, run:()=>console.log('module 186 ready') };
-ZORIX_SERVER['ext_186'] = module_186;
-const module_187 = { id:187, name:'ZORIX_Module_187', enabled:true, run:()=>console.log('module 187 ready') };
-ZORIX_SERVER['ext_187'] = module_187;
-const module_188 = { id:188, name:'ZORIX_Module_188', enabled:true, run:()=>console.log('module 188 ready') };
-ZORIX_SERVER['ext_188'] = module_188;
-const module_189 = { id:189, name:'ZORIX_Module_189', enabled:true, run:()=>console.log('module 189 ready') };
-ZORIX_SERVER['ext_189'] = module_189;
-const module_190 = { id:190, name:'ZORIX_Module_190', enabled:true, run:()=>console.log('module 190 ready') };
-ZORIX_SERVER['ext_190'] = module_190;
-const module_191 = { id:191, name:'ZORIX_Module_191', enabled:true, run:()=>console.log('module 191 ready') };
-ZORIX_SERVER['ext_191'] = module_191;
-const module_192 = { id:192, name:'ZORIX_Module_192', enabled:true, run:()=>console.log('module 192 ready') };
-ZORIX_SERVER['ext_192'] = module_192;
-const module_193 = { id:193, name:'ZORIX_Module_193', enabled:true, run:()=>console.log('module 193 ready') };
-ZORIX_SERVER['ext_193'] = module_193;
-const module_194 = { id:194, name:'ZORIX_Module_194', enabled:true, run:()=>console.log('module 194 ready') };
-ZORIX_SERVER['ext_194'] = module_194;
-const module_195 = { id:195, name:'ZORIX_Module_195', enabled:true, run:()=>console.log('module 195 ready') };
-ZORIX_SERVER['ext_195'] = module_195;
-const module_196 = { id:196, name:'ZORIX_Module_196', enabled:true, run:()=>console.log('module 196 ready') };
-ZORIX_SERVER['ext_196'] = module_196;
-const module_197 = { id:197, name:'ZORIX_Module_197', enabled:true, run:()=>console.log('module 197 ready') };
-ZORIX_SERVER['ext_197'] = module_197;
-const module_198 = { id:198, name:'ZORIX_Module_198', enabled:true, run:()=>console.log('module 198 ready') };
-ZORIX_SERVER['ext_198'] = module_198;
-const module_199 = { id:199, name:'ZORIX_Module_199', enabled:true, run:()=>console.log('module 199 ready') };
-ZORIX_SERVER['ext_199'] = module_199;
-const module_200 = { id:200, name:'ZORIX_Module_200', enabled:true, run:()=>console.log('module 200 ready') };
-ZORIX_SERVER['ext_200'] = module_200;
-const module_201 = { id:201, name:'ZORIX_Module_201', enabled:true, run:()=>console.log('module 201 ready') };
-ZORIX_SERVER['ext_201'] = module_201;
-const module_202 = { id:202, name:'ZORIX_Module_202', enabled:true, run:()=>console.log('module 202 ready') };
-ZORIX_SERVER['ext_202'] = module_202;
-const module_203 = { id:203, name:'ZORIX_Module_203', enabled:true, run:()=>console.log('module 203 ready') };
-ZORIX_SERVER['ext_203'] = module_203;
-const module_204 = { id:204, name:'ZORIX_Module_204', enabled:true, run:()=>console.log('module 204 ready') };
-ZORIX_SERVER['ext_204'] = module_204;
-const module_205 = { id:205, name:'ZORIX_Module_205', enabled:true, run:()=>console.log('module 205 ready') };
-ZORIX_SERVER['ext_205'] = module_205;
-const module_206 = { id:206, name:'ZORIX_Module_206', enabled:true, run:()=>console.log('module 206 ready') };
-ZORIX_SERVER['ext_206'] = module_206;
-const module_207 = { id:207, name:'ZORIX_Module_207', enabled:true, run:()=>console.log('module 207 ready') };
-ZORIX_SERVER['ext_207'] = module_207;
-const module_208 = { id:208, name:'ZORIX_Module_208', enabled:true, run:()=>console.log('module 208 ready') };
-ZORIX_SERVER['ext_208'] = module_208;
-const module_209 = { id:209, name:'ZORIX_Module_209', enabled:true, run:()=>console.log('module 209 ready') };
-ZORIX_SERVER['ext_209'] = module_209;
-const module_210 = { id:210, name:'ZORIX_Module_210', enabled:true, run:()=>console.log('module 210 ready') };
-ZORIX_SERVER['ext_210'] = module_210;
-const module_211 = { id:211, name:'ZORIX_Module_211', enabled:true, run:()=>console.log('module 211 ready') };
-ZORIX_SERVER['ext_211'] = module_211;
-const module_212 = { id:212, name:'ZORIX_Module_212', enabled:true, run:()=>console.log('module 212 ready') };
-ZORIX_SERVER['ext_212'] = module_212;
-const module_213 = { id:213, name:'ZORIX_Module_213', enabled:true, run:()=>console.log('module 213 ready') };
-ZORIX_SERVER['ext_213'] = module_213;
-const module_214 = { id:214, name:'ZORIX_Module_214', enabled:true, run:()=>console.log('module 214 ready') };
-ZORIX_SERVER['ext_214'] = module_214;
-const module_215 = { id:215, name:'ZORIX_Module_215', enabled:true, run:()=>console.log('module 215 ready') };
-ZORIX_SERVER['ext_215'] = module_215;
-const module_216 = { id:216, name:'ZORIX_Module_216', enabled:true, run:()=>console.log('module 216 ready') };
-ZORIX_SERVER['ext_216'] = module_216;
-const module_217 = { id:217, name:'ZORIX_Module_217', enabled:true, run:()=>console.log('module 217 ready') };
-ZORIX_SERVER['ext_217'] = module_217;
-const module_218 = { id:218, name:'ZORIX_Module_218', enabled:true, run:()=>console.log('module 218 ready') };
-ZORIX_SERVER['ext_218'] = module_218;
-const module_219 = { id:219, name:'ZORIX_Module_219', enabled:true, run:()=>console.log('module 219 ready') };
-ZORIX_SERVER['ext_219'] = module_219;
-const module_220 = { id:220, name:'ZORIX_Module_220', enabled:true, run:()=>console.log('module 220 ready') };
-ZORIX_SERVER['ext_220'] = module_220;
-const module_221 = { id:221, name:'ZORIX_Module_221', enabled:true, run:()=>console.log('module 221 ready') };
-ZORIX_SERVER['ext_221'] = module_221;
-const module_222 = { id:222, name:'ZORIX_Module_222', enabled:true, run:()=>console.log('module 222 ready') };
-ZORIX_SERVER['ext_222'] = module_222;
-const module_223 = { id:223, name:'ZORIX_Module_223', enabled:true, run:()=>console.log('module 223 ready') };
-ZORIX_SERVER['ext_223'] = module_223;
-const module_224 = { id:224, name:'ZORIX_Module_224', enabled:true, run:()=>console.log('module 224 ready') };
-ZORIX_SERVER['ext_224'] = module_224;
-const module_225 = { id:225, name:'ZORIX_Module_225', enabled:true, run:()=>console.log('module 225 ready') };
-ZORIX_SERVER['ext_225'] = module_225;
-const module_226 = { id:226, name:'ZORIX_Module_226', enabled:true, run:()=>console.log('module 226 ready') };
-ZORIX_SERVER['ext_226'] = module_226;
-const module_227 = { id:227, name:'ZORIX_Module_227', enabled:true, run:()=>console.log('module 227 ready') };
-ZORIX_SERVER['ext_227'] = module_227;
-const module_228 = { id:228, name:'ZORIX_Module_228', enabled:true, run:()=>console.log('module 228 ready') };
-ZORIX_SERVER['ext_228'] = module_228;
-const module_229 = { id:229, name:'ZORIX_Module_229', enabled:true, run:()=>console.log('module 229 ready') };
-ZORIX_SERVER['ext_229'] = module_229;
-const module_230 = { id:230, name:'ZORIX_Module_230', enabled:true, run:()=>console.log('module 230 ready') };
-ZORIX_SERVER['ext_230'] = module_230;
-const module_231 = { id:231, name:'ZORIX_Module_231', enabled:true, run:()=>console.log('module 231 ready') };
-ZORIX_SERVER['ext_231'] = module_231;
-const module_232 = { id:232, name:'ZORIX_Module_232', enabled:true, run:()=>console.log('module 232 ready') };
-ZORIX_SERVER['ext_232'] = module_232;
-const module_233 = { id:233, name:'ZORIX_Module_233', enabled:true, run:()=>console.log('module 233 ready') };
-ZORIX_SERVER['ext_233'] = module_233;
-const module_234 = { id:234, name:'ZORIX_Module_234', enabled:true, run:()=>console.log('module 234 ready') };
-ZORIX_SERVER['ext_234'] = module_234;
-const module_235 = { id:235, name:'ZORIX_Module_235', enabled:true, run:()=>console.log('module 235 ready') };
-ZORIX_SERVER['ext_235'] = module_235;
-const module_236 = { id:236, name:'ZORIX_Module_236', enabled:true, run:()=>console.log('module 236 ready') };
-ZORIX_SERVER['ext_236'] = module_236;
-const module_237 = { id:237, name:'ZORIX_Module_237', enabled:true, run:()=>console.log('module 237 ready') };
-ZORIX_SERVER['ext_237'] = module_237;
-const module_238 = { id:238, name:'ZORIX_Module_238', enabled:true, run:()=>console.log('module 238 ready') };
-ZORIX_SERVER['ext_238'] = module_238;
-const module_239 = { id:239, name:'ZORIX_Module_239', enabled:true, run:()=>console.log('module 239 ready') };
-ZORIX_SERVER['ext_239'] = module_239;
-const module_240 = { id:240, name:'ZORIX_Module_240', enabled:true, run:()=>console.log('module 240 ready') };
-ZORIX_SERVER['ext_240'] = module_240;
-const module_241 = { id:241, name:'ZORIX_Module_241', enabled:true, run:()=>console.log('module 241 ready') };
-ZORIX_SERVER['ext_241'] = module_241;
-const module_242 = { id:242, name:'ZORIX_Module_242', enabled:true, run:()=>console.log('module 242 ready') };
-ZORIX_SERVER['ext_242'] = module_242;
-const module_243 = { id:243, name:'ZORIX_Module_243', enabled:true, run:()=>console.log('module 243 ready') };
-ZORIX_SERVER['ext_243'] = module_243;
-const module_244 = { id:244, name:'ZORIX_Module_244', enabled:true, run:()=>console.log('module 244 ready') };
-ZORIX_SERVER['ext_244'] = module_244;
-const module_245 = { id:245, name:'ZORIX_Module_245', enabled:true, run:()=>console.log('module 245 ready') };
-ZORIX_SERVER['ext_245'] = module_245;
-const module_246 = { id:246, name:'ZORIX_Module_246', enabled:true, run:()=>console.log('module 246 ready') };
-ZORIX_SERVER['ext_246'] = module_246;
-const module_247 = { id:247, name:'ZORIX_Module_247', enabled:true, run:()=>console.log('module 247 ready') };
-ZORIX_SERVER['ext_247'] = module_247;
-const module_248 = { id:248, name:'ZORIX_Module_248', enabled:true, run:()=>console.log('module 248 ready') };
-ZORIX_SERVER['ext_248'] = module_248;
-const module_249 = { id:249, name:'ZORIX_Module_249', enabled:true, run:()=>console.log('module 249 ready') };
-ZORIX_SERVER['ext_249'] = module_249;
-const module_250 = { id:250, name:'ZORIX_Module_250', enabled:true, run:()=>console.log('module 250 ready') };
-ZORIX_SERVER['ext_250'] = module_250;
-const module_251 = { id:251, name:'ZORIX_Module_251', enabled:true, run:()=>console.log('module 251 ready') };
-ZORIX_SERVER['ext_251'] = module_251;
-const module_252 = { id:252, name:'ZORIX_Module_252', enabled:true, run:()=>console.log('module 252 ready') };
-ZORIX_SERVER['ext_252'] = module_252;
-const module_253 = { id:253, name:'ZORIX_Module_253', enabled:true, run:()=>console.log('module 253 ready') };
-ZORIX_SERVER['ext_253'] = module_253;
-const module_254 = { id:254, name:'ZORIX_Module_254', enabled:true, run:()=>console.log('module 254 ready') };
-ZORIX_SERVER['ext_254'] = module_254;
-const module_255 = { id:255, name:'ZORIX_Module_255', enabled:true, run:()=>console.log('module 255 ready') };
-ZORIX_SERVER['ext_255'] = module_255;
-const module_256 = { id:256, name:'ZORIX_Module_256', enabled:true, run:()=>console.log('module 256 ready') };
-ZORIX_SERVER['ext_256'] = module_256;
-const module_257 = { id:257, name:'ZORIX_Module_257', enabled:true, run:()=>console.log('module 257 ready') };
-ZORIX_SERVER['ext_257'] = module_257;
-const module_258 = { id:258, name:'ZORIX_Module_258', enabled:true, run:()=>console.log('module 258 ready') };
-ZORIX_SERVER['ext_258'] = module_258;
-const module_259 = { id:259, name:'ZORIX_Module_259', enabled:true, run:()=>console.log('module 259 ready') };
-ZORIX_SERVER['ext_259'] = module_259;
-const module_260 = { id:260, name:'ZORIX_Module_260', enabled:true, run:()=>console.log('module 260 ready') };
-ZORIX_SERVER['ext_260'] = module_260;
-const module_261 = { id:261, name:'ZORIX_Module_261', enabled:true, run:()=>console.log('module 261 ready') };
-ZORIX_SERVER['ext_261'] = module_261;
-const module_262 = { id:262, name:'ZORIX_Module_262', enabled:true, run:()=>console.log('module 262 ready') };
-ZORIX_SERVER['ext_262'] = module_262;
-const module_263 = { id:263, name:'ZORIX_Module_263', enabled:true, run:()=>console.log('module 263 ready') };
-ZORIX_SERVER['ext_263'] = module_263;
-const module_264 = { id:264, name:'ZORIX_Module_264', enabled:true, run:()=>console.log('module 264 ready') };
-ZORIX_SERVER['ext_264'] = module_264;
-const module_265 = { id:265, name:'ZORIX_Module_265', enabled:true, run:()=>console.log('module 265 ready') };
-ZORIX_SERVER['ext_265'] = module_265;
-const module_266 = { id:266, name:'ZORIX_Module_266', enabled:true, run:()=>console.log('module 266 ready') };
-ZORIX_SERVER['ext_266'] = module_266;
-const module_267 = { id:267, name:'ZORIX_Module_267', enabled:true, run:()=>console.log('module 267 ready') };
-ZORIX_SERVER['ext_267'] = module_267;
-const module_268 = { id:268, name:'ZORIX_Module_268', enabled:true, run:()=>console.log('module 268 ready') };
-ZORIX_SERVER['ext_268'] = module_268;
-const module_269 = { id:269, name:'ZORIX_Module_269', enabled:true, run:()=>console.log('module 269 ready') };
-ZORIX_SERVER['ext_269'] = module_269;
-const module_270 = { id:270, name:'ZORIX_Module_270', enabled:true, run:()=>console.log('module 270 ready') };
-ZORIX_SERVER['ext_270'] = module_270;
-const module_271 = { id:271, name:'ZORIX_Module_271', enabled:true, run:()=>console.log('module 271 ready') };
-ZORIX_SERVER['ext_271'] = module_271;
-const module_272 = { id:272, name:'ZORIX_Module_272', enabled:true, run:()=>console.log('module 272 ready') };
-ZORIX_SERVER['ext_272'] = module_272;
-const module_273 = { id:273, name:'ZORIX_Module_273', enabled:true, run:()=>console.log('module 273 ready') };
-ZORIX_SERVER['ext_273'] = module_273;
-const module_274 = { id:274, name:'ZORIX_Module_274', enabled:true, run:()=>console.log('module 274 ready') };
-ZORIX_SERVER['ext_274'] = module_274;
-const module_275 = { id:275, name:'ZORIX_Module_275', enabled:true, run:()=>console.log('module 275 ready') };
-ZORIX_SERVER['ext_275'] = module_275;
-const module_276 = { id:276, name:'ZORIX_Module_276', enabled:true, run:()=>console.log('module 276 ready') };
-ZORIX_SERVER['ext_276'] = module_276;
-const module_277 = { id:277, name:'ZORIX_Module_277', enabled:true, run:()=>console.log('module 277 ready') };
-ZORIX_SERVER['ext_277'] = module_277;
-const module_278 = { id:278, name:'ZORIX_Module_278', enabled:true, run:()=>console.log('module 278 ready') };
-ZORIX_SERVER['ext_278'] = module_278;
-const module_279 = { id:279, name:'ZORIX_Module_279', enabled:true, run:()=>console.log('module 279 ready') };
-ZORIX_SERVER['ext_279'] = module_279;
-const module_280 = { id:280, name:'ZORIX_Module_280', enabled:true, run:()=>console.log('module 280 ready') };
-ZORIX_SERVER['ext_280'] = module_280;
-const module_281 = { id:281, name:'ZORIX_Module_281', enabled:true, run:()=>console.log('module 281 ready') };
-ZORIX_SERVER['ext_281'] = module_281;
-const module_282 = { id:282, name:'ZORIX_Module_282', enabled:true, run:()=>console.log('module 282 ready') };
-ZORIX_SERVER['ext_282'] = module_282;
-const module_283 = { id:283, name:'ZORIX_Module_283', enabled:true, run:()=>console.log('module 283 ready') };
-ZORIX_SERVER['ext_283'] = module_283;
-const module_284 = { id:284, name:'ZORIX_Module_284', enabled:true, run:()=>console.log('module 284 ready') };
-ZORIX_SERVER['ext_284'] = module_284;
-const module_285 = { id:285, name:'ZORIX_Module_285', enabled:true, run:()=>console.log('module 285 ready') };
-ZORIX_SERVER['ext_285'] = module_285;
-const module_286 = { id:286, name:'ZORIX_Module_286', enabled:true, run:()=>console.log('module 286 ready') };
-ZORIX_SERVER['ext_286'] = module_286;
-const module_287 = { id:287, name:'ZORIX_Module_287', enabled:true, run:()=>console.log('module 287 ready') };
-ZORIX_SERVER['ext_287'] = module_287;
-const module_288 = { id:288, name:'ZORIX_Module_288', enabled:true, run:()=>console.log('module 288 ready') };
-ZORIX_SERVER['ext_288'] = module_288;
-const module_289 = { id:289, name:'ZORIX_Module_289', enabled:true, run:()=>console.log('module 289 ready') };
-ZORIX_SERVER['ext_289'] = module_289;
-const module_290 = { id:290, name:'ZORIX_Module_290', enabled:true, run:()=>console.log('module 290 ready') };
-ZORIX_SERVER['ext_290'] = module_290;
-const module_291 = { id:291, name:'ZORIX_Module_291', enabled:true, run:()=>console.log('module 291 ready') };
-ZORIX_SERVER['ext_291'] = module_291;
-const module_292 = { id:292, name:'ZORIX_Module_292', enabled:true, run:()=>console.log('module 292 ready') };
-ZORIX_SERVER['ext_292'] = module_292;
-const module_293 = { id:293, name:'ZORIX_Module_293', enabled:true, run:()=>console.log('module 293 ready') };
-ZORIX_SERVER['ext_293'] = module_293;
-const module_294 = { id:294, name:'ZORIX_Module_294', enabled:true, run:()=>console.log('module 294 ready') };
-ZORIX_SERVER['ext_294'] = module_294;
-const module_295 = { id:295, name:'ZORIX_Module_295', enabled:true, run:()=>console.log('module 295 ready') };
-ZORIX_SERVER['ext_295'] = module_295;
-const module_296 = { id:296, name:'ZORIX_Module_296', enabled:true, run:()=>console.log('module 296 ready') };
-ZORIX_SERVER['ext_296'] = module_296;
-const module_297 = { id:297, name:'ZORIX_Module_297', enabled:true, run:()=>console.log('module 297 ready') };
-ZORIX_SERVER['ext_297'] = module_297;
-const module_298 = { id:298, name:'ZORIX_Module_298', enabled:true, run:()=>console.log('module 298 ready') };
-ZORIX_SERVER['ext_298'] = module_298;
-const module_299 = { id:299, name:'ZORIX_Module_299', enabled:true, run:()=>console.log('module 299 ready') };
-ZORIX_SERVER['ext_299'] = module_299;
-const module_300 = { id:300, name:'ZORIX_Module_300', enabled:true, run:()=>console.log('module 300 ready') };
-ZORIX_SERVER['ext_300'] = module_300;
-http://console.log('ZORIX 1200 lines loaded - SERVER + APP + STRUCTURE in one file');
-</script>
+<body class="bg-gray-950 text-gray-100 h-screen flex">
+
+    <!-- Sidebar -->
+    <div class="w-80 bg-gray-900 border-r border-gray-700 flex flex-col">
+        <div class="p-4 border-b border-gray-700">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
+                <i class="fas fa-robot text-blue-500"></i> OR Chat
+            </h1>
+        </div>
+
+        <div class="p-4">
+            <button onclick="newChat()" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-2xl font-medium flex items-center justify-center gap-2">
+                <i class="fas fa-plus"></i> New Chat
+            </button>
+        </div>
+
+        <div class="px-4 text-xs uppercase tracking-widest text-gray-500 mb-2">Conversations</div>
+        <div id="chatHistory" class="flex-1 overflow-auto px-2 space-y-1"></div>
+
+        <div class="p-4 border-t border-gray-700 space-y-4">
+            <div>
+                <label class="text-sm block mb-1">OpenRouter API Key</label>
+                <input id="apiKey" type="password" class="w-full bg-gray-800 border border-gray-600 rounded-xl px-4 py-2 text-sm" placeholder="sk-or-...">
+                <button onclick="saveApiKey()" class="mt-2 w-full bg-gray-700 hover:bg-gray-600 py-2 rounded-xl text-sm">Save Key</button>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <label class="text-sm">Model</label>
+                    <button onclick="fetchModels()" class="text-blue-400 hover:text-blue-300 text-xs">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+                <select id="modelSelect" onchange="handleModelChange()" 
+                        class="w-full bg-gray-800 border border-gray-600 rounded-xl px-4 py-2 text-sm">
+                </select>
+            </div>
+
+            <div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span>Tools</span>
+                    <button onclick="document.getElementById('toolFileInput').click()" 
+                            class="text-violet-400 hover:text-violet-300 text-xs">+ Load MCP</button>
+                </div>
+                <input type="file" id="toolFileInput" multiple accept=".json" class="hidden" onchange="handleToolFiles(event)">
+                <div id="toolsList" class="text-xs bg-gray-800 rounded-xl p-3 max-h-40 overflow-auto"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Chat -->
+    <div class="flex-1 flex flex-col">
+        <div class="h-14 bg-gray-900 border-b border-gray-700 flex items-center px-6 justify-between">
+            <div id="currentModelHeader" class="font-medium text-gray-200"></div>
+            <div class="flex gap-4 text-gray-400">
+                <button onclick="exportChat()" title="Export Chat"><i class="fas fa-download"></i></button>
+                <button onclick="deleteCurrentChat()" title="Delete Chat"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+
+        <div id="messages" class="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-950"></div>
+
+        <div class="p-6 bg-gray-900 border-t border-gray-700">
+            <div class="flex gap-3">
+                <textarea id="userInput" rows="3" 
+                    class="flex-1 bg-gray-800 border border-gray-600 rounded-3xl px-5 py-4 focus:outline-none focus:border-blue-500 resize-y"
+                    placeholder="Send a message..."></textarea>
+                <button onclick="sendMessage()" 
+                        class="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-3xl flex items-center justify-center self-end">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="hidden fixed bottom-6 right-6 bg-gray-800 border border-gray-600 rounded-2xl px-6 py-3 shadow-2xl"></div>
+
+    <script>
+        let API_KEY = localStorage.getItem('or_api_key') || '';
+        let conversations = JSON.parse(localStorage.getItem('or_conversations') || '[]');
+        let currentChatId = null;
+        let AVAILABLE_MODELS = [];
+        let AVAILABLE_TOOLS = JSON.parse(localStorage.getItem('or_tools') || '[]');
+
+        async function init() {
+            document.getElementById('apiKey').value = API_KEY;
+            renderChatHistory();
+            if (conversations.length === 0) newChat();
+            else loadChat(conversations[0].id);
+            await fetchModels();
+        }
+
+        function saveApiKey() {
+            API_KEY = document.getElementById('apiKey').value.trim();
+            localStorage.setItem('or_api_key', API_KEY);
+            showToast('API Key saved');
+        }
+
+        async function fetchModels() {
+            if (!API_KEY) return showToast('Enter API Key first');
+            try {
+                const res = await fetch('https://openrouter.ai/api/v1/models', {
+                    headers: { Authorization: `Bearer ${API_KEY}` }
+                });
+                const data = await res.json();
+                AVAILABLE_MODELS = data.data || [];
+                
+                const select = document.getElementById('modelSelect');
+                select.innerHTML = AVAILABLE_MODELS
+                    .sort((a,b) => a.name.localeCompare(b.name))
+                    .map(m => `<option value="${m.id}">${m.name} (${Math.round((m.context_length||0)/1000)}k)</option>`).join('');
+                
+                if (currentChatId) {
+                    const chat = conversations.find(c => c.id === currentChatId);
+                    if (chat?.model) select.value = chat.model;
+                }
+                updateModelHeader();
+            } catch (e) {
+                showToast('Failed to load models');
+            }
+        }
+
+        function handleModelChange() {
+            updateModelHeader();
+            if (currentChatId) {
+                const chat = conversations.find(c => c.id === currentChatId);
+                if (chat) chat.model = document.getElementById('modelSelect').value;
+                saveConversations();
+            }
+        }
+
+        function updateModelHeader() {
+            const modelId = document.getElementById('modelSelect').value;
+            const model = AVAILABLE_MODELS.find(m => m.id === modelId);
+            document.getElementById('currentModelHeader').textContent = model ? model.name : modelId || 'No model selected';
+        }
+
+        function newChat() {
+            const chat = {
+                id: 'chat_' + Date.now(),
+                title: 'New Chat',
+                model: document.getElementById('modelSelect').value || 'openai/gpt-4o-mini',
+                messages: [],
+                createdAt: new Date().toISOString()
+            };
+            conversations.unshift(chat);
+            saveConversations();
+            loadChat(chat.id);
+        }
+
+        function loadChat(id) {
+            currentChatId = id;
+            const chat = conversations.find(c => c.id === id);
+            if (!chat) return;
+            document.getElementById('modelSelect').value = chat.model || '';
+            updateModelHeader();
+            renderMessages(chat.messages);
+            renderChatHistory();
+        }
+
+        function renderChatHistory() {
+            const container = document.getElementById('chatHistory');
+            container.innerHTML = conversations.map(chat => `
+                <div onclick="loadChat('${chat.id}')" 
+                     class="px-4 py-3 rounded-2xl cursor-pointer hover:bg-gray-800 ${chat.id === currentChatId ? 'bg-gray-800' : ''}">
+                    <div class="line-clamp-1">${chat.title}</div>
+                    <div class="text-xs text-gray-500">${new Date(chat.createdAt).toLocaleDateString()}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderMessages(messages) {
+            const container = document.getElementById('messages');
+            container.innerHTML = messages.map(msg => `
+                <div class="flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}">
+                    <div class="${msg.role === 'user' ? 'user-msg text-white' : 'assistant-msg'} max-w-[75%] px-6 py-4 prose prose-invert">
+                        ${msg.role === 'user' ? msg.content : marked.parse(msg.content || '')}
+                    </div>
+                </div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            if (!text || !currentChatId) return;
+
+            const chat = conversations.find(c => c.id === currentChatId);
+            chat.messages.push({ role: "user", content: text });
+            
+            if (chat.messages.length === 2) {
+                chat.title = text.slice(0, 40) + (text.length > 40 ? '...' : '');
+            }
+
+            input.value = '';
+            renderMessages(chat.messages);
+            renderChatHistory();
+
+            const model = document.getElementById('modelSelect').value;
+
+            // Create assistant message container for streaming
+            const messagesDiv = document.getElementById('messages');
+            const assistantWrapper = document.createElement('div');
+            assistantWrapper.className = 'flex justify-start';
+            assistantWrapper.innerHTML = `
+                <div class="assistant-msg max-w-[75%] px-6 py-4 prose prose-invert">
+                    <span class="animate-pulse">Thinking...</span>
+                </div>
+            `;
+            messagesDiv.appendChild(assistantWrapper);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            let fullResponse = '';
+
+            try {
+                const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json',
+                        'HTTP-Referer': window.location.href,
+                        'X-Title': 'OR Chatbot'
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        messages: chat.messages,
+                        tools: AVAILABLE_TOOLS.length > 0 ? AVAILABLE_TOOLS : undefined,
+                        stream: true
+                    })
+                });
+
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ') && !line.includes('[DONE]')) {
+                            try {
+                                const json = JSON.parse(line.slice(6));
+                                const delta = json.choices[0]?.delta?.content || '';
+                                if (delta) {
+                                    fullResponse += delta;
+                                    assistantWrapper.querySelector('.assistant-msg').innerHTML = marked.parse(fullResponse);
+                                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                                }
+                            } catch (e) {}
+                        }
+                    }
+                }
+
+                // Save final message
+                chat.messages.push({ role: "assistant", content: fullResponse });
+                saveConversations();
+
+            } catch (err) {
+                console.error(err);
+                showToast('Request failed');
+            }
+        }
+
+        function saveConversations() {
+            localStorage.setItem('or_conversations', JSON.stringify(conversations));
+        }
+
+        function deleteCurrentChat() {
+            if (!currentChatId || !confirm('Delete this conversation?')) return;
+            conversations = conversations.filter(c => c.id !== currentChatId);
+            saveConversations();
+            currentChatId = null;
+            if (conversations.length) loadChat(conversations[0].id);
+            else newChat();
+        }
+
+        function exportChat() {
+            const chat = conversations.find(c => c.id === currentChatId);
+            if (!chat) return;
+            const dataStr = JSON.stringify(chat, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+            const link = document.createElement('a');
+            link.href = dataUri;
+            link.download = `${chat.title.replace(/[^a-z0-9]/gi, '_')}.json`;
+            link.click();
+        }
+
+        function handleToolFiles(e) {
+            const files = Array.from(e.target.files);
+            let added = 0;
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        let tools = JSON.parse(ev.target.result);
+                        if (!Array.isArray(tools)) tools = [tools];
+                        tools.forEach(tool => {
+                            if (tool.type === "function" && !AVAILABLE_TOOLS.some(t => t.function.name === tool.function.name)) {
+                                AVAILABLE_TOOLS.push(tool);
+                                added++;
+                            }
+                        });
+                        localStorage.setItem('or_tools', JSON.stringify(AVAILABLE_TOOLS));
+                        renderTools();
+                        showToast(`Added ${added} tool(s)`);
+                    } catch (err) {
+                        showToast('Invalid tool file');
+                    }
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        function renderTools() {
+            document.getElementById('toolsList').innerHTML = AVAILABLE_TOOLS.map(t => 
+                `<div class="bg-gray-700 px-3 py-1.5 rounded-lg">${t.function.name}</div>`
+            ).join('');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+        }
+
+        // Enter key support
+        document.getElementById('userInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        window.onload = init;
+    </script>
 </body>
-</html>
+  </html>
