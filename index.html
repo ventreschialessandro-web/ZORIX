@@ -128,3 +128,160 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>SUPER APP AI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #0a0a0a;
+      color: white;
+      font-family: system-ui, sans-serif;
+    }
+    .app {
+      max-width: 500px;
+      min-height: 100vh;
+      margin: auto;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      padding: 18px;
+      background: #000;
+      border-bottom: 1px solid #292929;
+    }
+    header h1 { margin: 0; font-size: 20px; }
+    #status { color: #aaa; font-size: 12px; }
+    #chat {
+      flex: 1;
+      min-height: 60vh;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+    .msg {
+      max-width: 90%;
+      padding: 12px 15px;
+      border-radius: 16px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .ai {
+      align-self: flex-start;
+      background: #222;
+      border: 1px solid #333;
+    }
+    .user {
+      align-self: flex-end;
+      background: #fff;
+      color: #111;
+    }
+    .composer {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      background: #000;
+      border-top: 1px solid #292929;
+    }
+    #message {
+      flex: 1;
+      min-width: 0;
+      padding: 14px;
+      border-radius: 25px;
+      border: 1px solid #333;
+      background: #1a1a1a;
+      color: white;
+      font-size: 16px;
+    }
+    button {
+      min-width: 48px;
+      border: 0;
+      border-radius: 25px;
+      background: white;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .5; }
+    .hint {
+      padding: 0 15px 10px;
+      color: #999;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>⚡ SUPER APP AI</h1>
+      <div id="status">جاهز — نسخة تجريبية</div>
+    </header>
+
+    <section id="chat" aria-live="polite">
+      <div class="msg ai">
+        أهلًا بيك! 👋
+        أنا واجهة مساعدك الذكي الجديدة.
+        اكتب رسالة للتجربة. توصيل Groq هيتم بعد إعداد الخادم الآمن.
+      </div>
+    </section>
+
+    <div class="hint">
+      الإصدار الحالي: واجهة المحادثة فقط.
+    </div>
+
+    <form class="composer" id="form">
+      <input id="message" placeholder="اكتب رسالتك..." autocomplete="off" required>
+      <button id="send" type="submit" aria-label="إرسال">↑</button>
+    </form>
+  </main>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const form = document.getElementById('form');
+    const input = document.getElementById('message');
+    const send = document.getElementById('send');
+    const status = document.getElementById('status');
+
+    function addMessage(text, role) {
+      const bubble = document.createElement('div');
+      bubble.className = 'msg ' + role;
+      bubble.textContent = text;
+      chat.appendChild(bubble);
+      chat.scrollTop = chat.scrollHeight;
+      return bubble;
+    }
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage(text, 'user');
+      input.value = '';
+
+      addMessage(
+        'رسالتك وصلت للواجهة بنجاح ✅\nالخطوة القادمة: توصيلها بخادم Groq الآمن.',
+        'ai'
+      );
+
+      status.textContent = 'الواجهة تعمل';
+    });
+  </script>
+</body>
+</html>
