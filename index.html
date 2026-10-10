@@ -1,559 +1,365 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super App - تطبيق شامل</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chat</title>
+  <style>
+    :root {
+      --bg1: #0f172a;
+      --bg2: #1e293b;
+      --panel: #111827;
+      --card: #1f2937;
+      --primary: #8b5cf6;
+      --primary2: #3b82f6;
+      --user: #2563eb;
+      --bot: #374151;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --shadow: rgba(0,0,0,0.3);
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+    }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
+    .app {
+      width: 100%;
+      max-width: 900px;
+      height: 90vh;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      box-shadow: 0 25px 80px var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
 
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
 
-        .nav-tabs {
-            display: flex;
-            background: #f5f5f5;
-            border-bottom: 2px solid #667eea;
-            flex-wrap: wrap;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-        .tab-btn {
-            flex: 1;
-            padding: 15px 20px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            color: #666;
-            transition: all 0.3s;
-            min-width: 120px;
-        }
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      box-shadow: inset 0 0 18px rgba(255,255,255,0.15);
+    }
 
-        .tab-btn.active {
-            background: white;
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
-        }
+    .brand h1 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
 
-        .tab-btn:hover {
-            background: #efefef;
-        }
+    .status {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.08);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
 
-        .content {
-            padding: 30px;
-            min-height: 400px;
-        }
+    .messages {
+      flex: 1;
+      padding: 18px 18px 10px;
+      overflow-y: auto;
+      background:
+        radial-gradient(circle at top, rgba(139,92,246,0.12), transparent 30%),
+        rgba(17, 24, 39, 0.75);
+    }
 
-        .tab-content {
-            display: none;
-        }
+    .message {
+      display: flex;
+      margin-bottom: 16px;
+      animation: fadeIn 0.25s ease;
+    }
 
-        .tab-content.active {
-            display: block;
-            animation: slideIn 0.3s ease-in;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .message.user {
+      justify-content: flex-end;
+    }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+    .bubble {
+      max-width: 75%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      line-height: 1.6;
+      font-size: 0.98rem;
+      word-break: break-word;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.14);
+    }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
+    .message.user .bubble {
+      background: linear-gradient(135deg, var(--user), #1d4ed8);
+      border-bottom-left-radius: 8px;
+    }
 
-        .input-group input,
-        .input-group textarea,
-        .input-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
+    .message.bot .bubble {
+      background: var(--bot);
+      border-bottom-right-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
 
-        .input-group input:focus,
-        .input-group textarea:focus,
-        .input-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
-        }
+    .input-area {
+      display: flex;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.92);
+      padding: 16px 18px 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
 
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-right: 10px;
-        }
+    .input-area input {
+      flex: 1;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
+    .input-area input:focus {
+      border-color: rgba(139,92,246,0.9);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.18);
+    }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
+    .input-area button {
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: white;
+      font-weight: 700;
+      padding: 0 22px;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
 
-        .result-box {
-            background: #f0f0f0;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid #667eea;
-        }
+    .input-area button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
 
-        .weather-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            text-align: center;
-        }
+    .input-area button:active {
+      transform: translateY(0);
+    }
 
-        .todo-list {
-            list-style: none;
-        }
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 18px 10px;
+      background: rgba(17, 24, 39, 0.8);
+    }
 
-        .todo-item {
-            background: #f5f5f5;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid #667eea;
-        }
+    .chip {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
 
-        .todo-item.completed {
-            opacity: 0.6;
-            text-decoration: line-through;
-        }
+    .chip:hover {
+      background: rgba(255,255,255,0.1);
+    }
 
-        .delete-btn {
-            background: #f5576c;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
+    @media (max-width: 700px) {
+      .app {
+        height: 100vh;
+        border-radius: 0;
+      }
 
-        .delete-btn:hover {
-            background: #d63447;
-        }
+      .bubble {
+        max-width: 88%;
+      }
 
-        .complete-btn {
-            background: #26d07c;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            margin-right: 5px;
-        }
+      .header {
+        padding: 14px 16px;
+      }
 
-        .complete-btn:hover {
-            background: #1fa563;
-        }
+      .input-area {
+        padding: 12px 14px 14px;
+      }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .card {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-        }
-
-        .card h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .stats {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-            margin: 20px 0;
-        }
-
-        @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .tab-btn {
-                font-size: 0.9em;
-                min-width: 80px;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-        }
-    </style>
+      .input-area button {
+        min-width: 72px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>⭐ Super App</h1>
-            <p>تطبيق شامل للعديد من الخدمات</p>
-        </div>
-
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('calculator')">🧮 حاسبة</button>
-            <button class="tab-btn" onclick="switchTab('todo')">📝 مهام</button>
-            <button class="tab-btn" onclick="switchTab('weather')">🌤️ الطقس</button>
-            <button class="tab-btn" onclick="switchTab('converter')">🔄 تحويل</button>
-            <button class="tab-btn" onclick="switchTab('notes')">📄 ملاحظات</button>
-        </div>
-
-        <div class="content">
-            <!-- Calculator Tab -->
-            <div id="calculator" class="tab-content active">
-                <h2>🧮 حاسبة بسيطة</h2>
-                <div class="input-group">
-                    <label>الرقم الأول</label>
-                    <input type="number" id="calcNum1" placeholder="أدخل الرقم الأول">
-                </div>
-                <div class="input-group">
-                    <label>الرقم الثاني</label>
-                    <input type="number" id="calcNum2" placeholder="أدخل الرقم الثاني">
-                </div>
-                <button class="btn" onclick="calculate('add')">➕ جمع</button>
-                <button class="btn" onclick="calculate('sub')">➖ طرح</button>
-                <button class="btn" onclick="calculate('mul')">✖️ ضرب</button>
-                <button class="btn" onclick="calculate('div')">➗ قسمة</button>
-                <div class="result-box">
-                    <strong>النتيجة:</strong> <span id="calcResult">0</span>
-                </div>
-            </div>
-
-            <!-- Todo Tab -->
-            <div id="todo" class="tab-content">
-                <h2>📝 قائمة المهام</h2>
-                <div class="input-group">
-                    <label>أضف مهمة جديدة</label>
-                    <input type="text" id="todoInput" placeholder="مثال: اكمل المشروع" onkeypress="if(event.key==='Enter') addTodo()">
-                </div>
-                <button class="btn" onclick="addTodo()">➕ إضافة مهمة</button>
-                <ul class="todo-list" id="todoList"></ul>
-            </div>
-
-            <!-- Weather Tab -->
-            <div id="weather" class="tab-content">
-                <h2>🌤️ معلومات الطقس</h2>
-                <div class="input-group">
-                    <label>أدخل اسم المدينة</label>
-                    <input type="text" id="cityName" placeholder="مثال: القاهرة">
-                </div>
-                <button class="btn" onclick="getWeather()">🔍 البحث</button>
-                <div class="weather-card" id="weatherResult" style="display:none;">
-                    <h3 id="weatherCity">--</h3>
-                    <p id="weatherTemp" style="font-size: 2em; margin: 15px 0;">--°C</p>
-                    <p id="weatherDesc">--</p>
-                    <p id="weatherHumidity">الرطوبة: --%</p>
-                </div>
-            </div>
-
-            <!-- Converter Tab -->
-            <div id="converter" class="tab-content">
-                <h2>🔄 محول الوحدات</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>💱 تحويل العملات</h3>
-                        <input type="number" id="currencyAmount" placeholder="المبلغ" value="1">
-                        <select id="currencyFrom">
-                            <option>USD</option>
-                            <option>EUR</option>
-                            <option>GBP</option>
-                            <option>EGP</option>
-                        </select>
-                        <button class="btn" onclick="convertCurrency()" style="margin-top: 10px;">تحويل</button>
-                        <div class="result-box" style="margin-top: 15px;">
-                            <strong>النتيجة:</strong> <span id="currencyResult">0</span>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3>📏 تحويل الأطوال</h3>
-                        <input type="number" id="lengthAmount" placeholder="القيمة" value="1">
-                        <select id="lengthFrom">
-                            <option>متر</option>
-                            <option>كيلومتر</option>
-                            <option>قدم</option>
-                            <option>ميل</option>
-                        </select>
-                        <button class="btn" onclick="convertLength()" style="margin-top: 10px;">تحويل</button>
-                        <div class="result-box" style="margin-top: 15px;">
-                            <strong>النتيجة:</strong> <span id="lengthResult">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Notes Tab -->
-            <div id="notes" class="tab-content">
-                <h2>📄 الملاحظات</h2>
-                <div class="input-group">
-                    <label>عنوان الملاحظة</label>
-                    <input type="text" id="noteTitle" placeholder="أدخل عنوان الملاحظة">
-                </div>
-                <div class="input-group">
-                    <label>نص الملاحظة</label>
-                    <textarea id="noteContent" placeholder="اكتب ملاحظتك هنا" rows="5"></textarea>
-                </div>
-                <button class="btn" onclick="saveNote()">💾 حفظ الملاحظة</button>
-                <div id="notesList" style="margin-top: 30px;"></div>
-            </div>
-        </div>
+  <div class="app">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">AI</div>
+        <h1>محادثة ذكية</h1>
+      </div>
+      <div class="status">متصل</div>
     </div>
 
-    <script>
-        // Tab Switching
-        function switchTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            const btns = document.querySelectorAll('.tab-btn');
+    <div class="quick-actions">
+      <button class="chip" onclick="sendQuickMessage('مرحبا')">مرحبا</button>
+      <button class="chip" onclick="sendQuickMessage('ما هو حالك؟')">ما هو حالك؟</button>
+      <button class="chip" onclick="sendQuickMessage('اكتب لي joke')">Joke</button>
+      <button class="chip" onclick="sendQuickMessage('أعطني فكرة مشروع')">فكرة مشروع</button>
+    </div>
 
-            tabs.forEach(tab => tab.classList.remove('active'));
-            btns.forEach(btn => btn.classList.remove('active'));
+    <div class="messages" id="messages"></div>
 
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
+    <div class="input-area">
+      <input id="messageInput" type="text" placeholder="اكتب رسالتك..." />
+      <button id="sendBtn">إرسال</button>
+    </div>
+  </div>
 
-        // Calculator
-        function calculate(operation) {
-            const num1 = parseFloat(document.getElementById('calcNum1').value) || 0;
-            const num2 = parseFloat(document.getElementById('calcNum2').value) || 0;
-            let result;
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
 
-            if (operation === 'add') result = num1 + num2;
-            else if (operation === 'sub') result = num1 - num2;
-            else if (operation === 'mul') result = num1 * num2;
-            else if (operation === 'div') result = num2 !== 0 ? (num1 / num2).toFixed(2) : 'خطأ!';
+    function addMessage(text, sender = 'bot') {
+      const msg = document.createElement('div');
+      msg.className = `message ${sender}`;
 
-            document.getElementById('calcResult').textContent = result;
-        }
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
 
-        // Todo List
-        let todos = JSON.parse(localStorage.getItem('todos')) || [];
+      msg.appendChild(bubble);
+      messagesEl.appendChild(msg);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
 
-        function addTodo() {
-            const input = document.getElementById('todoInput');
-            if (input.value.trim() === '') return alert('أدخل مهمة!');
+    function getBotReply(userText) {
+      const text = userText.trim().toLowerCase();
 
-            const todo = {
-                id: Date.now(),
-                text: input.value,
-                completed: false
-            };
+      if (!text) return 'أنت كتبت رسالة فارغة. هل يمكن أن تكتب شيئًا؟';
 
-            todos.push(todo);
-            localStorage.setItem('todos', JSON.stringify(todos));
-            input.value = '';
-            displayTodos();
-        }
+      if (text.includes('مرحبا') || text.includes('hello') || text.includes('hi')) {
+        return 'مرحبا! كيف يمكنني مساعدتك اليوم؟';
+      }
 
-        function displayTodos() {
-            const list = document.getElementById('todoList');
-            list.innerHTML = '';
+      if (text.includes('اسمك') || text.includes('who are you')) {
+        return 'أنا مساعد ذكي بسيط مصمم لواجهة دردشة. أقدر أساعدك في الأسئلة العادية، أفكار المشاريع، أو مجرد محادثة.';
+      }
 
-            todos.forEach(todo => {
-                const li = document.createElement('li');
-                li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
-                li.innerHTML = `
-                    <span>${todo.text}</span>
-                    <div>
-                        <button class="complete-btn" onclick="toggleTodo(${todo.id})">✓</button>
-                        <button class="delete-btn" onclick="deleteTodo(${todo.id})">🗑️</button>
-                    </div>
-                `;
-                list.appendChild(li);
-            });
-        }
+      if (text.includes('كيف الحال') || text.includes('حال') || text.includes('كيف أنت')) {
+        return 'أنا بخير، شكرًا لسؤالك. وأنا مستعد لمساعدتك.';
+      }
 
-        function toggleTodo(id) {
-            todos = todos.map(t => t.id === id ? {...t, completed: !t.completed} : t);
-            localStorage.setItem('todos', JSON.stringify(todos));
-            displayTodos();
-        }
+      if (text.includes('ساعة') || text.includes('وقت') || text.includes('تاريخ')) {
+        const now = new Date();
+        return `الوقت الحالي: ${now.toLocaleTimeString('ar-EG')}، والتاريخ: ${now.toLocaleDateString('ar-EG')}`;
+      }
 
-        function deleteTodo(id) {
-            todos = todos.filter(t => t.id !== id);
-            localStorage.setItem('todos', JSON.stringify(todos));
-            displayTodos();
-        }
+      if (text.includes(' joke') || text.includes('ضحك') || text.includes('مزحة')) {
+        return 'لماذا لا يحب المبرمجون المرايا؟ لأنهم يخافون من الإصدار الجديد! 😄';
+      }
 
-        displayTodos();
+      if (text.includes('فكرة') || text.includes('مشروع') || text.includes('idea')) {
+        return 'فكرة ممتازة: تطبيق إدارة مهام مع تسجيل الدخول، إشعارات، ومزامنة عبر الإنترنت. أو تطبيق شات داخلي مع دردشة فورية، إعدادات المستخدم، ولوحة تحكم.';
+      }
 
-        // Weather
-        function getWeather() {
-            const city = document.getElementById('cityName').value;
-            const weatherData = {
-                'القاهرة': { temp: 28, desc: 'صافي', humidity: 45 },
-                'cairo': { temp: 28, desc: 'صافي', humidity: 45 },
-                'الإسكندرية': { temp: 22, desc: 'غائم', humidity: 65 },
-                'alexandria': { temp: 22, desc: 'غائم', humidity: 65 },
-                'الجيزة': { temp: 27, desc: 'صافي', humidity: 40 },
-                'giza': { temp: 27, desc: 'صافي', humidity: 40 }
-            };
+      if (text.includes('شكرا') || text.includes('thanks')) {
+        return 'بكل سرور! أتمنى أن أكون مفيدًا.';
+      }
 
-            const data = weatherData[city.toLowerCase()];
-            if (!data) return alert('المدينة غير موجودة في قاعدة البيانات');
+      if (text.includes('تطبيق') || text.includes('app')) {
+        return 'أستطيع مساعدتك في بناء واجهة تطبيقات، شات، متجر، لوحة تحكم، أو موقع ويب. قل لي نوع التطبيق الذي تريد.';
+      }
 
-            document.getElementById('weatherCity').textContent = city;
-            document.getElementById('weatherTemp').textContent = data.temp + '°C';
-            document.getElementById('weatherDesc').textContent = data.desc;
-            document.getElementById('weatherHumidity').textContent = `الرطوبة: ${data.humidity}%`;
-            document.getElementById('weatherResult').style.display = 'block';
-        }
+      if (text.includes('تقنية') || text.includes('تطوير') || text.includes('html') || text.includes('css') || text.includes('javascript')) {
+        return 'أحب البرمجة! HTML و CSS و JavaScript هما أساس بناء التطبيقات الحديثة. لو تريد، أستطيع أن أكتب لك صفحة كاملة أو تطبيق صغير.';
+      }
 
-        // Currency Converter
-        const exchangeRates = {
-            'USD': 1,
-            'EUR': 0.92,
-            'GBP': 0.79,
-            'EGP': 30.5
-        };
+      if (text.includes('هل') && text.includes('تعمل')) {
+        return 'نعم، هذا التطبيق يشتغل بالكامل داخل المتصفح، وهو محاكاة ذكية للردود. إذا رغبت، أستطيع ربطه مع API حقيقي لاحقًا.';
+      }
 
-        function convertCurrency() {
-            const amount = parseFloat(document.getElementById('currencyAmount').value) || 0;
-            const from = document.getElementById('currencyFrom').value;
-            const toUSD = amount / exchangeRates[from];
-            const result = (toUSD * 30.5).toFixed(2);
-            document.getElementById('currencyResult').textContent = result + ' EGP';
-        }
+      if (text.includes('السلام') || text.includes('السلام عليكم')) {
+        return 'وعليكم السلام ورحمة الله وبركاته! كيف يمكنني مساعدتك؟';
+      }
 
-        // Length Converter
-        function convertLength() {
-            const amount = parseFloat(document.getElementById('lengthAmount').value) || 0;
-            const from = document.getElementById('lengthFrom').value;
-            let result;
+      if (text.includes('bye') || text.includes('وداع') || text.includes('مع السلامة')) {
+        return 'مع السلامة! أكون سعيدًا بمساعدتك في أي وقت.';
+      }
 
-            const toMeter = {
-                'متر': 1,
-                'كيلومتر': 1000,
-                'قدم': 0.3048,
-                'ميل': 1609.34
-            };
+      return `أفهمك، لكنني أستطيع فقط الرد على بعض الأسئلة والطلبات البسيطة في هذه النسخة. يمكنك أن تكتب: "مرحبا"، "كيف الحال؟"، "فكرة مشروع"، "مزحة"، أو "اكتب لي تطبيق".`;
+    }
 
-            result = (amount * toMeter[from] / 1000).toFixed(2);
-            document.getElementById('lengthResult').textContent = result + ' كم';
-        }
+    function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text) return;
 
-        // Notes
-        let notes = JSON.parse(localStorage.getItem('notes')) || [];
+      addMessage(text, 'user');
+      inputEl.value = '';
 
-        function saveNote() {
-            const title = document.getElementById('noteTitle').value;
-            const content = document.getElementById('noteContent').value;
+      setTimeout(() => {
+        const reply = getBotReply(text);
+        addMessage(reply, 'bot');
+      }, 350);
+    }
 
-            if (!title || !content) return alert('أدخل العنوان والمحتوى!');
+    sendBtn.addEventListener('click', sendMessage);
 
-            const note = {
-                id: Date.now(),
-                title,
-                content,
-                date: new Date().toLocaleDateString('ar-EG')
-            };
+    inputEl.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
 
-            notes.push(note);
-            localStorage.setItem('notes', JSON.stringify(notes));
-            document.getElementById('noteTitle').value = '';
-            document.getElementById('noteContent').value = '';
-            displayNotes();
-        }
+    function sendQuickMessage(text) {
+      inputEl.value = text;
+      sendMessage();
+    }
 
-        function displayNotes() {
-            const list = document.getElementById('notesList');
-            list.innerHTML = '';
-
-            notes.forEach(note => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `
-                    <h3>${note.title}</h3>
-                    <p>${note.content}</p>
-                    <small style="color: #999;">${note.date}</small>
-                    <button class="delete-btn" onclick="deleteNote(${note.id})" style="margin-top: 10px;">حذف</button>
-                `;
-                list.appendChild(div);
-            });
-        }
-
-        function deleteNote(id) {
-            notes = notes.filter(n => n.id !== id);
-            localStorage.setItem('notes', JSON.stringify(notes));
-            displayNotes();
-        }
-
-        displayNotes();
-    </script>
+    addMessage('مرحبًا! أنا مساعد ذكي بسيط. اكتب أي سؤال أو طلب، وسأحاول الرد لك.', 'bot');
+  </script>
 </body>
-  </html>
+</html>
