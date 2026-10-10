@@ -1,4 +1,1 @@
-ZORIX App v1.0
-Type: Web Application
-Modules: dashboard, files, settings
-Status: production
+
