@@ -1,19 +1,12 @@
-// frontend/chat.js - ده اللي بياخد كلامك ويعرضه
 function sendMessage() {
-  const input = document.getElementById('input');
-  const chatBox = document.getElementById('chatBox');
-  
-  if(input.value === "") return;
-  
-  chatBox.innerHTML += "<div class='user-msg'>" + input.value + "</div>";
-  
-  // بينده على المخ
+  let input = document.getElementById('input');
+  let box = document.getElementById('chatBox');
+  if(!input.value) return;
+  box.innerHTML += `<div style="background:#0f0f0f;color:white;padding:8px;margin:5px;border-radius:8px">انت: ${input.value}</div>`;
   askBrain(input.value);
-  
   input.value = "";
 }
-
 function showAIResponse(text) {
-  const chatBox = document.getElementById('chatBox');
-  chatBox.innerHTML += "<div class='ai-msg'>" + text + "</div>";
+  let box = document.getElementById('chatBox');
+  box.innerHTML += `<div style="background:#222;color:#00ff88;padding:8px;margin:5px;border-radius:8px">ZORIX: ${text}</div>`;
 }
