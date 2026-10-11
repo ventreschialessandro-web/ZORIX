@@ -1,28 +1,172 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZORIX</title>
-  <link rel="stylesheet" href="frontend/chat.css">
-</head>
-<body>
-  <div id="app"></div>
+ # Ether-Soul-AI-Companion
+Ether Soul is a full-stack AI chatbot web application that acts as a spiritual companion — built with a secure serverless architecture using Netlify Functions, Firebase Authentication, and multiple AI/knowledge APIs.
+Tech Stack
 
-  <script src="frontend/chat.js"></script>
-  <script src="backend/server.js"></script>
-  <script src="database/chat.db.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>ZORIX</title>
-</head>
-<body>
-  <div id="app">ZORIX شغال</div>
+LayerTechnologyFrontendHTML5, CSS3, JavaScript (ES6+), Tailwind CSSBackendNetlify Serverless FunctionsAuthFirebase AuthenticationAI ModelsGoogle Gemini AI (gemini-2.5-flash) / Groq (Llama 3.3 70B)DeploymentNetlify (CI/CD with GitHub)Languages SupportedEnglish, Hindi, MarathiAPIs Integrated6 total
 
-  <script src="frontend/chat.js"></script>
-</body>
-</html>
+
+Features
+
+
+Multi-modal AI chat — Routes queries to Gemini AI or factual APIs (Wikipedia, Google Books, Archive.org) based on context
+Firebase Authentication — Supports Google Sign-In (OAuth 2.0), Email/Password, and Guest Mode
+Multi-language support — Automatically detects and responds in English, Hindi, or Marathi using Unicode range detection
+Rate limiting — Queue-based system enforces a 1-second interval between requests; handles 429 errors gracefully with user-friendly messages
+Emotion tracking — Detects emotional keywords and renders contextual suggestion chips after each AI response
+Typing animation — Character-by-character response rendering with a 20ms async loop
+Secure API proxy — API keys are stored as Netlify environment variables, never exposed to the browser
+
+
+
+Architecture
+
+The app follows a client-server architecture with a secure serverless backend:
+
+User (Browser)
+    │
+    ├── Factual query? ──► Wikipedia / Google Books / Archive.org (direct)
+    │
+    └── Spiritual/personal query?
+            │
+            ▼
+    POST /.netlify/functions/chat
+            │
+            ▼
+    Netlify Serverless Function
+    (reads GEMINI_API_KEY from env)
+            │
+            ▼
+    Google Gemini AI API
+            │
+            ▼
+    Response → Browser → Typing animation
+
+The API key is never sent to the browser. It lives only on Netlify's servers as an environment variable.
+
+
+File Structure
+
+ether-soul/
+├── index.html                   # Main app: UI, Firebase auth, full chat engine (1582 lines)
+├── script.js                    # Original frontend logic — Gemini + Books + Archive (544 lines)
+├── styles.css                   # External stylesheet — fonts, watermark, gradients (63 lines)
+├── netlify.toml                 # Netlify build & redirect configuration (12 lines)
+├── package.json                 # Node.js manifest; lists node-fetch dependency (22 lines)
+├── .gitignore                   # Ignores node_modules, .env, .netlify, logs (25 lines)
+├── .env                         # API keys — NEVER committed to Git
+└── netlify/
+    └── functions/
+        └── chat.js              # Serverless backend proxy — keeps API key secure (112 lines)
+
+Total lines of code: ~2,300+
+
+
+APIs Used
+
+APIPurposeAuthCalled FromGoogle GeminiPrimary AI responsesAPI Key (server-side)Serverless functionGroq / Llama 3.3Alternative AI (ultra-fast inference)API Key (server-side)Serverless functionWikipediaFactual question answersNoneBrowserGoogle BooksBook search & infoNoneBrowserArchive.orgHistorical document searchNoneBrowserFirebase AuthGoogle, Email, and Guest authFirebase configBrowser
+
+
+Getting Started
+
+Prerequisites
+
+
+Node.js (v18+)
+Netlify CLI (npm install -g netlify-cli)
+A Google Gemini API key
+A Firebase project with Authentication enabled
+
+
+Local Setup
+
+
+Clone the repository
+
+
+bash   git clone https://github.com/your-username/ether-soul.git
+   cd ether-soul
+
+
+Install dependencies
+
+
+bash   npm install
+
+
+Set up environment variables
+Create a .env file in the project root:
+
+
+   GEMINI_API_KEY=your_gemini_api_key_here
+
+
+Run locally with Netlify Dev
+
+
+bash   netlify dev
+
+This starts both the frontend and the serverless function locally.
+
+
+Deployment
+
+The project uses Netlify's built-in CI/CD pipeline:
+
+
+Push changes to GitHub
+Netlify detects the push via webhook and builds automatically
+npm install installs dependencies
+esbuild bundles the serverless function
+Site goes live on Netlify's global CDN
+
+
+To deploy manually:
+
+bashgit add .
+git commit -m "your message"
+git push
+
+
+Security
+
+
+API keys are stored as Netlify environment variables — never in source code
+The serverless function acts as a proxy, adding the key server-side
+.gitignore prevents .env from being committed to GitHub
+CORS headers are set in chat.js (Access-Control-Allow-Origin: *)
+Incoming request payloads are validated before forwarding to Gemini
+
+
+To verify: Open the live site → F12 → Sources tab → Search for AIza (Google key prefix) — it should not appear anywhere in the browser code.
+
+
+Design Patterns
+
+PatternWhere UsedObserverFirebase onAuthStateChanged for auth stateQueueRate limiting — 1-second interval between API requestsProxyServerless function proxying Gemini API callsStrategydetectLanguage() for multi-language routing
+
+
+CSS Highlights
+
+
+Gradient text for the gold-to-orange title (background-clip: text)
+Glassmorphism auth modal using backdrop-filter: blur()
+Heartbeat keyframe animation on the "thinking..." indicator
+Pseudo-element ::before watermark logo at 12% opacity (click-through via pointer-events: none)
+Flexbox full-screen layout with z-index: 1000 modal layering
+
+
+
+Future Improvements
+
+
+Persist conversation history across sessions with Firebase Firestore
+Streaming responses via Server-Sent Events for real-time word-by-word output
+Voice input and output using the Web Speech API
+Rebuild frontend in React/Next.js for better component management
+Add usage analytics to understand user patterns
+
+
+
+License
+
+This project is for personal/portfolio use. See LICENSE for details.
