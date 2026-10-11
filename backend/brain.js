@@ -3,19 +3,20 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// يشغل ملفات الواجهة
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, 'frontend')));
 app.use(express.json());
 
-// يشغل قاعدة البيانات
-const db = require('../database/db.js');
+// تشغيل المخ
+try {
+  const brain = require('./backend/brain.js');
+  app.use('/api', brain);
+} catch (e) {
+  console.log('المخ لسه بيحمل');
+}
 
-// يشغل اوامر الذكاء الاصطناعي
-const prompts = require('../prompts/index.js');
-
-// اي طلب يجي يروح للواجهة
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
