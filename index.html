@@ -1,736 +1,170 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Venice</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 6l6 9-6 12-6-12z' fill='%23e9c47c'/></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{overflow:hidden;background:#04070c;font-family:'Inter',system-ui,-apple-system,sans-serif;color:#e9e7e3}
-  .stage{position:fixed;inset:0;overflow:hidden}
-  #water{position:absolute;inset:0;width:100%;height:100%;display:block}
-  .veil{position:absolute;inset:0;pointer-events:none;background:radial-gradient(130% 90% at 50% 0%,rgba(0,0,0,0) 42%,rgba(0,0,0,.5) 100%)}
-  .hidden{display:none !important}
-  .ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:#98a1ad;transition:background .12s,color .12s;flex:0 0 auto}
-  .ico:hover{background:rgba(255,255,255,.08);color:#eae7e1}
-  .ico.active{color:#e9c47c;background:rgba(233,196,124,.14)}
-  .btn{border:none;border-radius:11px;padding:11px 26px;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:500;color:#0a0d12;background:linear-gradient(180deg,#eccb85,#d2a349)}
-  .btn.wide{width:100%}
-  .btn.ghost{background:rgba(255,255,255,.07);color:#dfe4ea;border:1px solid rgba(255,255,255,.12)}
-  .overlay{position:absolute;inset:0;z-index:60;display:grid;place-content:center;justify-items:center;gap:6px;background:rgba(3,6,10,.78);backdrop-filter:blur(22px);padding:24px;text-align:center}
-  .overlay h1{font-size:32px;font-weight:600;letter-spacing:.34em;margin-top:14px;background:linear-gradient(180deg,#fff,#c8ac74);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .overlay p{font-size:12.5px;color:#8d96a3}
-  .card{width:340px;display:flex;flex-direction:column;gap:10px;text-align:start}
-  .card h2{font-size:19px;font-weight:600}
-  .muted{font-size:12px;color:#8d96a3;line-height:1.5}
-  .card input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;color:#eeebe6;font-family:inherit;font-size:13.5px;outline:none;width:100%}
-  .err{font-size:11.5px;color:#ef8a8a;min-height:15px}
-  .switch{font-size:12px;color:#8d96a3;text-align:center;cursor:pointer}
-  .switch b{color:#e9c47c}
-  .app{position:absolute;inset:0;display:flex}
-  .side{width:236px;flex:0 0 236px;display:flex;flex-direction:column;z-index:30;background:rgba(6,10,16,.62);backdrop-filter:blur(20px);border-inline-end:1px solid rgba(255,255,255,.07)}
-  .brand{display:flex;align-items:center;gap:9px;padding:15px 16px 13px}
-  .brand-name{font-size:13px;font-weight:600;letter-spacing:.2em;color:#f0ece4}
-  .newchat{margin:2px 12px 10px;display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:500;color:#0a0d12;border:1px solid rgba(255,255,255,.25);background:linear-gradient(180deg,#eccb85,#d2a349)}
-  .search{margin:0 12px 8px;display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
-  .search input{background:none;border:none;outline:none;color:#dfe4ea;font-family:inherit;font-size:12px;width:100%}
-  .side-label{font-size:9.5px;letter-spacing:.16em;color:#79828f;padding:4px 18px 6px;text-transform:uppercase}
-  .threads{flex:1;overflow-y:auto;padding:0 8px}
-  .thread{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:9px;font-size:12.5px;color:#b7bec9;cursor:pointer}
-  .thread:hover{background:rgba(255,255,255,.055);color:#eee}
-  .thread.on{background:rgba(233,196,124,.12);color:#f2e4c6;box-shadow:inset 0 0 0 1px rgba(233,196,124,.22)}
-  .thread .t-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .thread .t-del{opacity:0;font-size:14px;color:#8d96a3;padding:0 3px}
-  .thread:hover .t-del{opacity:1}
-  .userbar{display:flex;align-items:center;gap:10px;padding:12px;border-top:1px solid rgba(255,255,255,.07)}
-  .uava{width:28px;height:28px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;font-size:11px;font-weight:600;color:#dff0fa;background:linear-gradient(140deg,#3d6d8a,#1d3b4e);border:1px solid rgba(255,255,255,.15)}
-  .uname{font-size:12.5px;font-weight:500;color:#dfe4ea;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .uplan{font-size:9.5px;color:#d3a44b;letter-spacing:.08em}
-  .main{flex:1;display:flex;flex-direction:column;min-width:0}
-  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(6,10,16,.45);backdrop-filter:blur(20px)}
-  .model{position:relative;display:flex;align-items:center;gap:8px;padding:7px 11px;border-radius:9px;cursor:pointer;font-size:12.5px;font-weight:500;color:#e6e3dd;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09)}
-  .dot-live{width:6px;height:6px;border-radius:50%;background:#5ec98a;box-shadow:0 0 8px #5ec98a}
-  .dot-off{background:#8d96a3;box-shadow:none}
-  .menu{position:absolute;top:calc(100% + 7px);inset-inline-start:0;min-width:250px;max-height:340px;overflow-y:auto;z-index:50;display:none;background:rgba(12,17,25,.97);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:6px;box-shadow:0 18px 40px rgba(0,0,0,.6)}
-  .menu.open{display:block}
-  .mitem{padding:8px 10px;border-radius:8px;font-size:12.5px;color:#c8cfd9;cursor:pointer}
-  .mitem:hover{background:rgba(255,255,255,.07);color:#fff}
-  .mitem.sel{color:#f0dcae;background:rgba(233,196,124,.1)}
-  .tools{display:flex;gap:3px}
-  #burger{display:none}
-  .msgs{flex:1;overflow-y:auto;padding:24px 26px 8px;scroll-behavior:smooth}
-  .msgs::-webkit-scrollbar,.threads::-webkit-scrollbar{width:8px}
-  .msgs::-webkit-scrollbar-thumb,.threads::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px;border:2px solid transparent;background-clip:content-box}
-  .wrap{max-width:840px;margin:0 auto;width:100%}
-  .hero{text-align:center;padding:8px 0 24px}
-  .hero h1{font-size:23px;font-weight:600;background:linear-gradient(180deg,#fff,#c9b489);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{font-size:12.5px;color:#8f98a5;margin-top:7px}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:16px}
-  .chip{font-size:11.5px;color:#c4cbd6;padding:7px 12px;border-radius:999px;cursor:pointer;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09)}
-  .row{display:flex;gap:10px;margin-bottom:18px;animation:pop .3s ease both}
-  @keyframes pop{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
-  .row.me{justify-content:flex-end}
-  .ava{width:26px;height:26px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;margin-top:2px;background:linear-gradient(140deg,rgba(233,196,124,.92),rgba(150,110,45,.92));border:1px solid rgba(255,255,255,.2)}
-  .bubble{font-size:13.5px;line-height:1.7;max-width:82%;color:#e4e2de;word-wrap:break-word;min-width:0}
-  .row.me .bubble{background:rgba(233,196,124,.12);border:1px solid rgba(233,196,124,.22);padding:9px 13px;border-radius:13px 13px 4px 13px;color:#f3ecdd;white-space:pre-wrap}
-  .bubble p{margin:0 0 9px}
-  .bubble h1,.bubble h2,.bubble h3{margin:12px 0 7px;color:#fff;font-weight:600}
-  .bubble ul{margin:6px 0 10px;padding-inline-start:20px}
-  .bubble code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:rgba(255,255,255,.09);padding:1.5px 5px;border-radius:5px;color:#e9c47c}
-  .bubble a{color:#9fd0ea}.bubble strong{color:#fff;font-weight:600}
-  .bubble blockquote{border-inline-start:2px solid rgba(233,196,124,.5);padding-inline-start:10px;color:#a9b2bf;margin:6px 0}
-  .codewrap{position:relative;margin:10px 0}
-  .codewrap pre{background:rgba(4,8,13,.85);border:1px solid rgba(255,255,255,.1);padding:13px 14px;border-radius:10px;overflow-x:auto}
-  .codewrap pre code{background:none;padding:0;color:#cfe3d8;font-size:12.5px}
-  .copy{position:absolute;top:8px;inset-inline-end:8px;font-size:10.5px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,.1);color:#c4cbd6;cursor:pointer;opacity:0;transition:opacity .15s}
-  .codewrap:hover .copy{opacity:1}
-  .cursor{display:inline-block;width:7px;height:14px;background:#e9c47c;vertical-align:-2px;margin-inline-start:2px;animation:bl 1s steps(2) infinite}
-  @keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
-  .composer{padding:10px 26px 14px;background:rgba(6,10,16,.45);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.07)}
-  .box{display:flex;align-items:flex-end;gap:8px;padding:9px 10px 9px 12px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.11)}
-  .box:focus-within{border-color:rgba(233,196,124,.42)}
-  textarea{flex:1;background:none;border:none;outline:none;resize:none;color:#eeebe6;font-family:inherit;font-size:13.5px;line-height:1.5;max-height:140px;padding:5px 0}
-  .send{width:32px;height:32px;border-radius:9px;flex:0 0 auto;display:grid;place-items:center;cursor:pointer;background:linear-gradient(180deg,#eccb85,#d2a349);border:none;color:#0a0d12}
-  .send:disabled{opacity:.45}
-  .mic{width:32px;height:32px;border-radius:9px;flex:0 0 auto;display:grid;place-items:center;cursor:pointer;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);color:#c4cbd6;transition:all .15s}
-  .mic:hover{background:rgba(255,255,255,.14)}
-  .mic.on{background:rgba(233,196,124,.22);border-color:rgba(233,196,124,.55);color:#f0dcae;animation:pulse 1.4s infinite}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(233,196,124,.45)}50%{box-shadow:0 0 0 8px rgba(233,196,124,0)}}
-  .foot{text-align:center;font-size:10.5px;color:#69727e;margin-top:8px}
-  .drawer{position:absolute;top:0;bottom:0;inset-inline-end:0;width:340px;z-index:70;padding:20px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;background:rgba(8,12,18,.97);backdrop-filter:blur(24px);border-inline-start:1px solid rgba(255,255,255,.09)}
-  .drawer h3{font-size:15px;font-weight:600}
-  .drawer label{font-size:10.5px;color:#8d96a3;letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
-  .drawer input,.drawer select,.drawer textarea{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 12px;color:#eeebe6;font-family:inherit;font-size:12.5px;outline:none;width:100%}
-  .drawer textarea{resize:vertical;min-height:80px}
-  .drawer input[type=range]{accent-color:#e9c47c;padding:0;border:none;background:none}
-  .hint{font-size:11px;color:#79828f;line-height:1.5}
-  .toast{position:absolute;bottom:22px;inset-inline-start:50%;transform:translateX(-50%) translateY(20px);background:rgba(12,17,25,.97);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px 16px;font-size:12.5px;opacity:0;transition:all .25s;pointer-events:none;z-index:90}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  @media (max-width:700px){
-    .side{position:absolute;top:0;bottom:0;inset-inline-start:0;transform:translateX(-100%);transition:transform .26s;width:250px}
-    .side.open{transform:none}
-    #burger{display:grid}
-    .msgs{padding:16px 14px 8px}.composer{padding:10px 14px 12px}.drawer{width:100%}
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT UI Clone</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Heroicons for modern icons -->
+    <script src="https://unpkg.com/heroicons@2.1.3/24/outline/index.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="text-gray-200">
 
-<div class="stage">
-  <canvas id="water"></canvas>
-  <div class="veil"></div>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="bg-black/90 w-72 p-3 flex flex-col fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-30 backdrop-blur-sm border-r border-white/10">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-2">
+                    <div class="bg-white/10 p-1.5 rounded-lg">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-lg">ChatGPT</span>
+                </div>
+                <button class="p-2 rounded-lg hover:bg-white/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                    </svg>
+                </button>
+            </div>
 
-  <div class="overlay" id="splash">
-    <svg width="70" height="70" viewBox="0 0 32 32" fill="none">
-      <path d="M14 17C10.5 13.6 5.6 12.6 1 15c4.2 0 8.2 1.9 10.4 5.2" stroke="#e9c47c" stroke-width="1.4" stroke-linecap="round"/>
-      <path d="M18 17c3.5-3.4 8.4-4.4 13-2-4.2 0-8.2 1.9-10.4 5.2" stroke="#e9c47c" stroke-width="1.4" stroke-linecap="round"/>
-      <path d="M16 6.5l5.2 7.2L16 25.5 10.8 13.7z" fill="#e9c47c"/>
-    </svg>
-    <h1>VENICE</h1>
-    <p>Private. Uncensored. Yours.</p>
-    <button class="btn" id="enterBtn" style="margin-top:22px">Enter</button>
-    <p class="hint" style="margin-top:14px">اكتب أو اتكلم — ويرد عليك صوتًا وكتابة</p>
-  </div>
+            <!-- Pinned Conversations -->
+            <div>
+                <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Pinned</h3>
+                <nav class="flex flex-col gap-1">
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium bg-white/5 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.353-.026.692-.026 1.038 0 .984.084 1.75.93 1.75 1.908v1.392m-6.375 0h6.375m-6.375 0v6.375c0 1.135.845 2.098 1.976 2.192.353.026.692-.026 1.038 0 .984.084 1.75.93 1.75 1.908v1.392m-6.375 0h6.375" /></svg>
+                        <span class="truncate">2025 UI/UX Design Trends</span>
+                    </a>
+                </nav>
+            </div>
 
-  <div class="overlay hidden" id="auth">
-    <div class="card">
-      <h2 id="authTitle">Sign in</h2>
-      <p class="muted" id="authSub">Local account. Your data never leaves this device.</p>
-      <input id="aName" type="text" placeholder="Name" class="hidden">
-      <input id="aEmail" type="email" placeholder="Email" autocomplete="off">
-      <input id="aPass" type="password" placeholder="Password">
-      <div class="err" id="authErr"></div>
-      <button class="btn wide" id="authBtn">Sign in</button>
-      <div class="switch" id="authSwitch">No account? <b>Create one</b></div>
+            <!-- Chat History -->
+            <div class="flex-grow mt-6 overflow-y-auto custom-scrollbar -mr-3 pr-3">
+                 <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Recent</h3>
+                <nav class="flex flex-col gap-1">
+                    <a href="#" class="px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 transition-colors duration-200 truncate">
+                        Understanding Quantum Computing
+                    </a>
+                    <a href="#" class="px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 transition-colors duration-200 truncate">
+                        Recipe for a perfect pizza
+                    </a>
+                    <a href="#" class="px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 transition-colors duration-200 truncate">
+                        JavaScript Promises vs Async/Await
+                    </a>
+                     <a href="#" class="px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 transition-colors duration-200 truncate">
+                        How to train a dragon (metaphorically)
+                    </a>
+                </nav>
+            </div>
+
+            <!-- User Menu -->
+            <div class="border-t border-white/10 mt-auto pt-3">
+                <a href="#" class="flex items-center gap-3 p-3 rounded-lg text-sm font-medium hover:bg-white/5 transition-colors duration-200">
+                    <div class="w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center bg-blue-600 text-white font-bold">
+                        C
+                    </div>
+                    <span class="truncate font-semibold">Chirag</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col relative bg-[#1C1C1C]">
+            <!-- Mobile Header -->
+            <header class="md:hidden flex items-center justify-between p-2 bg-black/80 backdrop-blur-sm border-b border-white/10 sticky top-0 z-10">
+                <button id="menu-btn" class="p-2 rounded-lg hover:bg-white/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                </button>
+                <h1 class="text-lg font-semibold">New Chat</h1>
+                <button class="p-2 rounded-lg hover:bg-white/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                </button>
+            </header>
+
+            <!-- Chat Area -->
+            <div id="chat-container" class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Initial Welcome Message -->
+                    <div id="welcome-message" class="text-center py-20">
+                        <div class="inline-block bg-white/10 rounded-full p-3 mb-6 shadow-lg">
+                             <svg class="w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.624L16.5 21.75l-.398-1.126a3.375 3.375 0 00-2.456-2.456L12.75 18l1.126-.398a3.375 3.375 0 002.456-2.456L16.5 14.25l.398 1.126a3.375 3.375 0 002.456 2.456L20.25 18l-1.126.398a3.375 3.375 0 00-2.456 2.456z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white">How can I help you today?</h2>
+                    </div>
+                    <!-- Chat messages will be appended here -->
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="w-full bg-gradient-to-t from-black/50 to-transparent pt-4">
+                <div class="max-w-4xl mx-auto px-4">
+                    <div class="relative">
+                        <!-- Tools Popup -->
+                        <div id="tools-popup" class="tools-popup absolute bottom-full mb-3 w-full bg-[#2a2a2a] rounded-xl shadow-2xl p-2 opacity-0 transform scale-95 pointer-events-none">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                <button class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 text-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25z" /></svg>
+                                    <div>
+                                        <p class="font-semibold">Create an image</p>
+                                        <p class="text-xs text-gray-400">Generate an image with DALL-E</p>
+                                    </div>
+                                </button>
+                                <button class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 text-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+                                    <div>
+                                        <p class="font-semibold">Deep Research</p>
+                                        <p class="text-xs text-gray-400">Search the web and documents</p>
+                                    </div>
+                                </button>
+                                <button class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 text-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>
+                                    <div>
+                                        <p class="font-semibold">Write or code (Canvas)</p>
+                                        <p class="text-xs text-gray-400">Expand and edit in a scratchpad</p>
+                                    </div>
+                                </button>
+                                <button class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 text-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3.375 3.375 0 0116.5 4.219l-2.255 2.255a2.25 2.25 0 00-3.182 3.182l5.69 5.69a.75.75 0 001.06-1.06l-5.69-5.69a.75.75 0 010-1.06l2.255-2.255a1.875 1.875 0 00-2.652-2.652l-10.94 10.94a6 6 0 108.486 8.486l7.693-7.693a.75.75 0 00-1.06-1.06z" /></svg>
+                                    <div>
+                                        <p class="font-semibold">Upload file</p>
+                                        <p class="text-xs text-gray-400">Attach documents, images, or data</p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <form id="chat-form" class="flex items-center gap-2">
+                            <button type="button" id="tools-btn" class="p-3 bg-[#2a2a2a] border border-white/10 rounded-xl shadow-lg hover:bg-white/10 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            </button>
+                            <div class="w-full flex relative">
+                                <textarea id="chat-input" rows="1" class="w-full bg-[#2a2a2a] border border-white/10 rounded-xl shadow-lg py-3.5 pl-4 pr-14 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 custom-scrollbar" placeholder="Message ChatGPT..."></textarea>
+                                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed transition-colors">
+                                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <p class="text-xs text-center text-gray-600 pt-3 pb-3">ChatGPT can make mistakes. Consider checking important information.</p>
+                </div>
+            </div>
+        </main>
     </div>
-  </div>
 
-  <div class="app hidden" id="app">
-    <aside class="side" id="side">
-      <div class="brand">
-        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-          <path d="M14 17C10.5 13.6 5.6 12.6 1 15c4.2 0 8.2 1.9 10.4 5.2" stroke="#e9c47c" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M18 17c3.5-3.4 8.4-4.4 13-2-4.2 0-8.2 1.9-10.4 5.2" stroke="#e9c47c" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M16 6.5l5.2 7.2L16 25.5 10.8 13.7z" fill="#e9c47c"/>
-        </svg>
-        <div class="brand-name">VENICE</div>
-      </div>
-      <button class="newchat" id="newBtn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        New chat
-      </button>
-      <div class="search">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#79828f" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="searchInp" placeholder="Search chats">
-      </div>
-      <div class="side-label">Recent</div>
-      <div class="threads" id="threads"></div>
-      <div class="userbar">
-        <div class="uava" id="uava">U</div>
-        <div style="flex:1;min-width:0">
-          <div class="uname" id="uname">User</div>
-          <div class="uplan" id="uplan">DEMO</div>
-        </div>
-        <div class="ico" id="setBtn" title="Settings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.2 2.2M16.9 16.9l2.2 2.2M19.1 4.9l-2.2 2.2M7.1 16.9l-2.2 2.2"/></svg></div>
-        <div class="ico" id="outBtn" title="Sign out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div>
-      </div>
-    </aside>
-
-    <section class="main">
-      <div class="topbar">
-        <div style="display:flex;align-items:center;gap:6px;min-width:0">
-          <div class="ico" id="burger"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
-          <div class="model" id="modelBtn">
-            <span class="dot-live" id="liveDot"></span>
-            <span id="modelName">venice-uncensored</span>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
-            <div class="menu" id="menu"></div>
-          </div>
-        </div>
-        <div class="tools">
-          <div class="ico" id="spkBtn" title="Read replies aloud"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 010 7M19 5a9 9 0 010 14"/></svg></div>
-          <div class="ico" id="regenBtn" title="Regenerate"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 11-3-6.7M21 4v5h-5"/></svg></div>
-          <div class="ico" id="fsBtn" title="Fullscreen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5a1 1 0 011-1h4M20 9V5a1 1 0 00-1-1h-4M4 15v4a1 1 0 001 1h4M20 15v4a1 1 0 01-1 1h-4"/></svg></div>
-        </div>
-      </div>
-
-      <div class="msgs" id="msgs"><div class="wrap" id="msgWrap"></div></div>
-
-      <div class="composer">
-        <div class="wrap">
-          <div class="box">
-            <div class="mic" id="micBtn" title="اضغط واتكلم"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v4"/></svg></div>
-            <textarea id="inp" rows="1" placeholder="اكتب أو اتكلم..."></textarea>
-            <button class="send" id="sendBtn" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg></button>
-          </div>
-          <div class="foot" id="foot">اضغط المايك واتكلم</div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="drawer hidden" id="drawer">
-    <h3>Settings</h3>
-    <label>Venice API key</label>
-    <input id="keyInp" type="password" placeholder="paste your key">
-    <div class="hint">venice.ai &rarr; Settings &rarr; API Keys</div>
-    <label>Voice language</label>
-    <select id="langSel">
-      <option value="ar-SA">العربية</option>
-      <option value="en-US">English (US)</option>
-      <option value="en-GB">English (UK)</option>
-      <option value="fr-FR">Français</option>
-      <option value="es-ES">Español</option>
-      <option value="de-DE">Deutsch</option>
-      <option value="tr-TR">Türkçe</option>
-    </select>
-    <label>System prompt</label>
-    <textarea id="sysInp" rows="3"></textarea>
-    <label>Temperature <span id="tempVal">0.7</span></label>
-    <input id="tempInp" type="range" min="0" max="1.5" step="0.05">
-    <button class="btn wide" id="saveSet">Save settings</button>
-    <label>Data</label>
-    <button class="btn ghost wide" id="expBtn">Export all data (.json)</button>
-    <button class="btn ghost wide" id="wipeBtn">Wipe everything</button>
-    <button class="btn ghost wide" id="closeSet">Close</button>
-  </div>
-
-  <div class="toast" id="toast"></div>
-</div>
-
-<script>
-/* ============================================================
-   ★ حط مفتاحك هنا بين علامتي التنصيص ★
-   ============================================================ */
-const VENICE_API_KEY = '';
-const VENICE_BASE = 'https://api.venice.ai/api/v1';
-
-/* ================== tiny DB ================== */
-const IDB = (() => {
-  let p;
-  const open = () => p || (p = new Promise((res, rej) => {
-    const r = indexedDB.open('venice_local', 1);
-    r.onupgradeneeded = e => {
-      const db = e.target.result;
-      db.createObjectStore('users', { keyPath:'id', autoIncrement:true }).createIndex('email','email',{unique:true});
-      db.createObjectStore('chats', { keyPath:'id', autoIncrement:true }).createIndex('user','user_id');
-      db.createObjectStore('messages', { keyPath:'id', autoIncrement:true }).createIndex('chat','chat_id');
-      db.createObjectStore('kv');
-    };
-    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
-  }));
-  const tx = async (store, mode, fn) => {
-    const db = await open();
-    return new Promise((res, rej) => {
-      const t = db.transaction(store, mode), s = t.objectStore(store), req = fn(s);
-      t.oncomplete = () => res(req ? req.result : undefined);
-      t.onerror = () => rej(t.error);
-    });
-  };
-  return {
-    put:(s,v)=>tx(s,'readwrite',st=>st.put(v)), get:(s,k)=>tx(s,'readonly',st=>st.get(k)),
-    del:(s,k)=>tx(s,'readwrite',st=>st.delete(k)), all:s=>tx(s,'readonly',st=>st.getAll()),
-    byIndex:(s,i,v)=>tx(s,'readonly',st=>st.index(i).getAll(v)),
-    oneByIndex:(s,i,v)=>tx(s,'readonly',st=>st.index(i).get(v)),
-    clear:s=>tx(s,'readwrite',st=>st.clear()),
-  };
-})();
-
-/* ================== helpers ================== */
-const $ = s => document.querySelector(s);
-const DEFAULT_SYS = 'You are Venice: private, precise, uncensored. Answer directly, never hedge, use markdown when it helps, and always reply in the same language the user used.';
-const FALLBACK_MODELS = ['venice-uncensored','llama-3.3-70b','qwen2.5-coder-32b','deepseek-v3','mistral-31b','gemma-3-27b-it'];
-const getKey = () => localStorage.getItem('vkey') || VENICE_API_KEY;
-
-const state = { me:null, chats:[], chat:null, model: localStorage.getItem('vmodel') || 'venice-uncensored',
-  streaming:false, sys:'', temp:0.7, models:[], speak:false, lang: localStorage.getItem('vlang') || 'ar-SA' };
-
-async function sha(str){
-  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('venice$' + str));
-  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
-}
-function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function inline(s){
-  return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/`([^`]+)`/g,'<code>$1</code>')
-    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
-}
-function renderMD(src){
-  const lines = src.split('\n');
-  let out='', inCode=false, buf=[], list=[];
-  const flush=()=>{ if(list.length){ out+='<ul>'+list.map(t=>'<li>'+inline(t)+'</li>').join('')+'</ul>'; list=[]; } };
-  for(const line of lines){
-    if(/^```/.test(line)){
-      if(inCode){ out+='<div class="codewrap"><button class="copy">copy</button><pre><code>'+esc(buf.join('\n'))+'</code></pre></div>'; buf=[]; inCode=false; }
-      else { flush(); inCode=true; } continue;
-    }
-    if(inCode){ buf.push(line); continue; }
-    if(/^\s*[-*]\s+/.test(line)){ list.push(line.replace(/^\s*[-*]\s+/,'')); continue; }
-    if(/^\s*\d+[.)]\s+/.test(line)){ list.push(line.replace(/^\s*\d+[.)]\s+/,'')); continue; }
-    flush();
-    if(/^###\s/.test(line)) out+='<h3>'+inline(line.slice(4))+'</h3>';
-    else if(/^##\s/.test(line)) out+='<h2>'+inline(line.slice(3))+'</h2>';
-    else if(/^#\s/.test(line)) out+='<h1>'+inline(line.slice(2))+'</h1>';
-    else if(/^>\s?/.test(line)) out+='<blockquote>'+inline(line.replace(/^>\s?/,''))+'</blockquote>';
-    else if(!line.trim()) out+='<div style="height:7px"></div>';
-    else out+='<p>'+inline(line)+'</p>';
-  }
-  flush();
-  if(inCode) out+='<div class="codewrap"><button class="copy">copy</button><pre><code>'+esc(buf.join('\n'))+'</code></pre></div>';
-  return out;
-}
-function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200); }
-
-/* ================== voice ================== */
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recog = null, listening = false;
-
-function stripMD(s){
-  return s.replace(/```[\s\S]*?```/g,' ').replace(/`([^`]*)`/g,'$1').replace(/[*_#>]/g,'')
-          .replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/\s+/g,' ').trim();
-}
-function speak(text){
-  if(!state.speak || !text) return;
-  try{
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(stripMD(text).slice(0,1400));
-    u.lang = state.lang;
-    const v = speechSynthesis.getVoices().find(v=>v.lang===state.lang) ||
-              speechSynthesis.getVoices().find(v=>v.lang.startsWith(state.lang.slice(0,2)));
-    if(v) u.voice = v;
-    speechSynthesis.speak(u);
-  }catch(e){}
-}
-if(window.speechSynthesis) speechSynthesis.onvoiceschanged = () => {};
-
-function toggleMic(){
-  if(!SR){ toast('متصفحك ما يدعم التعرف على الصوت — جرب Chrome'); return; }
-  if(listening){ recog.stop(); return; }
-  recog = new SR();
-  recog.lang = state.lang;
-  recog.interimResults = true;
-  recog.continuous = false;
-  let finalText = '';
-  recog.onstart = () => { listening=true; $('#micBtn').classList.add('on'); $('#foot').textContent='أتكلم... اسمعك'; };
-  recog.onerror = e => { listening=false; $('#micBtn').classList.remove('on'); $('#foot').textContent='خطأ: '+e.error; };
-  recog.onend = () => {
-    listening=false; $('#micBtn').classList.remove('on');
-    $('#foot').textContent = finalText ? 'أرسل...' : 'اضغط المايك واتكلم';
-    if(finalText.trim()) send(finalText.trim());
-  };
-  recog.onresult = e => {
-    let txt='';
-    for(let i=e.resultIndex;i<e.results.length;i++) txt += e.results[i][0].transcript;
-    finalText = txt; $('#inp').value = txt;
-  };
-  try{ recog.start(); }catch(e){ toast('تعذر تشغيل المايك'); }
-}
-
-/* ================== ocean ================== */
-(function(){
-  const cv=$('#water'), ctx=cv.getContext('2d');
-  let W,H,DPR,t=0; const sp=[];
-  function resize(){ DPR=Math.min(devicePixelRatio||1,2); W=cv.clientWidth; H=cv.clientHeight; cv.width=W*DPR; cv.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0); }
-  function seed(){ sp.length=0; for(let i=0;i<90;i++) sp.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.4,s:Math.random()*.35+.06,ph:Math.random()*6.28,a:Math.random()*.4+.12}); }
-  resize(); seed(); addEventListener('resize',()=>{resize();seed();});
-  function caus(x,y,r,c,a){ const g=ctx.createRadialGradient(x,y,0,x,y,r); g.addColorStop(0,c.replace('A',a)); g.addColorStop(1,c.replace('A','0')); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,6.2832); ctx.fill(); }
-  (function frame(){
-    t+=.006;
-    const g=ctx.createLinearGradient(0,0,0,H);
-    g.addColorStop(0,'#050a12'); g.addColorStop(.42,'#071523'); g.addColorStop(.72,'#08202f'); g.addColorStop(1,'#040a11');
-    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-    ctx.globalCompositeOperation='lighter';
-    for(let i=0;i<6;i++){ const p=i/6; caus(W*(.5+.42*Math.sin(t*.5+p*7.1)), H*(.28+.55*p)+34*Math.sin(t*.8+p*4.2), 150+70*Math.sin(t*.4+p), 'rgba(96,176,214,A)', .055); }
-    for(let i=0;i<3;i++){ const p=i/3; caus(W*(.5+.4*Math.cos(t*.36+p*5.5)), H*(.6+.3*p), 130+60*Math.cos(t*.5+p), 'rgba(224,182,106,A)', .045); }
-    ctx.globalCompositeOperation='source-over';
-    for(let l=0;l<7;l++){
-      const baseY=H*.55+l*(H*.062), amp=9+l*2.6, fq=.0062+l*.0012, sd=.5+l*.16;
-      const al=.2-l*.021, tn=l%3===0?'230,196,124':'150,205,232';
-      ctx.beginPath();
-      for(let x=0;x<=W;x+=5){
-        const y=baseY+Math.sin(x*fq+t*sd*2.1)*amp+Math.sin(x*fq*2.4-t*sd*1.3)*(amp*.42)+Math.sin(x*fq*.5+t*sd*.7)*(amp*.6);
-        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-      }
-      ctx.strokeStyle='rgba('+tn+','+al.toFixed(3)+')'; ctx.lineWidth=l<2?1.4:1; ctx.stroke();
-    }
-    for(const s of sp){ s.y-=s.s; s.x+=Math.sin(t*1.4+s.ph)*.22; if(s.y<-6){s.y=H+6;s.x=Math.random()*W;}
-      const a=s.a*(.45+.55*Math.abs(Math.sin(t*1.6+s.ph)));
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.2832); ctx.fillStyle='rgba(226,238,247,'+a.toFixed(3)+')'; ctx.fill(); }
-    ctx.globalCompositeOperation='lighter';
-    for(let i=0;i<4;i++){
-      const off=(i-1.5)*(W*.24)+Math.sin(t*.4+i)*18;
-      const rg=ctx.createLinearGradient(W/2+off,0,W/2+off*1.4,H*.85);
-      rg.addColorStop(0,'rgba(150,200,235,0.055)'); rg.addColorStop(1,'rgba(150,200,235,0)');
-      ctx.fillStyle=rg; ctx.beginPath();
-      ctx.moveTo(W/2+off-38,0); ctx.lineTo(W/2+off+38,0);
-      ctx.lineTo(W/2+off*1.4+120,H*.9); ctx.lineTo(W/2+off*1.4-120,H*.9); ctx.closePath(); ctx.fill();
-    }
-    ctx.globalCompositeOperation='source-over';
-    requestAnimationFrame(frame);
-  })();
-})();
-
-/* ================== auth ================== */
-let signup = false;
-const show = (el,v)=>el.classList.toggle('hidden',!v);
-const showAuth = () => { show($('#app'),false); show($('#auth'),true); };
-
-$('#authSwitch').onclick = () => {
-  signup = !signup;
-  $('#authTitle').textContent = signup ? 'Create account' : 'Sign in';
-  $('#authBtn').textContent = signup ? 'Create account' : 'Sign in';
-  show($('#aName'), signup);
-  $('#authSwitch').innerHTML = signup ? 'Have an account? <b>Sign in</b>' : 'No account? <b>Create one</b>';
-};
-
-$('#authBtn').onclick = async () => {
-  const email = $('#aEmail').value.trim().toLowerCase();
-  const pass = $('#aPass').value, name = $('#aName').value.trim();
-  $('#authErr').textContent = '';
-  if(!email || !pass) return $('#authErr').textContent = 'Email and password required';
-  if(signup && pass.length < 6) return $('#authErr').textContent = 'Password too short';
-  try{
-    if(signup){
-      if(await IDB.oneByIndex('users','email',email)) return $('#authErr').textContent = 'Email already registered';
-      const id = await IDB.put('users', { email, name: name || email.split('@')[0], pass: await sha(pass), created_at: Date.now() });
-      await IDB.put('kv', { key:'set:'+id, sys: DEFAULT_SYS, temp: 0.7 });
-      localStorage.setItem('vsession', id);
-    } else {
-      const u = await IDB.oneByIndex('users','email',email);
-      if(!u || u.pass !== await sha(pass)) return $('#authErr').textContent = 'Wrong email or password';
-      localStorage.setItem('vsession', u.id);
-    }
-    await boot();
-  }catch(e){ $('#authErr').textContent = e.message || 'Error'; }
-};
-$('#outBtn').onclick = () => { localStorage.removeItem('vsession'); location.reload(); };
-
-$('#enterBtn').onclick = async () => {
-  $('#splash').classList.add('hidden');
-  const sid = localStorage.getItem('vsession');
-  if(sid && await IDB.get('users', +sid)) return boot();
-  if(!(await IDB.all('users')).length){ signup = true; $('#authSwitch').onclick(); }
-  showAuth();
-};
-
-async function boot(){
-  const u = await IDB.get('users', +localStorage.getItem('vsession'));
-  if(!u) return showAuth();
-  state.me = u;
-  const cfg = (await IDB.get('kv','set:'+u.id)) || { sys: DEFAULT_SYS, temp: 0.7 };
-  state.sys = cfg.sys; state.temp = cfg.temp;
-  show($('#auth'), false); show($('#app'), true);
-  $('#uname').textContent = u.name;
-  $('#uava').textContent = (u.name[0]||'U').toUpperCase();
-  $('#langSel').value = state.lang;
-  updateLive();
-  await loadModels(); await loadChats();
-  if(state.chats.length) await openChat(state.chats[0].id); else newChatUI();
-}
-
-function updateLive(){
-  const has = !!getKey();
-  $('#liveDot').classList.toggle('dot-off', !has);
-  $('#uplan').textContent = has ? 'LIVE' : 'DEMO';
-  $('#foot').textContent = has ? 'متصل بـ api.venice.ai — اضغط المايك واتكلم' : 'وضع تجريبي — ضع المفتاح في الإعدادات';
-}
-
-async function loadModels(){
-  let list = FALLBACK_MODELS;
-  const key = getKey();
-  if(key){
-    try{
-      const r = await fetch(VENICE_BASE + '/models', { headers:{ Authorization:'Bearer '+key } });
-      const j = await r.json();
-      const ids = (j.data||[]).map(m=>m.id).filter(Boolean);
-      if(ids.length) list = ids.slice(0,60);
-    }catch(e){}
-  }
-  state.models = list;
-  if(!list.includes(state.model)) state.model = list[0];
-  $('#modelName').textContent = state.model;
-  $('#menu').innerHTML = list.map(m=>`<div class="mitem${m===state.model?' sel':''}" data-id="${esc(m)}">${esc(m)}</div>`).join('');
-  $('#menu').querySelectorAll('.mitem').forEach(el => el.onclick = async () => {
-    state.model = el.dataset.id; localStorage.setItem('vmodel', state.model);
-    $('#modelName').textContent = state.model;
-    $('#menu').querySelectorAll('.mitem').forEach(x=>x.classList.remove('sel')); el.classList.add('sel');
-    $('#menu').classList.remove('open');
-    if(state.chat){ state.chat.model = state.model; state.chat.updated_at = Date.now(); await IDB.put('chats', state.chat); }
-  });
-}
-
-/* ================== chats ================== */
-async function loadChats(){
-  const all = await IDB.byIndex('chats','user',state.me.id);
-  state.chats = all.sort((a,b)=>b.updated_at-a.updated_at);
-  const f = ($('#searchInp').value||'').toLowerCase();
-  const list = f ? state.chats.filter(c=>c.title.toLowerCase().includes(f)) : state.chats;
-  $('#threads').innerHTML = list.map(c=>
-    `<div class="thread${state.chat&&state.chat.id===c.id?' on':''}" data-id="${c.id}">
-      <span class="t-title">${esc(c.title)}</span><span class="t-del" data-del="${c.id}">×</span></div>`).join('');
-  $('#threads').querySelectorAll('.thread').forEach(el=>{
-    el.onclick = e => { if(e.target.dataset.del) return; openChat(+el.dataset.id); $('#side').classList.remove('open'); };
-    el.ondblclick = async () => {
-      const cur = state.chats.find(c=>c.id===+el.dataset.id);
-      const t = prompt('Rename chat', cur.title); if(!t) return;
-      cur.title = t.trim(); cur.updated_at = Date.now(); await IDB.put('chats',cur); loadChats();
-    };
-    el.querySelector('.t-del').onclick = async e => {
-      e.stopPropagation(); const id = +el.dataset.del;
-      await IDB.del('chats', id);
-      for(const m of await IDB.byIndex('messages','chat',id)) await IDB.del('messages', m.id);
-      if(state.chat?.id===id){ state.chat=null; newChatUI(); }
-      loadChats();
-    };
-  });
-}
-$('#searchInp').oninput = () => loadChats();
-
-function newChatUI(){
-  state.chat = null;
-  $('#msgWrap').innerHTML =
-    `<div class="hero"><h1>أهلاً بك.</h1>
-     <p>اضغط المايك واتكلم، أو اكتب — وأنا أرد عليك.</p>
-     <div class="chips">
-       <div class="chip" data-t="عرفني بنفسك">عرفني بنفسك</div>
-       <div class="chip" data-t="اشرح لي الذكاء الاصطناعي ببساطة">اشرح الذكاء الاصطناعي</div>
-       <div class="chip" data-t="Write a Python script to rename files">Write a Python script</div>
-     </div></div>`;
-  $('#msgWrap').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ $('#inp').value=c.dataset.t; send(); });
-  loadChats(); $('#inp').focus();
-}
-
-async function ensureChat(){
-  if(state.chat) return state.chat;
-  const now = Date.now();
-  const id = await IDB.put('chats', { user_id:state.me.id, title:'New chat', model:state.model, created_at:now, updated_at:now });
-  state.chat = await IDB.get('chats', id);
-  return state.chat;
-}
-
-async function openChat(id){
-  const chat = await IDB.get('chats', id); if(!chat) return;
-  state.chat = chat; state.model = chat.model || state.model;
-  $('#modelName').textContent = state.model;
-  const msgs = (await IDB.byIndex('messages','chat',id)).sort((a,b)=>a.created_at-b.created_at);
-  if(!msgs.length){ newChatUI(); state.chat = chat; return; }
-  $('#msgWrap').innerHTML = '';
-  msgs.forEach(m=>addBubble(m.role, m.content));
-  scrollDown(); loadChats();
-}
-
-/* ================== messages ================== */
-const scrollDown = () => { const m=$('#msgs'); m.scrollTop=m.scrollHeight; };
-
-function addBubble(role, text, streaming=false){
-  const row = document.createElement('div');
-  row.className = 'row ' + (role==='user'?'me':'ai');
-  const ava = role==='user' ? '' : '<div class="ava"><svg width="13" height="13" viewBox="0 0 32 32" fill="none"><path d="M16 8l4.4 6.2L16 24l-4.4-9.8z" fill="#12161c"/></svg></div>';
-  row.innerHTML = ava + `<div class="bubble">${role==='user'?esc(text):renderMD(text)}${streaming?'<span class="cursor"></span>':''}</div>`;
-  $('#msgWrap').appendChild(row); scrollDown();
-  return row.querySelector('.bubble');
-}
-function attachCopy(scope){
-  scope.querySelectorAll('.codewrap').forEach(cw=>{
-    const b = cw.querySelector('.copy');
-    b.onclick = () => { navigator.clipboard.writeText(cw.querySelector('code').textContent); b.textContent='copied'; setTimeout(()=>b.textContent='copy',1200); };
-  });
-}
-
-async function streamVenice(msgs, onDelta){
-  const r = await fetch(VENICE_BASE + '/chat/completions', {
-    method:'POST',
-    headers:{ 'Authorization':'Bearer '+getKey(), 'Content-Type':'application/json' },
-    body: JSON.stringify({ model: state.model, messages: msgs, stream:true, temperature: state.temp })
-  });
-  if(!r.ok) throw new Error('Venice ' + r.status + ': ' + (await r.text()).slice(0,200));
-  const reader = r.body.getReader(), dec = new TextDecoder();
-  let buf='', full='';
-  while(true){
-    const { done, value } = await reader.read(); if(done) break;
-    buf += dec.decode(value,{stream:true});
-    const parts = buf.split('\n\n'); buf = parts.pop();
-    for(const p of parts) for(const line of p.split('\n')){
-      if(!line.startsWith('data:')) continue;
-      const raw = line.slice(5).trim();
-      if(!raw || raw === '[DONE]') continue;
-      try{ const j = JSON.parse(raw); const d = j.choices?.[0]?.delta?.content || j.choices?.[0]?.text || '';
-        if(d){ full += d; onDelta(d); } }catch{}
-    }
-  }
-  return full;
-}
-
-async function streamLocal(msgs, onDelta){
-  const last = msgs.filter(m=>m.role==='user').pop()?.content || '';
-  const ar = /[\u0600-\u06FF]/.test(last);
-  const text = ar
-    ? `أنا فينيس. سمعتك: **${last.slice(0,60)}**\n\nهذا رد من المخ التجريبي المدمج. ضع مفتاح Venice API في أول الكود أو في الإعدادات وبيشتغل الذكاء الحقيقي على السيرفر.`
-    : `I'm Venice. Got it: **${last.slice(0,60)}**\n\nThis is the built-in demo brain. Add your Venice API key at the top of the code or in Settings to go live.`;
-  let full='';
-  for(const ch of text){ full += ch; onDelta(ch); await new Promise(r=>setTimeout(r,9)); }
-  return full;
-}
-
-async function send(spoken){
-  if(state.streaming) return;
-  const inp = $('#inp');
-  const text = (spoken ?? inp.value).trim();
-  if(!text) return;
-  state.streaming = true; $('#sendBtn').disabled = true;
-  if(window.speechSynthesis) speechSynthesis.cancel();
-
-  $('#msgWrap').querySelector('.hero')?.remove();
-  await ensureChat();
-  const chatId = state.chat.id;
-
-  await IDB.put('messages', { chat_id:chatId, role:'user', content:text, created_at:Date.now() });
-  addBubble('user', text);
-  inp.value=''; inp.style.height='auto';
-
-  if(state.chat.title === 'New chat'){
-    state.chat.title = text.slice(0,46); state.chat.updated_at = Date.now();
-    await IDB.put('chats', state.chat); loadChats();
-  }
-
-  const bubble = addBubble('assistant','',true);
-  const history = (await IDB.byIndex('messages','chat',chatId)).sort((a,b)=>a.created_at-b.created_at).map(m=>({role:m.role,content:m.content}));
-  const payload = [{ role:'system', content: state.sys || DEFAULT_SYS }, ...history];
-
-  let acc='', raf=false;
-  const paint = () => { raf=false; bubble.innerHTML = renderMD(acc)+'<span class="cursor"></span>'; scrollDown(); };
-  const onDelta = d => { acc += d; if(!raf){ raf=true; requestAnimationFrame(paint); } };
-
-  let used = 'local';
-  if(getKey()){
-    try{ await streamVenice(payload, onDelta); used = 'venice'; }
-    catch(e){ onDelta('\n\n> ' + e.message); await streamLocal(payload, onDelta); }
-  } else {
-    await streamLocal(payload, onDelta);
-  }
-
-  bubble.innerHTML = renderMD(acc); attachCopy(bubble);
-  await IDB.put('messages', { chat_id:chatId, role:'assistant', content:acc, created_at:Date.now(), via:used });
-  state.chat.updated_at = Date.now(); await IDB.put('chats', state.chat);
-  loadChats();
-  state.streaming = false; $('#sendBtn').disabled = false;
-  if(state.speak) speak(acc);
-}
-
-/* ================== wiring ================== */
-$('#sendBtn').onclick = () => send();
-$('#micBtn').onclick = toggleMic;
-$('#inp').addEventListener('keydown', e => { if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
-$('#inp').addEventListener('input', e => { e.target.style.height='auto'; e.target.style.height=Math.min(e.target.scrollHeight,140)+'px'; });
-$('#newBtn').onclick = () => { newChatUI(); $('#side').classList.remove('open'); };
-$('#burger').onclick = () => $('#side').classList.toggle('open');
-$('#modelBtn').onclick = e => { e.stopPropagation(); $('#menu').classList.toggle('open'); };
-document.addEventListener('click', () => $('#menu').classList.remove('open'));
-$('#fsBtn').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
-
-$('#spkBtn').onclick = () => {
-  state.speak = !state.speak;
-  $('#spkBtn').classList.toggle('active', state.speak);
-  if(!state.speak && window.speechSynthesis) speechSynthesis.cancel();
-  toast(state.speak ? 'قراءة الردود الصوتية: مفعّلة' : 'قراءة الردود الصوتية: متوقفة');
-};
-
-$('#regenBtn').onclick = async () => {
-  if(!state.chat || state.streaming) return;
-  const msgs = (await IDB.byIndex('messages','chat',state.chat.id)).sort((a,b)=>a.created_at-b.created_at);
-  const lastA = [...msgs].reverse().find(m=>m.role==='assistant');
-  if(lastA) await IDB.del('messages', lastA.id);
-  const lastU = [...msgs].reverse().find(m=>m.role==='user');
-  if(!lastU) return;
-  await openChat(state.chat.id);
-  state.streaming = true; $('#sendBtn').disabled = true;
-  const bubble = addBubble('assistant','',true);
-  let acc='', raf=false;
-  const paint=()=>{raf=false;bubble.innerHTML=renderMD(acc)+'<span class="cursor"></span>';scrollDown();};
-  const onDelta=d=>{acc+=d;if(!raf){raf=true;requestAnimationFrame(paint);}};
-  const hist = (await IDB.byIndex('messages','chat',state.chat.id)).sort((a,b)=>a.created_at-b.created_at).map(m=>({role:m.role,content:m.content}));
-  const payload=[{role:'system',content:state.sys||DEFAULT_SYS},...hist];
-  try{ getKey() ? await streamVenice(payload,onDelta) : await streamLocal(payload,onDelta); }
-  catch(e){ onDelta('\n\n> '+e.message); await streamLocal(payload,onDelta); }
-  bubble.innerHTML = renderMD(acc); attachCopy(bubble);
-  await IDB.put('messages',{chat_id:state.chat.id,role:'assistant',content:acc,created_at:Date.now()});
-  state.streaming=false; $('#sendBtn').disabled=false;
-  if(state.speak) speak(acc);
-};
-
-/* ================== settings ================== */
-$('#setBtn').onclick = () => {
-  $('#keyInp').value = localStorage.getItem('vkey') || VENICE_API_KEY;
-  $('#sysInp').value = state.sys || DEFAULT_SYS;
-  $('#tempInp').value = state.temp; $('#tempVal').textContent = state.temp;
-  $('#langSel').value = state.lang;
-  show($('#drawer'), true);
-};
-$('#tempInp').oninput = e => $('#tempVal').textContent = e.target.value;
-$('#langSel').onchange = e => { state.lang = e.target.value; localStorage.setItem('vlang', state.lang); };
-$('#closeSet').onclick = () => show($('#drawer'), false);
-$('#saveSet').onclick = async () => {
-  const k = $('#keyInp').value.trim();
-  k ? localStorage.setItem('vkey', k) : localStorage.removeItem('vkey');
-  state.sys = $('#sysInp').value; state.temp = +$('#tempInp').value;
-  await IDB.put('kv', { key:'set:'+state.me.id, sys: state.sys, temp: state.temp });
-  updateLive(); await loadModels();
-  show($('#drawer'), false); toast('تم الحفظ');
-};
-$('#expBtn').onclick = async () => {
-  const data = { users: await IDB.all('users'), chats: await IDB.all('chats'), messages: await IDB.all('messages') };
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
-  a.download = 'venice-backup.json'; a.click(); toast('تم التصدير');
-};
-$('#wipeBtn').onclick = async () => {
-  if(!confirm('Delete all users, chats and messages?')) return;
-  for(const s of ['users','chats','messages','kv']) await IDB.clear(s);
-  localStorage.clear(); location.reload();
-};
-</script>
+    <!-- Overlay for mobile sidebar -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-60 z-20 hidden md:hidden"></div>
+    <script src="script.js"></script>
 </body>
-</html>
+         </html>
