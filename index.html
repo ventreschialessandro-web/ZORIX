@@ -1,57 +1,24 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>محول الصور الدائم - ZORIX</title>
-<style>
-body{font-family:Arial;text-align:center;padding:20px;background:#0f0f0f;color:white}
-.box{background:#1e1e1e;padding:20px;border-radius:10px;max-width:450px;margin:auto;border:1px solid #333}
-button{background:#00ff88;color:black;border:none;padding:12px 25px;border-radius:5px;font-size:18px;font-weight:bold;cursor:pointer;width:100%}
-#links{margin-top:15px;text-align:left;direction:ltr;word-break:break-all}
-a{color:#00ff88}
-img{max-width:100%;border-radius:8px;margin-top:10px;border:1px solid #333}
-</style>
-</head>
-<body>
-<div class="box">
-<h2>محول الصور - ZORIX v2</h2>
-<p>اختار الصور من جهازك</p>
-<input type="file" id="myImages" multiple accept="image/*" style="width:100%"><br><br>
-<button onclick="uploadImages()">رفع الصور</button>
-<p id="status"></p>
-<div id="links"></div>
-</div>
-
 <script>
+const API_KEY = "c9bd8f8fbce9deef0d65b5f5beeead9b";
+
 async function uploadImages(){
- const input=document.getElementById('myImages');
- const status=document.getElementById('status');
- const linksDiv=document.getElementById('links');
- if(input.files.length==0){status.innerText="اختار صورة الأول";return;}
- status.innerText="جاري الرفع... ⏳";
- linksDiv.innerHTML="";
- for(let file of input.files){
-   const form=new FormData();
-   form.append('file',file);
-   try{
-     const res=await fetch('https://tmpfiles.org/api/v1/upload',{method:'POST',body:form});
-     const data=await res.json();
-     if(data.status=='success'){
-       let url=data.data.url;
-       let directUrl=url.replace('tmpfiles.org/','tmpfiles.org/dl/');
-       status.innerText="✅ تم الرفع بنجاح!";
-       linksDiv.innerHTML+=`<div style="background:#2a2a2a;padding:10px;border-radius:5px;margin-bottom:10px">
-       📸 ${file.name}<br>
-       <a href="${directUrl}" target="_blank">${directUrl}</a><br>
-       <img src="${directUrl}">
-       </div>`;
-     }
-   }catch(e){
-     status.innerText="❌ خطأ: "+e.message;
-   }
- }
+  const input = document.getElementById('myImages');
+  const status = document.getElementById('status');
+  if(!input.files.length){ status.innerText="اختار صور"; return; }
+  
+  status.innerText="جاري الرفع للسيرفر الأمريكي...";
+  
+  for(let file of input.files){
+    const form = new FormData();
+    form.append("image", file);
+    
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
+      method: "POST",
+      body: form
+    });
+    const data = await res.json();
+    console.log("رابط الصورة الدائم:", data.data.url);
+    status.innerText = "✅ تم الحفظ في السيرفر: " + data.data.url;
+  }
 }
 </script>
-</body>
-</html>
